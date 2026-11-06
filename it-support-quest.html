@@ -240,6 +240,27 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
 .lbrow .lbpos{width:32px;display:flex;justify-content:center;text-align:center;font-weight:800;font-size:15px;color:var(--mut)}
 .lbrow .lbav svg{width:36px;height:36px;display:block}
 .lbrow.me{background:var(--okbg);margin:0 -14px;padding:10px 14px;border-radius:12px}
+.pfb{padding:0;border-radius:50%;position:relative;overflow:visible;background:var(--card2)}
+.pfimg{border-radius:50%;object-fit:cover;display:block}
+.pfav{display:block;border-radius:50%;overflow:hidden}
+.pfav svg{width:100%;height:100%;display:block}
+.pfdot{position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;border-radius:50%;background:var(--ok);border:2px solid var(--bg)}
+.pfhead{display:flex;gap:14px;align-items:center;margin:2px 0 12px}
+.pfbig{position:relative;flex:none;cursor:pointer}
+.pfcam{position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border-radius:50%;background:var(--ac);display:grid;place-items:center;font-size:15px;border:3px solid var(--surf)}
+.pfgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px}
+.pfgrid button{border:3px solid transparent;background:none;padding:0;border-radius:50%;aspect-ratio:1;overflow:hidden}
+.pfgrid button.on{border-color:var(--ac)}
+.pfgrid svg{width:100%;height:100%;display:block}
+.pfstats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.pfstats div{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.pfstats b{display:block;font-size:17px}
+.pfstats span{font-size:12px;color:var(--mut)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips button{border:1px solid var(--line);background:var(--card2);border-radius:18px;padding:8px 12px;font-size:13px;font-weight:600;color:var(--mut)}
+.chips button.on{background:var(--ac);border-color:var(--ac);color:var(--onac)}
+.lbrow .lbav .pfav,.lbrow .lbav .pfimg{width:36px!important;height:36px!important}
+@media (max-width:430px){.rankchip{max-width:31vw}}
 .copy{text-align:center;font-size:11px;color:var(--mut);opacity:.75;margin:22px 0 4px}
 </style>
 </head>
@@ -248,6 +269,7 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
   <button class="ib" id="backBtn" aria-label="Back" hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
   <div class="brand" id="brand"><span class="logo">&gt;_</span><span>IT Support <b>Quest</b></span></div>
   <div class="grow"></div>
+  <button class="ib pfb" id="pfBtn" aria-label="Profile"></button>
   <button class="rankchip" id="rankChip" aria-label="Stats"></button>
   <button class="ib" id="setBtn" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg></button>
 </header>
@@ -702,7 +724,7 @@ function route(){
   window.scrollTo(0,0);
 }
 function applyTheme(){document.documentElement.dataset.theme=P.set.theme;const dark=P.set.theme==='dark'||(P.set.theme==='system'&&!matchMedia('(prefers-color-scheme: light)').matches);document.querySelector('meta[name=theme-color]').content=dark?'#0b1020':'#f2f5fb'}
-function renderChip(){$('rankChip').textContent=RANKS[rankIdx(P.xp)][1]}
+function renderChip(){$('rankChip').textContent=RANKS[rankIdx(P.xp)][1];renderPfBtn()}
 
 /* ===== HOME ===== */
 function renderHome(){
@@ -1258,6 +1280,7 @@ function openSettings(){
   const segs=(key,vals)=>`<div class="seg">${vals.map(([v,l])=>`<button data-set="${key}" data-v="${v}" class="${String(P.set[key])===String(v)?'on':''}">${l}</button>`).join('')}</div>`;
   const sw=(key,l,sub)=>`<div class="setrow"><div class="lbl" style="margin:0"><span>${l}<div class="mut small" style="font-weight:400">${sub}</div></span><button class="sw ${P.set[key]?'on':''}" data-sw="${key}" aria-label="${l}"></button></div></div>`;
   $('setBody').innerHTML=`<div class="grab"></div><div class="h2" style="margin:0 0 4px">Settings</div>
+    <button class="setrow" id="pfRow" style="display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-bottom:1px solid var(--line);text-align:left;color:inherit;font:inherit;cursor:pointer">${myPic(44)}<span style="flex:1;min-width:0"><b>${esc(profName())}</b><div class="mut small">Profile: photo, username and goal</div></span><span style="font-size:22px;color:var(--ac)">&#8250;</span></button>
     <div class="setrow"><div class="lbl">Theme</div>${segs('theme',[['system','System'],['light','Light'],['dark','Dark']])}</div>
     <div class="setrow"><div class="lbl">Daily goal <span class="mut small">questions per day</span></div>${segs('goal',[[10,'10'],[20,'20'],[30,'30'],[50,'50']])}</div>
     <div class="setrow"><div class="lbl">Level</div>${segs('level',[['all','All'],['1','Level 1'],['2','Level 2']])}</div>
@@ -1269,7 +1292,7 @@ function openSettings(){
     <button class="btn pri" id="setDone" style="width:100%">Done</button>
     <p class="small mut" style="text-align:center;margin:12px 0 0">${SY.user?'Progress saves on this device and to your account.':'Progress is saved on this device. Sign in to keep it safe and use it on other devices.'} Works offline.</p><p class="copy" style="margin-top:10px">&copy; 2026 Sushil Amgain</p>`;
   $('settings').hidden=false;SY.view='settings';
-  $('acctBtn').onclick=openAccount;$('bkBtn').onclick=openBackup;
+  $('acctBtn').onclick=openAccount;$('pfRow').onclick=openProfile;$('bkBtn').onclick=openBackup;
   $('setBody').querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{const k=b.dataset.set,v=b.dataset.v;P.set[k]=k==='goal'?+v:k==='level'&&v!=='all'?+v:v;save();if(k==='theme')applyTheme();openSettings();refresh()});
   $('setBody').querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const k=b.dataset.sw;P.set[k]=!P.set[k];save();b.classList.toggle('on',P.set[k]);if(k==='sound'&&P.set.sound)sGood();if(k==='vib')buzz(30)});
   $('resetBtn').onclick=()=>{if(!confirm('Reset ALL progress, XP, stats and notes?'+(SY.user?' This also resets it on your account.':'')+' This cannot be undone.'))return;const st=P.set;localStorage.removeItem(KEY);P=load();P.set=st;save();closeSettings();toast('Progress reset');S=null;nav('home')};
@@ -1286,7 +1309,7 @@ $('settings').onclick=e=>{if(e.target===$('settings'))closeSettings()};
 })();
 
 /* ===== WIRING ===== */
-$('setBtn').onclick=openSettings;
+$('setBtn').onclick=openSettings;$('pfBtn').onclick=openProfile;
 const goHome=()=>{if(!$('v-game').hidden){stopGame();nav('games');return}if(!$('v-play').hidden&&S&&S.n)endSession();else{S=null;nav('home')}};
 $('brand').onclick=goHome;$('backBtn').onclick=goHome;
 $('rankChip').onclick=()=>nav('stats');
@@ -1386,6 +1409,7 @@ function cloudUser(u){
   if(u)cloudPull();else{SY.conflict=null;setSync('off')}
   if(SY.view==='account')openAccount();else if(SY.view==='settings')openSettings();
   if(!$('v-board').hidden)renderBoard();
+  renderPfBtn();if(SY.view==='profile')openProfile();
 }
 function cloudBoot(){
   addEventListener('online',()=>{if(SY.user&&!SY.conflict&&(SY.t||SY.state==='offline'||SY.state==='err'))cloudPush()});
@@ -1456,8 +1480,9 @@ function lbWeek(){const wk=weekKey(),x=P.xp||0;
   if(x<P.lbw.start)P.lbw.start=x;P.lbw.last=x}
 const weekXp=()=>P.lbw&&P.lbw.wk===weekKey()?Math.max(0,(P.xp||0)-P.lbw.start):0;
 const lbJoined=()=>!!(SY.user&&P.set.lbOn&&P.set.lbName);
-const lbDoc=()=>({name:P.set.lbName,xp:Math.round(P.xp||0),wxp:Math.round(weekXp()),wk:weekKey(),answered:Math.round(P.answered||0),acc:P.answered?Math.round(P.correct/P.answered*100):0,updated:Date.now()});
-async function lbPush(){if(!lbJoined()||!FB)return;try{await FB.fs.setDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid),lbDoc())}catch(e){LB.err=errText(e)}}
+const lbDoc=()=>(Object.assign(LB.noPic?{}:{photo:okPhoto(P.set.photo)?P.set.photo:'',av:String(P.set.av||'').slice(0,20)},{name:P.set.lbName,xp:Math.round(P.xp||0),wxp:Math.round(weekXp()),wk:weekKey(),answered:Math.round(P.answered||0),acc:P.answered?Math.round(P.correct/P.answered*100):0,updated:Date.now()}));
+async function lbPush(){if(!lbJoined()||!FB)return;const ref=FB.fs.doc(FB.db,'leaderboard',SY.user.uid);
+  try{await FB.fs.setDoc(ref,lbDoc());LB.err=''}catch(e){if(!LB.noPic&&e&&e.code==='permission-denied'){LB.noPic=true;try{await FB.fs.setDoc(ref,lbDoc());LB.err='';return}catch(e2){e=e2}}LB.err=errText(e)}}
 const cleanName=t=>String(t||'').replace(/<[^>]*>/g,'').replace(/[<>"&\\]/g,'').replace(/\s+/g,' ').trim().slice(0,20);
 async function lbLoad(force){
   if(!fbOn()||LB.loading)return;if(!force&&LB.rows&&Date.now()-LB.at<60000)return;
@@ -1486,7 +1511,7 @@ function renderBoard(){
     const myPos=rows.findIndex(r=>r.uid===me);
     if(myPos>=0)h+=`<p class="small mut" style="margin:0 0 8px">You are <b style="color:var(--ac)">#${myPos+1}</b> of ${rows.length} ${LB.tab==='week'?'this week':'all time'}.</p>`;
     h+=`<div class="card" style="padding:4px 14px">`+rows.slice(0,100).map((r,i)=>{const pos=i<3?lbMedal(i):'#'+(i+1);
-      return `<div class="trow lbrow${r.uid===me?' me':''}"><span class="lbpos">${pos}</span><span class="lbav">${avatar(r.name||'?',true)}</span><div class="tb"><b>${esc(r.name||'Player')}${r.uid===me?' (you)':''}</b><div class="mut small">${RANKS[rankIdx(r.xp||0)][1]}, ${r.acc||0}% accuracy</div></div><b>${(r.score||0).toLocaleString()} XP</b></div>`}).join('')+`</div>`;
+      return `<div class="trow lbrow${r.uid===me?' me':''}"><span class="lbpos">${pos}</span><span class="lbav">${personPic(r,36)}</span><div class="tb"><b>${esc(r.name||'Player')}${r.uid===me?' (you)':''}</b><div class="mut small">${RANKS[rankIdx(r.xp||0)][1]}, ${r.acc||0}% accuracy</div></div><b>${(r.score||0).toLocaleString()} XP</b></div>`}).join('')+`</div>`;
   }
   h+=`<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="lbRef">Refresh</button>${lbJoined()?`<button class="btn" id="lbRen">Change name</button><button class="btn danger" id="lbLeave">Leave</button>`:''}</div>
     <p class="small mut" style="text-align:center">This week resets every Monday. Only your name, XP, rank and accuracy are shown.</p>`;
@@ -1498,11 +1523,80 @@ function renderBoard(){
     if(n.length<2){m.textContent='Name needs at least 2 letters.';return}
     const taken=(LB.rows||[]).some(r=>r.uid!==me&&String(r.name).toLowerCase()===n.toLowerCase());if(taken){m.textContent='Someone already uses that name. Try another.';return}
     P.set.lbName=n;P.set.lbOn=true;save();await cloudPush();await lbPush();if(LB.err){m.textContent=LB.err;return}toast('You joined the leaderboard');lbLoad(true);renderBoard()});
-  on('lbRen',()=>{P.set.lbOn=false;save();renderBoard()});
+  on('lbRen',openProfile);
   on('lbLeave',async()=>{if(!confirm('Leave the leaderboard? Your name and XP will be removed from it. Your progress stays.'))return;
     P.set.lbOn=false;save();try{await FB.fs.deleteDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid))}catch(e){}
     if(LB.rows)LB.rows=LB.rows.filter(r=>r.uid!==me);toast('You left the leaderboard');renderBoard()});
   lbLoad();
+}
+
+/* ===== PROFILE ===== */
+const AIMS=[['job','Land my first IT job'],['l2','Move from L1 to L2'],['cert','Pass a cert (A+, Network+)'],['skills','Sharpen my skills'],['fun','Just for fun']];
+const AVSEEDS=['Nova','Kai','Mira','Leo','Ava','Raj','Zoe','Sam','Ivy','Max','Noor','Jin'];
+const okPhoto=d=>typeof d==='string'&&d.length<12000&&/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(d);
+function profName(){return P.set.lbName||(SY.user&&SY.user.email?cleanName(SY.user.email.split('@')[0]):'')||'Player'}
+function personPic(r,size){
+  if(okPhoto(r.photo))return `<img class="pfimg" src="${r.photo}" alt="" style="width:${size}px;height:${size}px">`;
+  return `<span class="pfav" style="width:${size}px;height:${size}px">${avatar(String(r.av||r.name||'?'),true)}</span>`;
+}
+const myPic=size=>personPic({photo:P.set.photo,av:P.set.av,name:profName()},size);
+function renderPfBtn(){const b=$('pfBtn');if(b)b.innerHTML=myPic(36)+(SY.user?'<i class="pfdot"></i>':'')}
+function memberSince(){const ds=Object.keys(P.days||{}).sort(),t=[P.created||Infinity];if(ds[0])t.push(new Date(ds[0]+'T12:00').getTime());const m=Math.min(...t);return isFinite(m)?new Date(m):new Date()}
+function shrinkPhoto(img){
+  const m=Math.min(img.naturalWidth||img.width,img.naturalHeight||img.height),sx=((img.naturalWidth||img.width)-m)/2,sy=((img.naturalHeight||img.height)-m)/2;
+  for(const [S,q] of [[128,.82],[128,.65],[96,.7],[72,.6],[56,.5]]){
+    const c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');if(!x)return null;
+    x.fillStyle='#fff';x.fillRect(0,0,S,S);x.drawImage(img,sx,sy,m,m,0,0,S,S);const d=c.toDataURL('image/jpeg',q);if(okPhoto(d))return d;
+  }
+  return null;
+}
+function pickPhoto(file){
+  if(!file)return;if(file.type&&!/^image\//.test(file.type)){toast('Please pick a picture');return}
+  const url=URL.createObjectURL(file),img=new Image();
+  img.onload=()=>{URL.revokeObjectURL(url);const d=shrinkPhoto(img);if(!d){toast('Could not use that picture. Try another one.');return}
+    P.set.photo=d;save();renderPfBtn();if(SY.view==='profile')openProfile();toast('Photo updated')};
+  img.onerror=()=>{URL.revokeObjectURL(url);toast('Could not read that picture. Try another one.')};
+  img.src=url;
+}
+function openProfile(){
+  SY.view='profile';$('settings').hidden=false;if(fbOn())lbLoad();
+  const r=rankIdx(P.xp),acc=P.answered?Math.round(P.correct/P.answered*100)+'%':'-',tro=ACH.filter(a=>P.ach[a.id]).length,aim=AIMS.find(a=>a[0]===P.set.aim);
+  let pos='';if(lbJoined()&&LB.rows){const rows=LB.rows.filter(x=>x.uid!==SY.user.uid).concat([{uid:SY.user.uid,xp:P.xp||0}]).sort((a,b)=>(b.xp||0)-(a.xp||0));pos='#'+(rows.findIndex(x=>x.uid===SY.user.uid)+1)+' of '+rows.length}
+  const stat=(v,l)=>`<div><b>${v}</b><span>${l}</span></div>`;
+  $('setBody').innerHTML=`<div class="grab"></div>
+    <div class="pfhead"><label class="pfbig" for="pfFile" title="Change photo">${myPic(84)}<span class="pfcam">&#128247;</span></label>
+      <div style="min-width:0"><div class="h2" style="margin:0;overflow:hidden;text-overflow:ellipsis">${esc(profName())}</div><div style="color:var(--amb);font-weight:700;font-size:14px">${RANKS[r][1]}</div>
+      <div class="mut small">${aim?esc(aim[1]):'Member since '+memberSince().toLocaleDateString([], {month:'short',year:'numeric'})}</div></div></div>
+    <input type="file" id="pfFile" accept="image/*" hidden>
+    <div class="acrow" style="margin-top:0"><label class="btn" for="pfFile" style="text-align:center">${P.set.photo?'Change photo':'Add photo'}</label>${P.set.photo?'<button class="btn" id="pfDel">Remove photo</button>':''}</div>
+    <div class="setrow"><div class="lbl" style="margin:0">Or pick a character</div><div class="pfgrid">${AVSEEDS.map(s=>`<button data-av="${s}" class="${!P.set.photo&&P.set.av===s?'on':''}" aria-label="${s}">${avatar(s,true)}</button>`).join('')}</div></div>
+    <div class="setrow"><div class="lbl" style="margin:0">Username <span class="mut small">2 to 20 letters, shown on the leaderboard</span></div>
+      <div style="display:flex;gap:8px;align-items:center"><input class="fld" id="pfName" maxlength="20" autocomplete="nickname" spellcheck="false" placeholder="Pick a username" value="${esc(P.set.lbName||'')}" style="flex:1"><button class="btn pri sbtn" id="pfSave" style="margin-top:8px">Save</button></div><div class="acmsg" id="pfMsg"></div></div>
+    <div class="setrow"><div class="lbl" style="margin:0">What are you studying for?</div><div class="chips">${AIMS.map(([k,l])=>`<button data-aim="${k}" class="${P.set.aim===k?'on':''}">${l}</button>`).join('')}</div></div>
+    <div class="setrow"><div class="lbl" style="margin:0"><span>Show me on the leaderboard<div class="mut small" style="font-weight:400">${SY.user?(pos?'You are '+pos+' all time':'Your username, picture, XP and rank'):'Sign in first to join'}</div></span><button class="sw ${lbJoined()?'on':''}" id="pfLb" aria-label="Show me on the leaderboard"></button></div></div>
+    <div class="lbl" style="margin:14px 0 0">Your stats</div>
+    <div class="pfstats">${stat(P.xp||0,'XP')}${stat(dayStreak()+' days','day streak')}${stat(P.answered||0,'questions answered')}${stat(acc,'accuracy')}${stat(P.bestStreak||0,'best answer streak')}${stat(tro+' of '+ACH.length,'trophies')}</div>
+    <div class="acbox" style="margin-top:12px;display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0">${SY.user?`<b style="overflow-wrap:anywhere">${esc(SY.user.email||'')}</b><div class="mut small">${syncText()}</div>`:fbOn()?'<b>Not signed in</b><div class="mut small">Sign in to keep your profile and progress safe on every device</div>':'<b>Saved on this device</b><div class="mut small">Accounts are not switched on</div>'}</div>
+      ${fbOn()?`<button class="btn sbtn" id="pfAcct">${SY.user?'Account':'Sign in'}</button>`:''}</div>
+    <button class="btn pri" id="pfDone" style="width:100%;margin-top:12px">Done</button>
+    <p class="small mut" style="text-align:center;margin:10px 0 0">Member since ${memberSince().toLocaleDateString([], {day:'numeric',month:'long',year:'numeric'})}</p>`;
+  const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
+  $('pfFile').onchange=e=>{pickPhoto(e.target.files&&e.target.files[0]);e.target.value=''};
+  on('pfDel',()=>{P.set.photo='';save();renderPfBtn();openProfile();toast('Photo removed')});
+  $('setBody').querySelectorAll('[data-av]').forEach(b=>b.onclick=()=>{P.set.av=b.dataset.av;P.set.photo='';save();renderPfBtn();openProfile()});
+  $('setBody').querySelectorAll('[data-aim]').forEach(b=>b.onclick=()=>{P.set.aim=P.set.aim===b.dataset.aim?'':b.dataset.aim;save();openProfile()});
+  const saveName=()=>{const n=cleanName($('pfName').value),m=$('pfMsg');m.className='acmsg';
+    if(n.length<2){m.textContent='Username needs at least 2 letters.';return}
+    const me=SY.user&&SY.user.uid;if((LB.rows||[]).some(r=>r.uid!==me&&String(r.name).toLowerCase()===n.toLowerCase())){m.textContent='Someone already uses that name. Try another.';return}
+    P.set.lbName=n;save();renderPfBtn();if(lbJoined())cloudPush();toast('Username saved');openProfile()};
+  on('pfSave',saveName);$('pfName').onkeydown=e=>{if(e.key==='Enter')saveName()};
+  on('pfLb',()=>{
+    if(!SY.user){if(fbOn())openAccount();else toast('Accounts are not switched on');return}
+    if(!lbJoined()&&!P.set.lbName){const m=$('pfMsg');m.className='acmsg';m.textContent='Save a username first.';$('pfName').focus();return}
+    if(lbJoined()){P.set.lbOn=false;save();FB.fs.deleteDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid)).catch(()=>{});if(LB.rows)LB.rows=LB.rows.filter(r=>r.uid!==SY.user.uid);toast('Hidden from the leaderboard')}
+    else{P.set.lbOn=true;save();cloudPush();toast('You are on the leaderboard')}
+    openProfile()});
+  on('pfAcct',openAccount);on('pfDone',closeSettings);
 }
 
 /* ----- backup code (no account needed) ----- */
