@@ -1256,6 +1256,12 @@ function openSettings(){
 function closeSettings(){$('settings').hidden=true;SY.view=null}
 function refresh(){const v=(location.hash||'#home').slice(1);if(v==='home')renderHome();if(v==='stats')renderStats()}
 $('settings').onclick=e=>{if(e.target===$('settings'))closeSettings()};
+(()=>{const b=$('setBody');let y0=null,dy=0;
+  b.addEventListener('touchstart',e=>{if(b.scrollTop>0||e.target.closest('input,textarea,.seg,.sw')){y0=null;return}y0=e.touches[0].clientY;dy=0;b.style.transition='none'},{passive:true});
+  b.addEventListener('touchmove',e=>{if(y0===null)return;dy=Math.max(0,e.touches[0].clientY-y0);if(dy>0){b.style.transform='translateY('+dy+'px)';if(e.cancelable)e.preventDefault()}},{passive:false});
+  b.addEventListener('touchend',()=>{if(y0===null)return;y0=null;b.style.transition='transform .2s';
+    if(dy>90){b.style.transform='translateY(100%)';setTimeout(()=>{closeSettings();b.style.transform='';b.style.transition=''},180)}else b.style.transform='';});
+})();
 
 /* ===== WIRING ===== */
 $('setBtn').onclick=openSettings;
