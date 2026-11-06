@@ -244,6 +244,26 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
 .pfimg{border-radius:50%;object-fit:cover;display:block}
 .pfav{display:block;border-radius:50%;overflow:hidden}
 .pfav svg{width:100%;height:100%;display:block}
+.pfbadge{position:absolute;top:-5px;right:-7px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#ef4444;color:#fff;font:700 11px/18px system-ui,sans-serif;font-style:normal;text-align:center;border:2px solid var(--bg);box-sizing:content-box}
+.msgn{display:inline-block;min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:10px;background:#ef4444;color:#fff;font-size:12px;line-height:20px;font-style:normal;font-weight:700;vertical-align:middle}
+.msgn[hidden]{display:none}
+.chrow{display:flex;align-items:center;gap:12px;width:100%;padding:10px 4px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--tx);text-align:left;font:inherit;cursor:pointer}
+.chrow .tb{flex:1;min-width:0}.chrow .pv{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chrow.un .pv{color:var(--tx);font-weight:700}
+.chdot{width:10px;height:10px;border-radius:50%;background:var(--ac);flex:none}
+.chtop{display:flex;align-items:center;gap:8px;position:sticky;top:-10px;background:var(--surf);padding:8px 0 10px;margin:-2px 0 4px;z-index:1;border-bottom:1px solid var(--line)}
+.chtop .ib{font-size:28px;line-height:1}
+.chwho{display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--tx);font:inherit;font-size:17px;cursor:pointer;min-width:0;padding:0}
+.chwho b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chlist{display:flex;flex-direction:column;gap:6px;min-height:42vh;padding:8px 0}
+.chday{align-self:center;font-size:12px;color:var(--mut);margin:6px 0 2px}
+.bub{max-width:80%;padding:8px 12px;border-radius:16px 16px 16px 4px;background:var(--card2);color:var(--tx);white-space:pre-wrap;overflow-wrap:anywhere;align-self:flex-start;font-size:15px;line-height:1.35}
+.bub.me{align-self:flex-end;background:var(--ac);color:var(--onac);border-radius:16px 16px 4px 16px}
+.bub.pend{opacity:.6}
+.bub small{display:block;font-size:11px;opacity:.7;margin-top:2px;text-align:right}
+.chbar{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));background:var(--surf);display:flex;gap:8px;align-items:center;padding:8px 0 calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.chbar .fld{margin:0;flex:1}.chbar .btn{margin:0}
+.lbrow[data-uid]{cursor:pointer}
 .pfdot{position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;border-radius:50%;background:var(--ok);border:2px solid var(--bg)}
 .pfhead{display:flex;gap:14px;align-items:center;margin:2px 0 12px}
 .pfbig{position:relative;flex:none;cursor:pointer}
@@ -1298,7 +1318,7 @@ function openSettings(){
   $('resetBtn').onclick=()=>{if(!confirm('Reset ALL progress, XP, stats and notes?'+(SY.user?' This also resets it on your account.':'')+' This cannot be undone.'))return;const st=P.set;localStorage.removeItem(KEY);P=load();P.set=st;save();closeSettings();toast('Progress reset');S=null;nav('home')};
   $('setDone').onclick=closeSettings;
 }
-function closeSettings(){$('settings').hidden=true;SY.view=null}
+function closeSettings(){$('settings').hidden=true;SY.view=null;chatStop()}
 function refresh(){const v=(location.hash||'#home').slice(1);if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='board')renderBoard()}
 $('settings').onclick=e=>{if(e.target===$('settings'))closeSettings()};
 (()=>{const b=$('setBody');let y0=null,dy=0;
@@ -1409,7 +1429,7 @@ function cloudUser(u){
   if(u)cloudPull();else{SY.conflict=null;setSync('off')}
   if(SY.view==='account')openAccount();else if(SY.view==='settings')openSettings();
   if(!$('v-board').hidden)renderBoard();
-  renderPfBtn();if(SY.view==='profile')openProfile();
+  if(u)inboxStart();else inboxStop();renderPfBtn();if(SY.view==='profile')openProfile();if(SY.view==='inbox')openInbox();if(!u&&(SY.view==='chat'||SY.view==='player'))closeSettings();
 }
 function cloudBoot(){
   addEventListener('online',()=>{if(SY.user&&!SY.conflict&&(SY.t||SY.state==='offline'||SY.state==='err'))cloudPush()});
@@ -1511,10 +1531,10 @@ function renderBoard(){
     const myPos=rows.findIndex(r=>r.uid===me);
     if(myPos>=0)h+=`<p class="small mut" style="margin:0 0 8px">You are <b style="color:var(--ac)">#${myPos+1}</b> of ${rows.length} ${LB.tab==='week'?'this week':'all time'}.</p>`;
     h+=`<div class="card" style="padding:4px 14px">`+rows.slice(0,100).map((r,i)=>{const pos=i<3?lbMedal(i):'#'+(i+1);
-      return `<div class="trow lbrow${r.uid===me?' me':''}"><span class="lbpos">${pos}</span><span class="lbav">${personPic(r,36)}</span><div class="tb"><b>${esc(r.name||'Player')}${r.uid===me?' (you)':''}</b><div class="mut small">${RANKS[rankIdx(r.xp||0)][1]}, ${r.acc||0}% accuracy</div></div><b>${(r.score||0).toLocaleString()} XP</b></div>`}).join('')+`</div>`;
+      return `<div class="trow lbrow${r.uid===me?' me':''}" data-uid="${esc(r.uid||'')}" role="button" tabindex="0"><span class="lbpos">${pos}</span><span class="lbav">${personPic(r,36)}</span><div class="tb"><b>${esc(r.name||'Player')}${r.uid===me?' (you)':''}</b><div class="mut small">${RANKS[rankIdx(r.xp||0)][1]}, ${r.acc||0}% accuracy</div></div><b>${(r.score||0).toLocaleString()} XP</b></div>`}).join('')+`</div>`;
   }
-  h+=`<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="lbRef">Refresh</button>${lbJoined()?`<button class="btn" id="lbRen">Change name</button><button class="btn danger" id="lbLeave">Leave</button>`:''}</div>
-    <p class="small mut" style="text-align:center">This week resets every Monday. Only your name, XP, rank and accuracy are shown.</p>`;
+  h+=`<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="lbRef">Refresh</button>${SY.user?'<button class="btn" id="lbMsgs">Messages<i class="msgn"'+(unreadCount()?'':' hidden')+'>'+unreadCount()+'</i></button>':''}${lbJoined()?`<button class="btn" id="lbRen">Change name</button><button class="btn danger" id="lbLeave">Leave</button>`:''}</div>
+    <p class="small mut" style="text-align:center">This week resets every Monday. Tap a player to see their card or send them a message.</p>`;
   v.innerHTML=h;
   const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
   v.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{LB.tab=b.dataset.lt;renderBoard()});
@@ -1523,7 +1543,8 @@ function renderBoard(){
     if(n.length<2){m.textContent='Name needs at least 2 letters.';return}
     const taken=(LB.rows||[]).some(r=>r.uid!==me&&String(r.name).toLowerCase()===n.toLowerCase());if(taken){m.textContent='Someone already uses that name. Try another.';return}
     P.set.lbName=n;P.set.lbOn=true;save();await cloudPush();await lbPush();if(LB.err){m.textContent=LB.err;return}toast('You joined the leaderboard');lbLoad(true);renderBoard()});
-  on('lbRen',openProfile);
+  on('lbRen',openProfile);on('lbMsgs',openInbox);
+  v.querySelectorAll('[data-uid]').forEach(e=>{e.onclick=()=>openPlayer(e.dataset.uid);e.onkeydown=k=>{if(k.key==='Enter')openPlayer(e.dataset.uid)}});
   on('lbLeave',async()=>{if(!confirm('Leave the leaderboard? Your name and XP will be removed from it. Your progress stays.'))return;
     P.set.lbOn=false;save();try{await FB.fs.deleteDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid))}catch(e){}
     if(LB.rows)LB.rows=LB.rows.filter(r=>r.uid!==me);toast('You left the leaderboard');renderBoard()});
@@ -1540,7 +1561,7 @@ function personPic(r,size){
   return `<span class="pfav" style="width:${size}px;height:${size}px">${avatar(String(r.av||r.name||'?'),true)}</span>`;
 }
 const myPic=size=>personPic({photo:P.set.photo,av:P.set.av,name:profName()},size);
-function renderPfBtn(){const b=$('pfBtn');if(b)b.innerHTML=myPic(36)+(SY.user?'<i class="pfdot"></i>':'')}
+function renderPfBtn(){const b=$('pfBtn');if(!b)return;const n=unreadCount();b.innerHTML=myPic(36)+(SY.user?'<i class="pfdot"></i>':'')+(n?'<i class="pfbadge">'+(n>9?'9+':n)+'</i>':'');b.setAttribute('aria-label',n?'Profile, '+n+' unread messages':'Profile')}
 function memberSince(){const ds=Object.keys(P.days||{}).sort(),t=[P.created||Infinity];if(ds[0])t.push(new Date(ds[0]+'T12:00').getTime());const m=Math.min(...t);return isFinite(m)?new Date(m):new Date()}
 function shrinkPhoto(img){
   const m=Math.min(img.naturalWidth||img.width,img.naturalHeight||img.height),sx=((img.naturalWidth||img.width)-m)/2,sy=((img.naturalHeight||img.height)-m)/2;
@@ -1567,7 +1588,7 @@ function openProfile(){
     <div class="pfhead"><label class="pfbig" for="pfFile" title="Change photo">${myPic(84)}<span class="pfcam">&#128247;</span></label>
       <div style="min-width:0"><div class="h2" style="margin:0;overflow:hidden;text-overflow:ellipsis">${esc(profName())}</div><div style="color:var(--amb);font-weight:700;font-size:14px">${RANKS[r][1]}</div>
       <div class="mut small">${aim?esc(aim[1]):'Member since '+memberSince().toLocaleDateString([], {month:'short',year:'numeric'})}</div></div></div>
-    <input type="file" id="pfFile" accept="image/*" hidden>
+    <input type="file" id="pfFile" accept="image/*" hidden>${fbOn()?`<button class="btn${unreadCount()?' pri':''}" id="pfMsgs" style="width:100%;margin:0 0 10px">Messages<i class="msgn"${unreadCount()?'':' hidden'}>${unreadCount()}</i></button>`:''}
     <div class="acrow" style="margin-top:0"><label class="btn" for="pfFile" style="text-align:center">${P.set.photo?'Change photo':'Add photo'}</label>${P.set.photo?'<button class="btn" id="pfDel">Remove photo</button>':''}</div>
     <div class="setrow"><div class="lbl" style="margin:0">Or pick a character</div><div class="pfgrid">${AVSEEDS.map(s=>`<button data-av="${s}" class="${!P.set.photo&&P.set.av===s?'on':''}" aria-label="${s}">${avatar(s,true)}</button>`).join('')}</div></div>
     <div class="setrow"><div class="lbl" style="margin:0">Username <span class="mut small">2 to 20 letters, shown on the leaderboard</span></div>
@@ -1596,7 +1617,123 @@ function openProfile(){
     if(lbJoined()){P.set.lbOn=false;save();FB.fs.deleteDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid)).catch(()=>{});if(LB.rows)LB.rows=LB.rows.filter(r=>r.uid!==SY.user.uid);toast('Hidden from the leaderboard')}
     else{P.set.lbOn=true;save();cloudPush();toast('You are on the leaderboard')}
     openProfile()});
-  on('pfAcct',openAccount);on('pfDone',closeSettings);
+  on('pfAcct',openAccount);on('pfMsgs',openInbox);on('pfDone',closeSettings);
+}
+
+/* ===== MESSAGES ===== */
+var CH={list:[],ready:false,err:'',unsub:null,uid:null,first:true,open:null,peer:null,msgs:[],mready:false,merr:'',munsub:null,sent:0};
+const chatId=(a,b)=>[a,b].sort().join('_');
+const isBlocked=uid=>(P.set.blocked||[]).includes(uid);
+function chatOther(c){const me=SY.user&&SY.user.uid;return (c.members||[]).find(x=>x!==me)||''}
+function chatUnread(c){const me=SY.user&&SY.user.uid;return !!(me&&c.lastBy&&c.lastBy!==me&&(c.updated||0)>((c.seen||{})[me]||0)&&!isBlocked(chatOther(c)))}
+function unreadCount(){return CH&&SY.user?CH.list.filter(chatUnread).length:0}
+function peerInfo(uid,c){const r=(LB.rows||[]).find(x=>x.uid===uid)||{},nm=r.name||(c&&c.names&&c.names[uid])||'Player';return Object.assign({},r,{uid,name:nm})}
+function chatTime(t){if(!t)return '';const d=new Date(t),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):d.toLocaleDateString([], {day:'numeric',month:'short'})}
+const chatErr=e=>e&&e.code==='permission-denied'?'Messages are not switched on yet. The new Firebase rules need to be published.':errText(e);
+function paintUnread(){renderPfBtn();const n=unreadCount();document.querySelectorAll('.msgn').forEach(e=>{e.textContent=n>9?'9+':n;e.hidden=!n})}
+function inboxStop(){if(!CH)return;if(CH.unsub){try{CH.unsub()}catch(e){}}CH.unsub=null;CH.uid=null;CH.list=[];CH.ready=false;CH.err='';CH.first=true;chatStop();paintUnread()}
+function inboxStart(){
+  if(!SY.user||!FB||!FB.fs.onSnapshot)return;const f=FB.fs,me=SY.user.uid;
+  if(CH.uid===me&&(CH.unsub||CH.err))return;if(CH.uid)inboxStop();CH.uid=me;CH.err='';CH.ready=false;CH.first=true;
+  CH.unsub=f.onSnapshot(f.query(f.collection(FB.db,'chats'),f.where('members','array-contains',me)),s=>{
+    const prev=new Map(CH.list.map(c=>[c.id,c.updated||0]));
+    CH.list=s.docs.map(d=>Object.assign({id:d.id},d.data())).sort((a,b)=>(b.updated||0)-(a.updated||0));CH.ready=true;CH.err='';
+    if(!CH.first)CH.list.forEach(c=>{if(chatUnread(c)&&(prev.get(c.id)||0)<(c.updated||0)&&!(SY.view==='chat'&&CH.open===c.id))toast('New message from '+peerInfo(chatOther(c),c).name)});
+    CH.first=false;paintUnread();if(SY.view==='inbox')openInbox();if(SY.view==='chat')chatSeen();
+  },e=>{CH.err=chatErr(e);CH.ready=true;CH.unsub=null;if(SY.view==='inbox')openInbox()});
+}
+function chatStop(){if(!CH)return;if(CH.munsub){try{CH.munsub()}catch(e){}}CH.munsub=null;CH.open=null;CH.peer=null;CH.msgs=[];CH.mready=false;CH.merr=''}
+function chatListen(cid){
+  const f=FB.fs;if(CH.munsub){try{CH.munsub()}catch(e){}}
+  CH.munsub=f.onSnapshot(f.query(f.collection(FB.db,'chats',cid,'msgs'),f.orderBy('at'),f.limitToLast(100)),s=>{
+    if(CH.open!==cid)return;if(SY.view!=='chat'){chatStop();return}
+    CH.msgs=s.docs.map(d=>d.data());CH.mready=true;CH.merr='';chatSeen();paintChat()},
+    e=>{CH.munsub=null;if(CH.open!==cid)return;CH.mready=true;CH.merr=e&&e.code==='permission-denied'?'':chatErr(e);paintChat()});
+}
+function chatSeen(){
+  if(SY.view!=='chat'||!CH.open||document.visibilityState==='hidden'||!SY.user)return;
+  const c=CH.list.find(x=>x.id===CH.open),me=SY.user.uid;if(!c||!chatUnread(c))return;
+  const t=Math.max(Date.now(),(c.updated||0)+1);c.seen=Object.assign({},c.seen,{[me]:t});paintUnread();
+  FB.fs.setDoc(FB.fs.doc(FB.db,'chats',c.id),{seen:{[me]:t}},{merge:true}).catch(()=>{});
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')chatSeen()});
+function toggleBlock(uid,then){
+  if(isBlocked(uid)){P.set.blocked=P.set.blocked.filter(x=>x!==uid);toast('Player unblocked')}
+  else{if(!confirm('Block this player? You will not see their messages, and they will not be told.'))return;P.set.blocked=(P.set.blocked||[]).concat(uid);toast('Player blocked')}
+  save();paintUnread();then()}
+function sheetOpen(view){SY.view=view;$('settings').hidden=false}
+function openPlayer(uid){
+  const me=SY.user&&SY.user.uid;if(uid&&uid===me){openProfile();return}
+  chatStop();sheetOpen('player');
+  const r=peerInfo(uid,CH.list.find(c=>chatOther(c)===uid)),bl=isBlocked(uid),wk=weekKey();
+  const stat=(v,l)=>`<div><b>${v}</b><span>${l}</span></div>`;
+  $('setBody').innerHTML=`<div class="grab"></div>
+    <div class="pfhead">${personPic(r,84)}<div style="min-width:0"><div class="h2" style="margin:0;overflow:hidden;text-overflow:ellipsis">${esc(r.name)}</div>
+      <div style="color:var(--amb);font-weight:700;font-size:14px">${r.xp!=null?RANKS[rankIdx(r.xp||0)][1]:'Player'}</div>${bl?'<div class="small" style="color:var(--bad)">Blocked</div>':''}</div></div>
+    ${r.xp!=null?`<div class="pfstats">${stat((r.xp||0).toLocaleString(),'XP all time')}${stat(((r.wk===wk?r.wxp:0)||0).toLocaleString(),'XP this week')}${stat((r.acc||0)+'%','accuracy')}</div>`:'<p class="mut small">This player is not on the leaderboard right now.</p>'}
+    <div class="acrow" style="margin-top:14px"><button class="btn pri" id="plMsg"${bl?' disabled':''}>${SY.user?'Message':'Sign in to message'}</button><button class="btn${bl?'':' danger'}" id="plBlock">${bl?'Unblock':'Block'}</button></div>
+    <button class="btn" id="plBack" style="width:100%;margin-top:10px">Close</button>`;
+  $('plMsg').onclick=()=>{if(!SY.user){openAccount();return}openChat(uid)};
+  $('plBlock').onclick=()=>toggleBlock(uid,()=>openPlayer(uid));
+  $('plBack').onclick=closeSettings;
+}
+function openInbox(){
+  chatStop();sheetOpen('inbox');const me=SY.user&&SY.user.uid;
+  let h=`<div class="grab"></div><div class="h2" style="margin:0 0 8px">Messages</div>`;
+  if(!fbOn())h+=`<div class="empty">${mascot('ok',80)}<p>Messages need accounts, which are not switched on for this copy of the game.</p></div>`;
+  else if(!SY.user)h+=`<div class="empty">${mascot('ok',80)}<p>Sign in to send and receive messages.</p><button class="btn pri" id="ibSign">Sign in</button></div>`;
+  else{
+    inboxStart();const list=CH.list.filter(c=>!isBlocked(chatOther(c)));
+    if(!CH.ready)h+=`<div class="empty"><p>Loading...</p></div>`;
+    else if(CH.err)h+=`<div class="empty">${mascot('sad',80)}<p>${esc(CH.err)}</p><button class="btn" id="ibRetry">Try again</button></div>`;
+    else if(!list.length)h+=`<div class="empty">${mascot('ok',80)}<p>No messages yet. Tap a player on the leaderboard to say hi.</p></div>`;
+    else h+=list.map(c=>{const u=chatOther(c),r=peerInfo(u,c),un=chatUnread(c);
+      return `<button class="chrow${un?' un':''}" data-chat="${esc(u)}">${personPic(r,42)}<span class="tb"><b>${esc(r.name)}</b><span class="pv mut small">${c.lastBy===me?'You: ':''}${esc(c.last||'')}</span></span><span class="mut small">${chatTime(c.updated)}</span>${un?'<i class="chdot"></i>':''}</button>`}).join('');
+    const nb=(P.set.blocked||[]).length;if(nb)h+=`<p class="small mut" style="margin:10px 0 0">${nb} blocked player${nb>1?'s':''}. Open them from the leaderboard to unblock.</p>`;
+  }
+  h+=`<div class="acrow" style="margin-top:14px">${fbOn()?'<button class="btn" id="ibFind">Find players</button>':''}<button class="btn" id="ibBack">Back to profile</button></div>`;
+  $('setBody').innerHTML=h;
+  const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
+  on('ibSign',openAccount);on('ibRetry',()=>{inboxStop();CH.ready=false;openInbox()});on('ibBack',openProfile);
+  on('ibFind',()=>{closeSettings();nav('board')});
+  $('setBody').querySelectorAll('[data-chat]').forEach(b=>b.onclick=()=>openChat(b.dataset.chat));
+}
+function openChat(uid){
+  if(!SY.user||!FB){openAccount();return}
+  const cid=chatId(SY.user.uid,uid);
+  if(CH.open!==cid){chatStop();CH.open=cid;CH.peer=uid;chatListen(cid)}
+  sheetOpen('chat');const r=peerInfo(uid,CH.list.find(c=>c.id===cid));
+  $('setBody').innerHTML=`<div class="chtop"><button class="ib" id="chBack" aria-label="Back to messages">&#8249;</button>
+      <button class="chwho" id="chWho">${personPic(r,36)}<b>${esc(r.name)}</b></button></div>
+    <div class="chlist" id="chList"></div>
+    <div class="chbar"><input class="fld" id="chIn" maxlength="500" autocomplete="off" placeholder="Message ${esc(r.name)}" enterkeyhint="send"><button class="btn pri sbtn" id="chSend">Send</button></div>`;
+  $('chBack').onclick=openInbox;$('chWho').onclick=()=>openPlayer(uid);
+  $('chSend').onclick=chatSend;$('chIn').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chatSend()}};
+  paintChat();chatSeen();
+}
+function paintChat(){
+  const l=$('chList');if(SY.view!=='chat'||!l)return;const me=SY.user&&SY.user.uid,bl=isBlocked(CH.peer);
+  let h='';
+  if(bl)h=`<div class="empty"><p>You blocked this player. Unblock them from their card to see and send messages.</p></div>`;
+  else if(!CH.mready)h=`<div class="empty"><p>Loading...</p></div>`;
+  else if(!CH.msgs.length&&!CH.merr)h=`<div class="empty">${mascot('happy',70)}<p>Say hi! Messages stay between the two of you.</p></div>`;
+  else{let day='';h=CH.msgs.map(m=>{const d=new Date(m.at||0).toDateString(),sep=d!==day?`<div class="chday">${d===new Date().toDateString()?'Today':new Date(m.at||0).toLocaleDateString([], {weekday:'short',day:'numeric',month:'short'})}</div>`:'';day=d;
+    return sep+`<div class="bub${m.by===me?' me':''}${m.pending?' pend':''}">${esc(String(m.text||''))}<small>${m.pending?'Sending...':new Date(m.at||0).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}</small></div>`}).join('')}
+  if(CH.merr)h+=`<p class="acmsg" style="text-align:center">${esc(CH.merr)}</p>`;
+  l.innerHTML=h;const i=$('chIn'),s=$('chSend');if(i)i.disabled=bl;if(s)s.disabled=bl;
+  const b=$('setBody');b.scrollTop=b.scrollHeight;
+}
+async function chatSend(){
+  const i=$('chIn');if(!i||!SY.user||!CH.open||isBlocked(CH.peer))return;
+  const t=String(i.value||'').replace(/[\u0000-\u001f\u007f]/g,' ').trim().slice(0,500);if(!t)return;
+  if(Date.now()-CH.sent<700)return;CH.sent=Date.now();
+  const f=FB.fs,me=SY.user.uid,uid=CH.peer,cid=CH.open,now=Date.now(),pend={by:me,text:t,at:now,pending:true};
+  i.value='';CH.merr='';CH.msgs.push(pend);CH.mready=true;paintChat();
+  try{
+    await f.setDoc(f.doc(FB.db,'chats',cid),{members:[me,uid].sort(),names:{[me]:profName()},last:t.slice(0,120),lastBy:me,updated:now,seen:{[me]:now}},{merge:true});
+    await f.addDoc(f.collection(FB.db,'chats',cid,'msgs'),{by:me,text:t,at:now});
+    if(CH.open===cid&&!CH.munsub)chatListen(cid);
+  }catch(e){if(CH.open!==cid)return;CH.msgs=CH.msgs.filter(m=>m!==pend);CH.merr=chatErr(e);const j=$('chIn');if(j&&!j.value)j.value=t;paintChat()}
 }
 
 /* ----- backup code (no account needed) ----- */
