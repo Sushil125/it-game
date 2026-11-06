@@ -9,7 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="IT Quest">
 <meta name="format-detection" content="telephone=no">
-<link rel="apple-touch-icon" id="appleIcon" href="">
+<link rel="apple-touch-icon" id="appleIcon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%234cc9f0%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-size=%2714%27 font-family=%27monospace%27 font-weight=%27bold%27 text-anchor=%27middle%27 fill=%27%23fff%27%3E&gt;_%3C/text%3E%3C/svg%3E">
 <title>IT Support Quest</title>
 <style>
@@ -227,6 +228,14 @@ button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .troph{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;font-size:11.5px;line-height:1.3}
 .troph b{display:block;font-size:12.5px;margin:4px 0 2px}.troph.lock{opacity:.5}
 @media(hover:none){.opt:hover:not(:disabled),.topic:hover,.btn:not(.pri):not(.danger):not(.t):not(.f):hover{border-color:var(--line)}.topic:hover .tpic{transform:none}}
+input.fld,textarea.fld{display:block;width:100%;flex:none;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0 0;color:var(--tx);font:16px system-ui,-apple-system,"Segoe UI",sans-serif;outline:0;-webkit-user-select:text;user-select:text}
+textarea.fld{font:13px ui-monospace,Consolas,monospace;resize:vertical;word-break:break-all}
+input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
+.acbox{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0}
+.acrow{display:flex;gap:8px;margin-top:10px}.acrow .btn{flex:1;min-width:0}
+.sbtn{flex:0 0 auto!important;min-width:0!important;min-height:0!important;padding:9px 14px!important;font-size:14px!important}
+.acmsg{min-height:20px;margin-top:8px;font-size:14px;color:var(--bad)}
+.acmsg.ok{color:var(--ok)}
 </style>
 </head>
 <body>
@@ -271,6 +280,11 @@ button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 <nav class="tabbar" id="tabbar"><button data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span>Learn</span></button><button data-nav="games"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="12" rx="5"/><path d="M7 11v4M5 13h4"/><circle cx="15.5" cy="12" r="1" fill="currentColor"/><circle cx="18" cy="14.5" r="1" fill="currentColor"/></svg><span>Games</span></button><button data-nav="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Stats</span></button><button data-nav="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span>Notes</span></button><button data-nav="sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg><span>Cheat sheet</span></button></nav>
 <div id="toasts"></div>
 <script>
+/* ===== ACCOUNT SETUP =====
+   To switch on accounts, paste your Firebase web app config between the braces, for example:
+   const FIREBASE_CONFIG={apiKey:"AIza...",authDomain:"your-app.firebaseapp.com",projectId:"your-app",appId:"1:123:web:abc"};
+   Leave it as null and the game still works, saving on this device only. */
+const FIREBASE_CONFIG={apiKey:"AIzaSyDxHJGy_o7ioG0c9M6grNKgq93fLMgjjYo",authDomain:"it-quest-c9782.firebaseapp.com",projectId:"it-quest-c9782",storageBucket:"it-quest-c9782.firebasestorage.app",messagingSenderId:"372524365725",appId:"1:372524365725:web:c67f12d22061ed96c42174"};
 const TICKETS=[
  {t:'"No internet since I came in." L1 notes: ipconfig shows 169.254.33.10. Everyone else on the floor is fine.',q:'What does that address tell you?',o:['The PC never got a DHCP lease, so Windows gave itself an APIPA address','The DNS server is down','The default gateway is set wrong','The user\'s AD account is disabled'],e:'169.254.x.x is APIPA: Windows assigns it when no DHCP server answers. Since others are fine, check this PC\'s path to DHCP (cable, switch port, VLAN, Wi-Fi auth), then run ipconfig /release and ipconfig /renew.'},
  {t:'User can ping 8.8.8.8 fine, but every website fails with "server not found".',q:'What is the most likely problem?',o:['Name resolution (DNS)','The network cable','The default gateway','The browser is out of date'],e:'Reaching 8.8.8.8 by IP proves the cable, IP and gateway work. Failing only by name points at DNS. Check DNS servers with ipconfig /all, test with nslookup, try ipconfig /flushdns.'},
@@ -582,7 +596,7 @@ function load(){
   return p;
 }
 let P=load();
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}};
+function save(quiet){if(!quiet)P.updated=Date.now();try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}if(!quiet)cloudSoon()}
 const today=()=>new Date().toLocaleDateString('en-CA');
 const RANKS=[[0,'Help Desk Trainee'],[60,'L1 Support Analyst'],[200,'Senior L1 Analyst'],[450,'L2 Candidate'],[800,'L2 Support Engineer'],[1300,'Senior L2 Engineer'],[2000,'L3 Engineer'],[3000,'Systems Administrator'],[4500,'Infrastructure Wizard']];
 const rankIdx=xp=>{let i=0;RANKS.forEach((r,j)=>{if(xp>=r[0])i=j});return i};
@@ -1158,7 +1172,7 @@ function gOrder(){
 }
 
 /* home-screen icon for iPhone (drawn once at start) */
-function makeIcon(){try{const c=document.createElement('canvas');c.width=c.height=180;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,'#4cc9f0');g.addColorStop(1,'#7c6cf6');x.fillStyle=g;x.fillRect(0,0,180,180);x.fillStyle='#fff';x.font='bold 80px Menlo,Consolas,monospace';x.textAlign='center';x.textBaseline='middle';x.fillText('>_',90,94);$('appleIcon').href=c.toDataURL('image/png')}catch(e){}}
+function makeIcon(){if(location.protocol!=='file:')return;try{const c=document.createElement('canvas');c.width=c.height=180;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,'#4cc9f0');g.addColorStop(1,'#7c6cf6');x.fillStyle=g;x.fillRect(0,0,180,180);x.fillStyle='#fff';x.font='bold 80px Menlo,Consolas,monospace';x.textAlign='center';x.textBaseline='middle';x.fillText('>_',90,94);$('appleIcon').href=c.toDataURL('image/png')}catch(e){}}
 
 /* ===== STATS ===== */
 function renderStats(){
@@ -1227,16 +1241,19 @@ function openSettings(){
     <div class="setrow"><div class="lbl">Level</div>${segs('level',[['all','All'],['1','Level 1'],['2','Level 2']])}</div>
     <div class="setrow"><div class="lbl">Command questions</div>${segs('cmdMode',[['type','Type them'],['choose','Multiple choice']])}</div>
     ${sw('sound','Sound effects','Short beeps for right and wrong')}${sw('vib','Vibration','On phones that support it')}
+    <div class="setrow"><div class="lbl" style="margin:0"><span>Account<div class="mut small" style="font-weight:400" id="acctSub">${acctLine()}</div></span><button class="btn sbtn" id="acctBtn">${SY.user?'Manage':'Sign in'}</button></div></div>
+    <div class="setrow"><div class="lbl" style="margin:0"><span>Backup code<div class="mut small" style="font-weight:400">Move progress without an account</div></span><button class="btn sbtn" id="bkBtn">Open</button></div></div>
     <div class="setrow" style="border:0"><button class="btn danger" id="resetBtn" style="width:100%">Reset all progress</button></div>
     <button class="btn pri" id="setDone" style="width:100%">Done</button>
-    <p class="small mut" style="text-align:center;margin:12px 0 0">Progress is saved in this browser only. Works offline.</p>`;
-  $('settings').hidden=false;
+    <p class="small mut" style="text-align:center;margin:12px 0 0">${SY.user?'Progress saves on this device and to your account.':'Progress is saved on this device. Sign in to keep it safe and use it on other devices.'} Works offline.</p>`;
+  $('settings').hidden=false;SY.view='settings';
+  $('acctBtn').onclick=openAccount;$('bkBtn').onclick=openBackup;
   $('setBody').querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{const k=b.dataset.set,v=b.dataset.v;P.set[k]=k==='goal'?+v:k==='level'&&v!=='all'?+v:v;save();if(k==='theme')applyTheme();openSettings();refresh()});
   $('setBody').querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const k=b.dataset.sw;P.set[k]=!P.set[k];save();b.classList.toggle('on',P.set[k]);if(k==='sound'&&P.set.sound)sGood();if(k==='vib')buzz(30)});
-  $('resetBtn').onclick=()=>{if(!confirm('Reset ALL progress, XP, stats and notes? This cannot be undone.'))return;const st=P.set;localStorage.removeItem(KEY);P=load();P.set=st;save();closeSettings();toast('Progress reset');S=null;nav('home')};
+  $('resetBtn').onclick=()=>{if(!confirm('Reset ALL progress, XP, stats and notes?'+(SY.user?' This also resets it on your account.':'')+' This cannot be undone.'))return;const st=P.set;localStorage.removeItem(KEY);P=load();P.set=st;save();closeSettings();toast('Progress reset');S=null;nav('home')};
   $('setDone').onclick=closeSettings;
 }
-function closeSettings(){$('settings').hidden=true}
+function closeSettings(){$('settings').hidden=true;SY.view=null}
 function refresh(){const v=(location.hash||'#home').slice(1);if(v==='home')renderHome();if(v==='stats')renderStats()}
 $('settings').onclick=e=>{if(e.target===$('settings'))closeSettings()};
 
@@ -1258,8 +1275,183 @@ document.addEventListener('keydown',e=>{
 });
 matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',applyTheme);
 
+/* ===== ACCOUNT + CLOUD SAVE ===== */
+var SY={user:null,ready:false,state:'off',msg:'',t:0,view:null,conflict:null,pulling:false,lastPull:0,at:0};
+var FB=null,FBP=null;
+const SYNC_KEY='l2quest_sync',FB_BASE='https://www.gstatic.com/firebasejs/10.12.2/';
+const fbOn=()=>!!(FIREBASE_CONFIG&&FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.projectId);
+function syncMeta(){try{return JSON.parse(localStorage.getItem(SYNC_KEY)||'{}')||{}}catch(e){return {}}}
+function setMeta(at){try{localStorage.setItem(SYNC_KEY,JSON.stringify({uid:SY.user.uid,at}))}catch(e){}}
+const hasProgress=p=>!!(p&&((p.xp||0)>0||(p.answered||0)>0||(p.notes&&p.notes.length)||Object.values(p.games||{}).some(g=>g&&((g.plays||0)>0||(g.best||0)>0))));
+function fbLoad(){
+  if(!fbOn())return Promise.reject(new Error('not-configured'));
+  if(FBP)return FBP;
+  FBP=Promise.all(['app','auth','firestore'].map(n=>import(FB_BASE+'firebase-'+n+'.js'))).then(([a,au,fs])=>{
+    const app=a.initializeApp(FIREBASE_CONFIG);
+    FB={au,fs,auth:au.getAuth(app),db:fs.getFirestore(app)};
+    return new Promise(res=>{let first=true;au.onAuthStateChanged(FB.auth,u=>{SY.user=u;SY.ready=true;if(first){first=false;res(FB)}cloudUser(u)})});
+  }).catch(e=>{FBP=null;throw e});
+  return FBP;
+}
+function errText(e){
+  const c=(e&&e.code)||'',m=(e&&e.message)||'';
+  const T={'auth/invalid-credential':'Email or password is wrong.','auth/invalid-login-credentials':'Email or password is wrong.','auth/wrong-password':'Email or password is wrong.','auth/user-not-found':'No account with that email. Tap Create account.',
+    'auth/email-already-in-use':'That email already has an account. Tap Sign in instead.','auth/weak-password':'Password needs at least 6 characters.','auth/invalid-email':'That email address does not look right.',
+    'auth/network-request-failed':'No internet connection. Try again when you are online.','unavailable':'No internet connection. Your progress is safe on this device.','auth/too-many-requests':'Too many tries. Wait a few minutes and try again.',
+    'auth/operation-not-allowed':'Email sign-in is not switched on in Firebase yet.','auth/unauthorized-domain':'This website is not on the Firebase authorized domains list.','permission-denied':'The cloud refused the save. Check the Firestore rules.',
+    'auth/missing-email':'Enter your email address first.'};
+  if(T[c])return T[c];
+  if(m==='not-configured')return 'Accounts are not switched on yet.';
+  if(/dynamically imported module|Failed to fetch|Importing a module|NetworkError|Load failed/i.test(m))return 'Could not reach the sign-in service. Check your connection.';
+  return 'Something went wrong ('+(c||m||'unknown')+').';
+}
+function acctLine(){
+  if(!fbOn())return 'Not switched on yet';
+  if(SY.conflict)return 'Choose which progress to keep';
+  if(!SY.user)return syncMeta().uid&&!SY.ready?'Connecting...':'Save progress and use it on any device';
+  return esc(SY.user.email||'Signed in')+' &middot; '+syncText();
+}
+function syncText(){
+  const S={off:'Not syncing',loading:'Checking your account...',pending:'Saving...',saving:'Saving...',offline:'Offline. Saved on this device, will sync when online',conflict:'Choose which progress to keep',
+    ok:'Synced'+(SY.at?' at '+new Date(SY.at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):''),err:'Not synced: '+(SY.msg||'error')};
+  return S[SY.state]||'';
+}
+function setSync(st,msg){SY.state=st;SY.msg=msg||'';if(st==='ok')SY.at=Date.now();const a=$('acctSub');if(a)a.innerHTML=acctLine();const b=$('acStat');if(b)b.textContent=syncText()}
+function cloudSoon(){if(!SY.user||!FB||SY.conflict)return;clearTimeout(SY.t);SY.t=setTimeout(cloudPush,2000);if(SY.state!=='offline')setSync('pending')}
+async function cloudPush(){
+  if(!SY.user||!FB||SY.conflict)return;clearTimeout(SY.t);SY.t=0;
+  if(!P.updated){P.updated=Date.now();save(true)}
+  const at=P.updated,uid=SY.user.uid;
+  setSync(navigator.onLine===false?'offline':'saving');
+  try{
+    await FB.fs.setDoc(FB.fs.doc(FB.db,'users',uid),{data:JSON.stringify(P),updated:at,xp:P.xp||0,email:SY.user.email||''});
+    if(SY.user&&SY.user.uid===uid){setMeta(at);if(!SY.t)setSync('ok')}
+  }catch(e){setSync('err',errText(e))}
+}
+function cloudTake(d){
+  let o;try{o=JSON.parse(d.data)}catch(e){setSync('err','account data looks damaged');return}
+  if(!o||typeof o!=='object'){setSync('err','account data looks damaged');return}
+  o.updated=d.updated||Date.now();
+  try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}
+  P=load();setMeta(P.updated);SY.conflict=null;applyTheme();setSync('ok');
+  if($('v-play').hidden&&$('v-game').hidden)route();
+  toast('Progress loaded from your account');
+}
+async function cloudPull(){
+  if(!SY.user||!FB||SY.pulling)return;SY.pulling=true;SY.lastPull=Date.now();setSync('loading');
+  try{
+    const uid=SY.user.uid,snap=await FB.fs.getDoc(FB.fs.doc(FB.db,'users',uid));
+    if(!SY.user||SY.user.uid!==uid)return;
+    if(!snap.exists()){SY.pulling=false;await cloudPush();return}
+    const d=snap.data(),cu=d.updated||0,loc=P.updated||0,m=syncMeta(),same=m.uid===uid;
+    let cp=null;try{cp=JSON.parse(d.data)}catch(e){}
+    if(cu===loc){setMeta(cu);setSync('ok')}
+    else if(same&&m.at===loc)cloudTake(d);          /* only the account changed */
+    else if(same&&m.at===cu){SY.pulling=false;await cloudPush()} /* only this device changed */
+    else if(!hasProgress(P))cloudTake(d);
+    else if(!hasProgress(cp)){SY.pulling=false;await cloudPush()}
+    else{SY.conflict={d,cp};setSync('conflict');openAccount();toast('Choose which progress to keep')}
+  }catch(e){setSync(navigator.onLine===false||(e&&e.code==='unavailable')?'offline':'err',errText(e))}
+  finally{SY.pulling=false}
+}
+function cloudUser(u){
+  if(u)cloudPull();else{SY.conflict=null;setSync('off')}
+  if(SY.view==='account')openAccount();else if(SY.view==='settings')openSettings();
+}
+function cloudBoot(){
+  addEventListener('online',()=>{if(SY.user&&!SY.conflict&&(SY.t||SY.state==='offline'||SY.state==='err'))cloudPush()});
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='hidden'){if(SY.t)cloudPush()}
+    else if(SY.user&&!SY.conflict&&Date.now()-SY.lastPull>30000&&!SY.t)cloudPull();
+  });
+  if(fbOn()&&syncMeta().uid)fbLoad().catch(e=>setSync('offline',errText(e)));
+}
+const sumLine=p=>`<b>${(p.xp||0).toLocaleString()} XP</b>, ${(p.answered||0).toLocaleString()} questions answered${p.updated?'<div class="mut small">Last played '+new Date(p.updated).toLocaleString([], {day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})+'</div>':''}`;
+function openAccount(){
+  SY.view='account';$('settings').hidden=false;
+  let h=`<div class="grab"></div><div class="h2" style="margin:0 0 4px">Account</div>`;
+  if(!fbOn()){
+    h+=`<p class="mut">Accounts are not switched on yet for this copy of the game. Until then your progress saves on this device, and you can move it with a <b>Backup code</b>.</p>`;
+  }else if(SY.user&&SY.conflict){
+    h+=`<p>Your account and this device both have progress. Which one do you want to keep? The other one will be replaced.</p>
+      <div class="acbox"><div class="lbl" style="margin:0 0 4px">On your account</div>${sumLine(Object.assign({},SY.conflict.cp||{},{updated:SY.conflict.d.updated}))}</div>
+      <div class="acbox"><div class="lbl" style="margin:0 0 4px">On this device</div>${sumLine(P)}</div>
+      <div class="acrow"><button class="btn pri" id="acUseCloud">Keep account</button><button class="btn" id="acUseLocal">Keep this device</button></div>`;
+  }else if(SY.user){
+    h+=`<div class="acbox">Signed in as <b>${esc(SY.user.email||'')}</b><div class="mut small" id="acStat">${syncText()}</div></div>
+      <p class="small mut">Your progress saves to your account a couple of seconds after each change. Sign in with the same email on another phone or computer to carry on there.</p>
+      <div class="acrow"><button class="btn" id="acSync">Sync now</button><button class="btn danger" id="acOut">Sign out</button></div>`;
+  }else if(!SY.ready&&FBP){
+    h+=`<p class="mut">Connecting...</p>`;
+  }else{
+    h+=`<p class="small mut" style="margin:0 0 4px">Sign in to save your progress online and use it on any device. Your progress on this device is kept.</p>
+      <input class="fld" id="acEmail" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="Email">
+      <input class="fld" id="acPass" type="password" autocomplete="current-password" placeholder="Password (6 or more characters)">
+      <div class="acmsg" id="acMsg"></div>
+      <div class="acrow"><button class="btn pri" id="acIn">Sign in</button><button class="btn" id="acUp">Create account</button></div>
+      <button class="btn ghost" id="acForgot" style="width:100%;margin-top:8px">Forgot password?</button>`;
+  }
+  h+=`<button class="btn ghost" id="acBack" style="width:100%;margin-top:10px">Back to settings</button>`;
+  $('setBody').innerHTML=h;
+  $('acBack').onclick=openSettings;
+  const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
+  on('acUseCloud',()=>cloudTake(SY.conflict.d));
+  on('acUseLocal',()=>{SY.conflict=null;cloudPush().then(()=>{if(SY.state==='ok')toast('Account updated with this device')});openAccount()});
+  on('acSync',()=>{if(SY.t)cloudPush();else cloudPull()});
+  on('acOut',async()=>{if(SY.t)await cloudPush();try{localStorage.removeItem(SYNC_KEY)}catch(e){}await FB.au.signOut(FB.auth);toast('Signed out. Progress stays on this device.')});
+  on('acIn',()=>acDo('in'));on('acUp',()=>acDo('up'));on('acForgot',()=>acDo('reset'));
+  const pw=$('acPass');if(pw)pw.onkeydown=e=>{if(e.key==='Enter')acDo('in')};
+  if(fbOn()&&!FBP)fbLoad().catch(e=>{const m=$('acMsg');if(m)m.textContent=errText(e)});
+}
+async function acDo(kind){
+  const em=$('acEmail').value.trim(),pw=$('acPass').value,msg=$('acMsg'),btns=$('setBody').querySelectorAll('.acrow .btn,#acForgot');
+  msg.className='acmsg';msg.textContent='';
+  if(!/^\S+@\S+\.\S+$/.test(em)){msg.textContent='Enter your email address.';return}
+  if(kind!=='reset'&&pw.length<6){msg.textContent='Password needs at least 6 characters.';return}
+  btns.forEach(b=>b.disabled=true);msg.className='acmsg ok';msg.textContent=kind==='reset'?'Sending...':'Please wait...';
+  try{
+    await fbLoad();
+    if(kind==='reset'){await FB.au.sendPasswordResetEmail(FB.auth,em);msg.textContent='Reset email sent. Check your inbox and spam folder.';btns.forEach(b=>b.disabled=false);return}
+    if(kind==='up')await FB.au.createUserWithEmailAndPassword(FB.auth,em,pw);else await FB.au.signInWithEmailAndPassword(FB.auth,em,pw);
+    toast(kind==='up'?'Account created':'Signed in');
+    if(SY.view==='account')openAccount();
+  }catch(e){msg.className='acmsg';msg.textContent=errText(e);btns.forEach(b=>b.disabled=false)}
+}
+/* ----- backup code (no account needed) ----- */
+const backupCode=()=>'ITQ1.'+btoa(unescape(encodeURIComponent(JSON.stringify(P))));
+function readBackup(t){
+  t=String(t||'').replace(/\s+/g,'');if(!t.startsWith('ITQ1.'))return null;
+  try{const o=JSON.parse(decodeURIComponent(escape(atob(t.slice(5)))));return o&&typeof o==='object'&&!Array.isArray(o)&&'xp' in o?o:null}catch(e){return null}
+}
+function openBackup(){
+  SY.view='backup';$('settings').hidden=false;
+  $('setBody').innerHTML=`<div class="grab"></div><div class="h2" style="margin:0 0 4px">Backup code</div>
+    <p class="small mut" style="margin:0">This code holds all your progress. Keep it somewhere safe (Notes app, or email it to yourself), then paste it on another device to carry on there.</p>
+    <textarea class="fld" id="bkOut" rows="4" readonly>${backupCode()}</textarea>
+    <button class="btn pri" id="bkCopy" style="width:100%;margin-top:8px">Copy code</button>
+    <div class="lbl" style="margin:18px 0 0">Restore from a code</div>
+    <textarea class="fld" id="bkIn" rows="3" placeholder="Paste a backup code here"></textarea>
+    <div class="acmsg" id="bkMsg"></div>
+    <button class="btn" id="bkRestore" style="width:100%;margin-top:4px">Restore</button>
+    <button class="btn ghost" id="acBack" style="width:100%;margin-top:10px">Back to settings</button>`;
+  $('acBack').onclick=openSettings;
+  $('bkCopy').onclick=()=>{
+    const t=$('bkOut'),code=t.value;
+    const fallback=()=>{t.focus();t.select();t.setSelectionRange(0,code.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}toast(ok?'Code copied':'Code selected. Tap Copy to copy it.')};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(code).then(()=>toast('Code copied'),fallback);else fallback();
+  };
+  $('bkRestore').onclick=()=>{
+    const o=readBackup($('bkIn').value),m=$('bkMsg');
+    if(!o){m.textContent='That does not look like a backup code. It should start with ITQ1.';return}
+    if(!confirm(`Replace the progress on this device with this backup?\n\nBackup: ${o.xp||0} XP, ${o.answered||0} questions\nThis device: ${P.xp||0} XP, ${P.answered||0} questions`))return;
+    try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}
+    P=load();save();applyTheme();checkAch(true);closeSettings();S=null;G&&stopGame();nav('home');toast('Backup restored');
+  };
+}
+
 /* ===== INIT ===== */
-applyTheme();makeIcon();checkAch(true);route();
+applyTheme();makeIcon();checkAch(true);route();cloudBoot();
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
 </html>
