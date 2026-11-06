@@ -236,6 +236,11 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
 .sbtn{flex:0 0 auto!important;min-width:0!important;min-height:0!important;padding:9px 14px!important;font-size:14px!important}
 .acmsg{min-height:20px;margin-top:8px;font-size:14px;color:var(--bad)}
 .acmsg.ok{color:var(--ok)}
+.lbme{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.lbrow .lbpos{width:30px;text-align:center;font-weight:800;font-size:15px;color:var(--mut)}
+.lbrow .lbav svg{width:36px;height:36px;display:block}
+.lbrow.me{background:var(--okbg);margin:0 -14px;padding:10px 14px;border-radius:12px}
+.copy{text-align:center;font-size:11px;color:var(--mut);opacity:.75;margin:22px 0 4px}
 </style>
 </head>
 <body>
@@ -260,6 +265,8 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
   <div class="topics" id="topics"></div>
   <div class="bigrow"><button class="btn pri big" id="mixBtn">Mixed practice<small>All topics, never ends</small></button><button class="btn big" id="revBtn">Review mistakes<small id="revCount"></small></button></div>
   <button class="btn promo" data-nav="games"><span class="pp" id="promoPics"></span><span style="flex:1"><b>Arcade: 6 mini-games</b><small>Blitz, Help Desk Shift, Port Match, Binary Builder and more</small></span><span style="font-size:22px;color:var(--ac)">&#8250;</span></button>
+  <button class="btn promo" data-nav="board"><span style="font-size:34px;line-height:1;padding-left:4px">&#127942;</span><span style="flex:1"><b>Leaderboard</b><small>See how you rank against everyone, this week and all time</small></span><span style="font-size:22px;color:var(--ac)">&#8250;</span></button>
+  <p class="copy">&copy; 2026 Sushil Amgain</p>
 </section>
 <section id="v-play" class="view" hidden>
   <div class="playhead"><div><div class="ptopic" id="pTopic"></div><div class="small mut" id="pSub"></div></div><div class="streak" id="pStreak"></div></div>
@@ -274,6 +281,7 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
 <section id="v-sheet" class="view" hidden></section>
 <section id="v-games" class="view" hidden></section>
 <section id="v-game" class="view" hidden></section>
+<section id="v-board" class="view" hidden></section>
 </main>
 <div class="actionbar" id="actionbar" hidden><div class="abin"><button class="btn" id="abL"></button><button class="btn pri" id="abR"></button></div></div>
 <div class="backdrop" id="settings" hidden><div class="bsheet" id="setBody"></div></div>
@@ -596,7 +604,7 @@ function load(){
   return p;
 }
 let P=load();
-function save(quiet){if(!quiet)P.updated=Date.now();try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}if(!quiet)cloudSoon()}
+function save(quiet){if(!quiet){P.updated=Date.now();lbWeek()}try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}if(!quiet)cloudSoon()}
 const today=()=>new Date().toLocaleDateString('en-CA');
 const RANKS=[[0,'Help Desk Trainee'],[60,'L1 Support Analyst'],[200,'Senior L1 Analyst'],[450,'L2 Candidate'],[800,'L2 Support Engineer'],[1300,'Senior L2 Engineer'],[2000,'L3 Engineer'],[3000,'Systems Administrator'],[4500,'Infrastructure Wizard']];
 const rankIdx=xp=>{let i=0;RANKS.forEach((r,j)=>{if(xp>=r[0])i=j});return i};
@@ -666,7 +674,7 @@ function toast(t){const d=document.createElement('div');d.className='toast';d.te
 function xpFloat(n,el){const r=(el||$('qText')).getBoundingClientRect(),d=document.createElement('div');d.className='xpf';d.textContent='+'+n+' XP';d.style.left=Math.min(innerWidth-110,r.left+r.width/2-30)+'px';d.style.top=(r.top+10)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
 
 /* ===== ROUTING ===== */
-const VIEWS=['home','play','summary','stats','notes','sheet','games','game'];
+const VIEWS=['home','play','summary','stats','notes','sheet','games','game','board'];
 function nav(v){if(location.hash!=='#'+v)location.hash=v;else route()}
 function route(){
   let v=(location.hash||'#home').slice(1);if(!VIEWS.includes(v))v='home';
@@ -674,9 +682,9 @@ function route(){
   if(v==='game'&&!G){v='games';history.replaceState(null,'','#games')}
   if(v!=='game')stopGame();
   VIEWS.forEach(x=>$('v-'+x).hidden=x!==v);
-  $('backBtn').hidden=!['play','summary','game'].includes(v);$('actionbar').hidden=v!=='play';$('tabbar').hidden=v==='play'||v==='game';
+  $('backBtn').hidden=!['play','summary','game','board'].includes(v);$('actionbar').hidden=v!=='play';$('tabbar').hidden=v==='play'||v==='game';
   $('tabbar').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.nav===v||(v==='summary'&&b.dataset.nav==='home')));if(v==='games')renderGames();
-  if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='notes')renderNotes();if(v==='sheet')renderSheet();
+  if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='notes')renderNotes();if(v==='sheet')renderSheet();if(v==='board')renderBoard();
   if(v!=='play'&&v!=='summary'&&S&&S.n>0)S=null;
   window.scrollTo(0,0);
 }
@@ -1180,6 +1188,7 @@ function renderStats(){
   for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.toLocaleDateString('en-CA');days.push({k,n:P.days[k]||0,l:i===0?'Today':d.toLocaleDateString('en-AU',{weekday:'short'})})}
   const mx=Math.max(g,...days.map(d=>d.n));
   $('v-stats').innerHTML=`<div class="h2" style="margin-top:4px">Your stats</div>
+    <button class="btn promo" data-nav="board" style="margin:0 0 12px" onclick="nav('board')"><span style="font-size:30px;line-height:1">&#127942;</span><span style="flex:1"><b>Leaderboard</b><small>Compare your XP with everyone</small></span><span style="font-size:22px;color:var(--ac)">&#8250;</span></button>
     <div class="tiles"><div class="tile"><b>${P.answered}</b><span>answered</span></div><div class="tile"><b>${acc}</b><span>accuracy</span></div><div class="tile"><b>${P.xp}</b><span>XP</span></div><div class="tile"><b>${P.bestStreak||0}</b><span>best streak</span></div></div>
     <div class="card"><div style="display:flex;justify-content:space-between"><b>Last 7 days</b><span class="mut small">goal ${g}/day, ${dayStreak()} day streak</span></div>
     <div class="week">${days.map(d=>`<div class="day"><span>${d.n||''}</span><i class="${d.n>=g?'met':''}" style="height:${Math.round(d.n/mx*100)}%"></i><span>${d.l}</span></div>`).join('')}</div></div>
@@ -1245,7 +1254,7 @@ function openSettings(){
     <div class="setrow"><div class="lbl" style="margin:0"><span>Backup code<div class="mut small" style="font-weight:400">Move progress without an account</div></span><button class="btn sbtn" id="bkBtn">Open</button></div></div>
     <div class="setrow" style="border:0"><button class="btn danger" id="resetBtn" style="width:100%">Reset all progress</button></div>
     <button class="btn pri" id="setDone" style="width:100%">Done</button>
-    <p class="small mut" style="text-align:center;margin:12px 0 0">${SY.user?'Progress saves on this device and to your account.':'Progress is saved on this device. Sign in to keep it safe and use it on other devices.'} Works offline.</p>`;
+    <p class="small mut" style="text-align:center;margin:12px 0 0">${SY.user?'Progress saves on this device and to your account.':'Progress is saved on this device. Sign in to keep it safe and use it on other devices.'} Works offline.</p><p class="copy" style="margin-top:10px">&copy; 2026 Sushil Amgain</p>`;
   $('settings').hidden=false;SY.view='settings';
   $('acctBtn').onclick=openAccount;$('bkBtn').onclick=openBackup;
   $('setBody').querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{const k=b.dataset.set,v=b.dataset.v;P.set[k]=k==='goal'?+v:k==='level'&&v!=='all'?+v:v;save();if(k==='theme')applyTheme();openSettings();refresh()});
@@ -1254,7 +1263,7 @@ function openSettings(){
   $('setDone').onclick=closeSettings;
 }
 function closeSettings(){$('settings').hidden=true;SY.view=null}
-function refresh(){const v=(location.hash||'#home').slice(1);if(v==='home')renderHome();if(v==='stats')renderStats()}
+function refresh(){const v=(location.hash||'#home').slice(1);if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='board')renderBoard()}
 $('settings').onclick=e=>{if(e.target===$('settings'))closeSettings()};
 (()=>{const b=$('setBody');let y0=null,dy=0;
   b.addEventListener('touchstart',e=>{if(b.scrollTop>0||e.target.closest('input,textarea,.seg,.sw')){y0=null;return}y0=e.touches[0].clientY;dy=0;b.style.transition='none'},{passive:true});
@@ -1331,7 +1340,7 @@ async function cloudPush(){
   setSync(navigator.onLine===false?'offline':'saving');
   try{
     await FB.fs.setDoc(FB.fs.doc(FB.db,'users',uid),{data:JSON.stringify(P),updated:at,xp:P.xp||0,email:SY.user.email||''});
-    if(SY.user&&SY.user.uid===uid){setMeta(at);if(!SY.t)setSync('ok')}
+    if(SY.user&&SY.user.uid===uid){setMeta(at);if(!SY.t)setSync('ok');lbPush()}
   }catch(e){setSync('err',errText(e))}
 }
 function cloudTake(d){
@@ -1363,6 +1372,7 @@ async function cloudPull(){
 function cloudUser(u){
   if(u)cloudPull();else{SY.conflict=null;setSync('off')}
   if(SY.view==='account')openAccount();else if(SY.view==='settings')openSettings();
+  if(!$('v-board').hidden)renderBoard();
 }
 function cloudBoot(){
   addEventListener('online',()=>{if(SY.user&&!SY.conflict&&(SY.t||SY.state==='offline'||SY.state==='err'))cloudPush()});
@@ -1423,6 +1433,63 @@ async function acDo(kind){
     if(SY.view==='account')openAccount();
   }catch(e){msg.className='acmsg';msg.textContent=errText(e);btns.forEach(b=>b.disabled=false)}
 }
+/* ===== LEADERBOARD ===== */
+var LB={rows:null,at:0,loading:false,err:'',tab:'week'};
+function weekKey(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toLocaleDateString('en-CA')}
+function lbWeek(){const wk=weekKey(),x=P.xp||0;
+  if(!P.lbw)P.lbw={wk,start:x,last:x};else if(P.lbw.wk!==wk)P.lbw={wk,start:Math.min(P.lbw.last||0,x),last:x};
+  if(x<P.lbw.start)P.lbw.start=x;P.lbw.last=x}
+const weekXp=()=>P.lbw&&P.lbw.wk===weekKey()?Math.max(0,(P.xp||0)-P.lbw.start):0;
+const lbJoined=()=>!!(SY.user&&P.set.lbOn&&P.set.lbName);
+const lbDoc=()=>({name:P.set.lbName,xp:Math.round(P.xp||0),wxp:Math.round(weekXp()),wk:weekKey(),answered:Math.round(P.answered||0),acc:P.answered?Math.round(P.correct/P.answered*100):0,updated:Date.now()});
+async function lbPush(){if(!lbJoined()||!FB)return;try{await FB.fs.setDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid),lbDoc())}catch(e){LB.err=errText(e)}}
+const cleanName=t=>String(t||'').replace(/<[^>]*>/g,'').replace(/[<>"&\\]/g,'').replace(/\s+/g,' ').trim().slice(0,20);
+async function lbLoad(force){
+  if(!fbOn()||LB.loading)return;if(!force&&LB.rows&&Date.now()-LB.at<60000)return;
+  LB.loading=true;LB.err='';
+  try{await fbLoad();const f=FB.fs,s=await f.getDocs(f.query(f.collection(FB.db,'leaderboard'),f.orderBy('xp','desc'),f.limit(200)));
+    LB.rows=s.docs.map(d=>Object.assign({uid:d.id},d.data()));LB.at=Date.now()}
+  catch(e){LB.err=errText(e)}
+  LB.loading=false;if(!$('v-board').hidden)renderBoard();
+}
+function renderBoard(){
+  const v=$('v-board'),wk=weekKey(),me=SY.user&&SY.user.uid;
+  let h=`<div class="h2" style="margin-top:4px">Leaderboard</div>`;
+  if(!fbOn()){v.innerHTML=h+`<div class="empty">${mascot('ok',90)}<p>The leaderboard needs accounts, which are not switched on for this copy of the game.</p></div>`;return}
+  h+=`<div class="seg" style="margin-bottom:12px"><button data-lt="week" class="${LB.tab==='week'?'on':''}">This week</button><button data-lt="all" class="${LB.tab==='all'?'on':''}">All time</button></div>`;
+  if(!SY.user)h+=`<div class="card lbme"><div style="flex:1"><b>Join the leaderboard</b><div class="mut small">Sign in or create a free account, then pick a name.</div></div><button class="btn pri sbtn" id="lbSign">Sign in</button></div>`;
+  else if(!lbJoined())h+=`<div class="card"><b>Pick your leaderboard name</b><div class="mut small">Others will see this name, your XP and your rank. Your email stays private.</div>
+    <input class="fld" id="lbName" maxlength="20" autocomplete="nickname" placeholder="e.g. Sushil A" value="${esc(P.set.lbName||'')}"><div class="acmsg" id="lbMsg"></div><button class="btn pri" id="lbJoin" style="width:100%;margin-top:4px">Join leaderboard</button></div>`;
+  let rows=(LB.rows||[]).map(r=>({...r,score:LB.tab==='week'?(r.wk===wk?r.wxp||0:0):r.xp||0}));
+  if(lbJoined()){const mine=Object.assign({uid:me},lbDoc());mine.score=LB.tab==='week'?mine.wxp:mine.xp;rows=rows.filter(r=>r.uid!==me);if(LB.rows)rows.push(mine)}
+  if(LB.tab==='week')rows=rows.filter(r=>r.score>0);
+  rows.sort((a,b)=>b.score-a.score||(a.updated||0)-(b.updated||0));
+  if(LB.loading&&!LB.rows)h+=`<div class="empty"><p>Loading...</p></div>`;
+  else if(LB.err&&!LB.rows)h+=`<div class="empty">${mascot('sad',80)}<p>${esc(LB.err)}</p><button class="btn" id="lbRetry">Try again</button></div>`;
+  else if(!rows.length)h+=`<div class="empty">${mascot('ok',80)}<p>${LB.tab==='week'?'Nobody has earned XP this week yet. Be the first!':'Nobody has joined yet. Be the first!'}</p></div>`;
+  else{
+    const myPos=rows.findIndex(r=>r.uid===me);
+    if(myPos>=0)h+=`<p class="small mut" style="margin:0 0 8px">You are <b style="color:var(--ac)">#${myPos+1}</b> of ${rows.length} ${LB.tab==='week'?'this week':'all time'}.</p>`;
+    h+=`<div class="card" style="padding:4px 14px">`+rows.slice(0,100).map((r,i)=>{const pos=i<3?['&#129351;','&#129352;','&#129353;'][i]:'#'+(i+1);
+      return `<div class="trow lbrow${r.uid===me?' me':''}"><span class="lbpos">${pos}</span><span class="lbav">${avatar(r.name||'?',true)}</span><div class="tb"><b>${esc(r.name||'Player')}${r.uid===me?' (you)':''}</b><div class="mut small">${RANKS[rankIdx(r.xp||0)][1]}, ${r.acc||0}% accuracy</div></div><b>${(r.score||0).toLocaleString()} XP</b></div>`}).join('')+`</div>`;
+  }
+  h+=`<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="lbRef">Refresh</button>${lbJoined()?`<button class="btn" id="lbRen">Change name</button><button class="btn danger" id="lbLeave">Leave</button>`:''}</div>
+    <p class="small mut" style="text-align:center">This week resets every Monday. Only your name, XP, rank and accuracy are shown.</p>`;
+  v.innerHTML=h;
+  const on=(id,f)=>{const e=$(id);if(e)e.onclick=f};
+  v.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{LB.tab=b.dataset.lt;renderBoard()});
+  on('lbSign',openAccount);on('lbRetry',()=>{lbLoad(true);renderBoard()});on('lbRef',()=>{lbLoad(true);toast('Refreshing...')});
+  on('lbJoin',async()=>{const n=cleanName($('lbName').value),m=$('lbMsg');
+    if(n.length<2){m.textContent='Name needs at least 2 letters.';return}
+    const taken=(LB.rows||[]).some(r=>r.uid!==me&&String(r.name).toLowerCase()===n.toLowerCase());if(taken){m.textContent='Someone already uses that name. Try another.';return}
+    P.set.lbName=n;P.set.lbOn=true;save();await cloudPush();await lbPush();if(LB.err){m.textContent=LB.err;return}toast('You joined the leaderboard');lbLoad(true);renderBoard()});
+  on('lbRen',()=>{P.set.lbOn=false;save();renderBoard()});
+  on('lbLeave',async()=>{if(!confirm('Leave the leaderboard? Your name and XP will be removed from it. Your progress stays.'))return;
+    P.set.lbOn=false;save();try{await FB.fs.deleteDoc(FB.fs.doc(FB.db,'leaderboard',SY.user.uid))}catch(e){}
+    if(LB.rows)LB.rows=LB.rows.filter(r=>r.uid!==me);toast('You left the leaderboard');renderBoard()});
+  lbLoad();
+}
+
 /* ----- backup code (no account needed) ----- */
 const backupCode=()=>'ITQ1.'+btoa(unescape(encodeURIComponent(JSON.stringify(P))));
 function readBackup(t){
