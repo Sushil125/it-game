@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IT Quest">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" id="appleIcon" href="">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%234cc9f0%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-size=%2714%27 font-family=%27monospace%27 font-weight=%27bold%27 text-anchor=%27middle%27 fill=%27%23fff%27%3E&gt;_%3C/text%3E%3C/svg%3E">
+<title>IT Support Quest</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--surf:#121a2d;--card:#172137;--card2:#1f2a45;--line:#28355a;--tx:#eaf0fc;--mut:#93a3c4;--ac:#4cc9f0;--ac2:#7c6cf6;--onac:#04121a;--ok:#34d399;--okbg:rgba(52,211,153,.13);--bad:#f87171;--badbg:rgba(248,113,113,.13);--amb:#fbbf24;--sh:0 10px 30px rgba(0,0,0,.35);--r:18px}
+html[data-theme=light]{color-scheme:light;--bg:#f2f5fb;--surf:#ffffff;--card:#ffffff;--card2:#eef2f9;--line:#dce3f0;--tx:#13203b;--mut:#5b6a8a;--ac:#0a8cc2;--ac2:#6650e6;--onac:#fff;--ok:#0e9f6e;--okbg:rgba(14,159,110,.1);--bad:#d64545;--badbg:rgba(214,69,69,.08);--amb:#b77d00;--sh:0 6px 20px rgba(19,32,59,.08)}
+@media (prefers-color-scheme:light){html[data-theme=system]{color-scheme:light;--bg:#f2f5fb;--surf:#ffffff;--card:#ffffff;--card2:#eef2f9;--line:#dce3f0;--tx:#13203b;--mut:#5b6a8a;--ac:#0a8cc2;--ac2:#6650e6;--onac:#fff;--ok:#0e9f6e;--okbg:rgba(14,159,110,.1);--bad:#d64545;--badbg:rgba(214,69,69,.08);--amb:#b77d00;--sh:0 6px 20px rgba(19,32,59,.08)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;min-height:100dvh;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+[hidden]{display:none!important}
+.mut{color:var(--mut)}.small{font-size:13px}
+code,kbd,.mono{font-family:"Cascadia Mono",ui-monospace,Consolas,Menlo,monospace}
+.appbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:var(--bg);background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:17px;cursor:pointer;white-space:nowrap}
+.brand b{color:var(--ac)}
+.logo{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font:700 13px ui-monospace,Consolas,monospace}
+.grow{flex:1}
+.ib{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;flex:none}
+.ib.sm{width:36px;height:36px;border-radius:10px}
+.ib.on{color:var(--amb);border-color:var(--amb)}
+.ib.on svg path{fill:currentColor}
+.rankchip{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--amb);max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+main{max-width:760px;margin:0 auto;padding:16px 14px calc(120px + env(safe-area-inset-bottom))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px 16px;min-height:48px;font-weight:600;transition:transform .08s,border-color .15s,background .15s}
+.btn:hover{border-color:var(--ac)}.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:var(--onac)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--bad);border-color:var(--bad);background:transparent}
+.btn small{display:block;font-weight:400;font-size:12px;opacity:.8}
+.view{animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+/* home */
+.hero-row{display:flex;gap:16px;align-items:center}
+.ring{position:relative;width:86px;height:86px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7}
+.rbg{stroke:var(--card2)}.rfg{stroke:url(#g);stroke:var(--ok);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.rtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.rtxt b{font-size:22px}.rtxt small{font-size:11px;color:var(--mut)}
+.hero-info{flex:1;min-width:0}
+.rank{font-size:20px;font-weight:700;color:var(--amb);margin:2px 0}
+.xpbar{height:8px;background:var(--card2);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:6px;transition:width .5s}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.kpis div{background:var(--card2);border-radius:12px;padding:10px;text-align:center}
+.kpis b{display:block;font-size:19px}.kpis span{font-size:12px;color:var(--mut)}
+.levelbar{display:flex;align-items:center;gap:12px;margin:18px 0 12px}
+.seg{display:flex;flex:1;background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:9px;font-size:14px;font-weight:600;color:var(--mut);min-height:40px}
+.seg button.on{background:var(--ac);color:var(--onac)}
+.topics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:640px){.topics{grid-template-columns:repeat(3,1fr)}}
+.topic{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px;min-height:150px;transition:transform .12s,border-color .15s}
+.topic:hover{border-color:var(--c)}.topic:active{transform:scale(.98)}
+.badge{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:700 12px ui-monospace,Consolas,monospace;color:#fff;background:var(--c);margin-bottom:4px}
+.topic h3{margin:0;font-size:16px}
+.topic p{margin:0;font-size:12.5px;color:var(--mut);line-height:1.35;flex:1}
+.mbar{height:5px;background:var(--card2);border-radius:4px;overflow:hidden}.mbar i{display:block;height:100%;background:var(--c)}
+.mlbl{font-size:11.5px;color:var(--mut)}
+.bigrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.btn.big{min-height:64px;text-align:left;padding:12px 16px}
+.links{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.links .btn{flex:1;min-width:100px}
+/* play */
+.playhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.ptopic{font-weight:700;font-size:18px}
+.streak{font-weight:700;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:14px;white-space:nowrap}
+.streak.hot{color:var(--amb);border-color:var(--amb)}
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--card2);color:var(--mut);margin-right:6px;letter-spacing:.3px}
+.tag.l1{background:rgba(52,211,153,.15);color:var(--ok)}.tag.l2{background:rgba(124,108,246,.18);color:var(--ac2)}
+html[data-theme=light] .tag.l2{color:#5541d6}
+.ticket{background:var(--card2);border-left:4px solid var(--amb);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:15px}
+.ticket .meta{font:12px ui-monospace,Consolas,monospace;color:var(--mut);margin-bottom:5px;word-break:break-word}
+.q{font-size:19px;font-weight:650;line-height:1.4;margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;min-height:54px;padding:13px 14px;border:1.5px solid var(--line);background:var(--surf);border-radius:14px;font-size:16px;line-height:1.4;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--ac)}
+.opt .k{flex:none;width:26px;height:26px;border-radius:8px;background:var(--card2);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--mut)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--okbg)}.opt.right .k{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--badbg);animation:shake .35s}.opt.wrong .k{background:var(--bad);color:#fff}
+.opt.dim{opacity:.55}
+@keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.term{display:flex;align-items:center;background:#060a14;border:1.5px solid var(--line);border-radius:14px;padding:4px 12px}
+.term:focus-within{border-color:var(--ac)}
+.term span{color:#34d399;font-family:ui-monospace,Consolas,monospace;margin-right:8px;white-space:nowrap}
+.term input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:#eaf0fc;font:16px ui-monospace,Consolas,monospace;padding:12px 0}
+.term input:disabled{opacity:.8}
+.keys{display:flex;gap:6px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.keys button{flex:none;min-width:44px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card2);font:600 15px ui-monospace,Consolas,monospace}
+.linkbtn{background:none;border:0;color:var(--ac);font-weight:600;padding:8px 0;font-size:14px}
+.fb{margin-top:14px;border-radius:14px;padding:14px 16px;font-size:15px;animation:fade .25s}
+.fb.ok{background:var(--okbg);border:1px solid var(--ok)}.fb.bad{background:var(--badbg);border:1px solid var(--bad)}
+.fb h4{margin:0 0 6px;font-size:16px}
+.ans{font-family:ui-monospace,Consolas,monospace;background:var(--card2);padding:2px 7px;border-radius:6px;word-break:break-word}
+.actionbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surf);border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px rgba(0,0,0,.18)}
+.abin{max-width:760px;margin:0 auto;display:flex;gap:10px}
+.abin .btn{flex:1}.abin .btn.pri{flex:2}
+.xpf{position:fixed;z-index:40;font-weight:800;font-size:20px;color:var(--ok);pointer-events:none;animation:xpf 1s forwards}
+@keyframes xpf{to{transform:translateY(-60px);opacity:0}}
+/* summary, stats, notes */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card2);border-radius:14px;padding:12px;text-align:center}.tile b{display:block;font-size:22px}.tile span{font-size:12px;color:var(--mut)}
+.h2{font-size:20px;font-weight:700;margin:20px 0 10px}
+.note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;font-size:14.5px}
+.note .nq{font-weight:650;margin-bottom:6px}
+.week{display:flex;align-items:flex-end;gap:8px;height:130px;padding-top:10px}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;font-size:11px;color:var(--mut)}
+.day i{display:block;width:100%;max-width:36px;border-radius:7px 7px 3px 3px;background:linear-gradient(var(--ac),var(--ac2));min-height:3px}
+.day i.met{background:linear-gradient(var(--ok),#0e9f6e)}
+.trow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.trow .badge{width:34px;height:34px;font-size:10px;margin:0}
+.trow .tb{flex:1}
+.empty{text-align:center;padding:40px 20px;color:var(--mut)}
+/* cheat sheet */
+.chipnav{position:sticky;top:calc(61px + env(safe-area-inset-top));z-index:10;display:flex;gap:8px;overflow-x:auto;padding:8px 0;background:var(--bg);scrollbar-width:none}
+.chipnav button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:8px 14px;font-size:13.5px;font-weight:600}
+.tw{overflow-x:auto;margin-bottom:8px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{color:var(--ac);font-weight:650;font-size:13px;background:var(--card2)}
+td code{color:var(--ok);white-space:nowrap}
+/* settings sheet */
+.backdrop{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.bsheet{width:100%;max-width:560px;max-height:88vh;overflow:auto;background:var(--surf);border-radius:22px 22px 0 0;padding:10px 18px calc(18px + env(safe-area-inset-bottom));animation:up .25s}
+@media(min-width:700px){.backdrop{align-items:center}.bsheet{border-radius:22px}}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--line);margin:4px auto 12px}
+.setrow{padding:12px 0;border-bottom:1px solid var(--line)}
+.setrow .lbl{font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.sw{width:52px;height:30px;border-radius:20px;border:0;background:var(--card2);position:relative;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px #0005}
+.sw.on{background:var(--ok)}.sw.on::after{left:25px}
+#toasts{position:fixed;left:0;right:0;top:calc(70px + env(safe-area-inset-top));z-index:50;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.toast{background:var(--amb);color:#1a1200;font-weight:700;padding:11px 18px;border-radius:14px;box-shadow:var(--sh);animation:up .3s;max-width:92vw;text-align:center}
+@media(max-width:380px){.q{font-size:17px}.brand span:last-child{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* pictures */
+.greet{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.greet .mascot{flex:none;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.bubble{position:relative;flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 13px;font-size:14px;line-height:1.4;text-align:left;color:var(--tx)}
+.bubble::before{content:"";position:absolute;left:-7px;top:50%;margin-top:-7px;width:12px;height:12px;background:var(--card);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+.bubble b{display:block;margin-bottom:2px}.bubble small{color:var(--mut)}
+.rankpic{flex:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))}
+@media(max-width:360px){.rankpic{display:none}}
+.tpic{display:block;width:48px;height:48px;margin-bottom:4px}.tpic svg{width:100%;height:100%;display:block}
+.tpic.sm{width:36px;height:36px;margin:0;flex:none}
+.tpic.xs{display:inline-block;width:24px;height:24px;margin:0 6px 0 0;vertical-align:middle}
+.topic:hover .tpic{transform:rotate(-6deg) scale(1.06)}.tpic{transition:transform .2s}
+.ticket{display:flex;gap:12px;align-items:flex-start}.ticket .tbd{flex:1;min-width:0}
+.tav{flex:none;width:44px;height:44px}.tav svg{display:block}
+.fbm{float:right;margin:-6px -6px 4px 8px}
+.dg{display:block;width:100%;max-width:440px;margin:0 auto 14px;overflow:visible}
+.dg text{fill:var(--mut);font:600 11px system-ui,sans-serif;text-anchor:middle}
+.dg .ln{stroke:var(--mut);stroke-width:2.5;fill:none;stroke-linecap:round}
+.dg .ln.bad{stroke:var(--bad);stroke-dasharray:5 5}
+.dg .bx{fill:var(--card2);stroke:var(--ac);stroke-width:2}
+.dg .bx2{fill:var(--card2);stroke:var(--ac2);stroke-width:2}
+.dg .fl{fill:var(--ac)}.dg .ok{fill:var(--ok)}.dg .x{stroke:var(--bad);stroke-width:3;stroke-linecap:round}
+.dg .pv{fill:var(--ac);font:700 12px ui-monospace,Consolas,monospace}
+.cf{position:fixed;top:-14px;z-index:60;width:9px;height:14px;border-radius:2px;pointer-events:none;animation:cf linear forwards}
+@keyframes cf{to{transform:translate(var(--dx),105vh) rotate(var(--r))}}
+/* tab bar + arcade */
+button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:19;background:var(--surf);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+.tabbar button{flex:1;max-width:120px;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10.5px;font-weight:600;color:var(--mut);padding:6px 0 4px;min-height:52px}
+.tabbar button.on{color:var(--ac)}.tabbar svg{width:24px;height:24px}
+.promo{display:flex;align-items:center;gap:14px;width:100%;margin-top:12px;text-align:left;min-height:76px}
+.pp{display:flex;padding-left:4px}.pp span{width:36px;height:36px;margin-left:-8px;border-radius:11px;box-shadow:0 0 0 2px var(--card);overflow:hidden}.pp svg{width:100%;height:100%;display:block}
+.ggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:640px){.ggrid{grid-template-columns:repeat(3,1fr)}}
+.gcard{text-align:left;border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;min-height:184px;transition:transform .12s}
+.gcard:active{transform:scale(.97)}
+.gcard::before{content:"";position:absolute;right:-34px;top:-34px;width:120px;height:120px;border-radius:50%;background:var(--c);opacity:.13}
+.gpic{display:block;width:62px;height:62px}.gpic svg{width:100%;height:100%;display:block}.gpic.sm{width:36px;height:36px;flex:none}
+.gcard h3{margin:0;font-size:16px}.gcard p{margin:0;font-size:12.5px;color:var(--mut);flex:1;line-height:1.35}
+.gbest{font-size:12.5px;font-weight:700;color:var(--c)}
+.ghud{display:flex;align-items:center;gap:8px;margin-bottom:10px}.ghud .gt{flex:1;font-weight:700;font-size:16px;min-width:0;line-height:1.2}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:5px 11px;font-weight:700;font-size:14px;white-space:nowrap}
+.tbar{height:9px;background:var(--card2);border-radius:5px;overflow:hidden;margin-bottom:14px}.tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--ok),var(--ac));transition:width .2s linear}
+.tbar.low i{background:var(--bad)}
+.queue{display:flex;gap:6px;align-items:center;margin-bottom:10px}.queue .qa svg{width:30px;height:30px;display:block}
+.cust{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}.cav svg{width:64px;height:64px;display:block}
+.cust .bubble{padding:8px 12px;font-size:14px}
+.tfcard{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:28px 20px;min-height:200px;display:grid;place-items:center;text-align:center;font-size:21px;font-weight:650;line-height:1.4;touch-action:pan-y;-webkit-user-select:none;user-select:none;transition:transform .15s,border-color .15s,background .15s;box-shadow:var(--sh);word-break:break-word}
+.tfcard.ok{border-color:var(--ok);background:var(--okbg)}.tfcard.bad{border-color:var(--bad);background:var(--badbg)}
+.tfbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}.tfbtns .btn{min-height:66px;font-size:19px}
+.btn.t{background:var(--okbg);border-color:var(--ok);color:var(--ok)}.btn.f{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.mgrid{display:grid;grid-template-columns:1fr 1.5fr;gap:10px}.mcol{display:flex;flex-direction:column;gap:8px}
+.mt{min-height:56px;border:1.5px solid var(--line);background:var(--card);border-radius:13px;padding:8px 10px;font-weight:600;font-size:14px;line-height:1.25;transition:opacity .2s}
+.mt.port{font:800 19px ui-monospace,Consolas,Menlo,monospace;color:var(--ac)}
+.mt.sel{border-color:var(--ac);background:var(--card2);box-shadow:0 0 0 3px rgba(76,201,240,.25)}
+.mt.done{border-color:var(--ok);background:var(--okbg);opacity:.45}
+.mt.wrong{border-color:var(--bad);animation:shake .35s}
+.target{text-align:center;margin:4px 0}.target b{font-size:56px;font-weight:800;line-height:1.1;display:block;color:var(--ac)}
+.cur{font:700 18px ui-monospace,Consolas,Menlo,monospace;text-align:center;color:var(--mut);margin-bottom:14px}.cur.hit{color:var(--ok)}
+.bits{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.bit{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:8px 0 6px;display:flex;flex-direction:column;align-items:center;gap:5px;min-height:104px}
+.bit small{font-size:10.5px;color:var(--mut);font-weight:700}.bit b{font:800 17px ui-monospace,Consolas,Menlo,monospace}
+.bit .lv{width:22px;height:42px;border-radius:12px;background:var(--card2);position:relative;transition:background .15s}
+.bit .lv::after{content:"";position:absolute;left:3px;bottom:3px;width:16px;height:16px;border-radius:50%;background:#93a3c4;transition:bottom .15s}
+.bit.on{border-color:var(--ac)}.bit.on .lv{background:var(--ac)}.bit.on .lv::after{bottom:23px;background:#fff}
+.olist{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.oslot{display:flex;gap:10px;align-items:center;background:var(--okbg);border:1.5px solid var(--ok);border-radius:12px;padding:9px 12px;font-weight:600;font-size:14.5px;animation:fade .2s}
+.oslot .n{width:26px;height:26px;border-radius:8px;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.opool{display:flex;flex-wrap:wrap;gap:8px}
+.oitem{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:10px 14px;font-weight:600;font-size:14.5px;min-height:48px;text-align:left}
+.oitem.wrong{border-color:var(--bad);animation:shake .35s}
+.trophies{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.troph{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;font-size:11.5px;line-height:1.3}
+.troph b{display:block;font-size:12.5px;margin:4px 0 2px}.troph.lock{opacity:.5}
+@media(hover:none){.opt:hover:not(:disabled),.topic:hover,.btn:not(.pri):not(.danger):not(.t):not(.f):hover{border-color:var(--line)}.topic:hover .tpic{transform:none}}
+</style>
+</head>
+<body>
+<header class="appbar">
+  <button class="ib" id="backBtn" aria-label="Back" hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <div class="brand" id="brand"><span class="logo">&gt;_</span><span>IT Support <b>Quest</b></span></div>
+  <div class="grow"></div>
+  <button class="rankchip" id="rankChip" aria-label="Stats"></button>
+  <button class="ib" id="setBtn" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg></button>
+</header>
+<main>
+<section id="v-home" class="view">
+  <div class="greet" id="greet"></div>
+  <div class="card">
+    <div class="hero-row">
+      <div class="ring"><svg viewBox="0 0 72 72"><circle class="rbg" cx="36" cy="36" r="30"/><circle class="rfg" id="ringFg" cx="36" cy="36" r="30"/></svg><div class="rtxt"><b id="goalNum">0</b><small id="goalOf">of 20 today</small></div></div>
+      <div class="hero-info"><small class="mut">YOUR RANK</small><div class="rank" id="rankName"></div><div class="xpbar"><i id="xpBar"></i></div><small class="mut" id="xpTxt"></small></div><div id="rankPic" class="rankpic"></div>
+    </div>
+    <div class="kpis"><div><b id="kStreak">0</b><span>day streak</span></div><div><b id="kAns">0</b><span>answered</span></div><div><b id="kAcc">-</b><span>accuracy</span></div></div>
+  </div>
+  <div class="levelbar"><span class="mut small">Level</span><div class="seg" id="levelSeg"></div></div>
+  <div class="topics" id="topics"></div>
+  <div class="bigrow"><button class="btn pri big" id="mixBtn">Mixed practice<small>All topics, never ends</small></button><button class="btn big" id="revBtn">Review mistakes<small id="revCount"></small></button></div>
+  <button class="btn promo" data-nav="games"><span class="pp" id="promoPics"></span><span style="flex:1"><b>Arcade: 6 mini-games</b><small>Blitz, Help Desk Shift, Port Match, Binary Builder and more</small></span><span style="font-size:22px;color:var(--ac)">&#8250;</span></button>
+</section>
+<section id="v-play" class="view" hidden>
+  <div class="playhead"><div><div class="ptopic" id="pTopic"></div><div class="small mut" id="pSub"></div></div><div class="streak" id="pStreak"></div></div>
+  <div class="card">
+    <div class="qmeta"><div id="qTags"></div><button class="ib sm" id="saveBtn" aria-label="Save to notes"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg></button></div>
+    <div id="qTicket"></div><div class="q" id="qText"></div><div id="qBody"></div><div id="qFb"></div>
+  </div>
+</section>
+<section id="v-summary" class="view" hidden></section>
+<section id="v-stats" class="view" hidden></section>
+<section id="v-notes" class="view" hidden></section>
+<section id="v-sheet" class="view" hidden></section>
+<section id="v-games" class="view" hidden></section>
+<section id="v-game" class="view" hidden></section>
+</main>
+<div class="actionbar" id="actionbar" hidden><div class="abin"><button class="btn" id="abL"></button><button class="btn pri" id="abR"></button></div></div>
+<div class="backdrop" id="settings" hidden><div class="bsheet" id="setBody"></div></div>
+<nav class="tabbar" id="tabbar"><button data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg><span>Learn</span></button><button data-nav="games"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="12" rx="5"/><path d="M7 11v4M5 13h4"/><circle cx="15.5" cy="12" r="1" fill="currentColor"/><circle cx="18" cy="14.5" r="1" fill="currentColor"/></svg><span>Games</span></button><button data-nav="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Stats</span></button><button data-nav="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg><span>Notes</span></button><button data-nav="sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg><span>Cheat sheet</span></button></nav>
+<div id="toasts"></div>
+<script>
+const TICKETS=[
+ {t:'"No internet since I came in." L1 notes: ipconfig shows 169.254.33.10. Everyone else on the floor is fine.',q:'What does that address tell you?',o:['The PC never got a DHCP lease, so Windows gave itself an APIPA address','The DNS server is down','The default gateway is set wrong','The user\'s AD account is disabled'],e:'169.254.x.x is APIPA: Windows assigns it when no DHCP server answers. Since others are fine, check this PC\'s path to DHCP (cable, switch port, VLAN, Wi-Fi auth), then run ipconfig /release and ipconfig /renew.'},
+ {t:'User can ping 8.8.8.8 fine, but every website fails with "server not found".',q:'What is the most likely problem?',o:['Name resolution (DNS)','The network cable','The default gateway','The browser is out of date'],e:'Reaching 8.8.8.8 by IP proves the cable, IP and gateway work. Failing only by name points at DNS. Check DNS servers with ipconfig /all, test with nslookup, try ipconfig /flushdns.'},
+ {t:'PC has IP 10.4.7.25/24. It can ping other PCs in 10.4.7.x but nothing on any other subnet or the internet.',q:'What should you check first?',o:['The default gateway setting','The DNS server setting','The subnet mask on the other PCs','The proxy settings in the browser'],e:'Traffic to other subnets goes through the default gateway (the router). Local works but remote fails = gateway missing, wrong or unreachable. Compare ipconfig /all with a working PC.'},
+ {t:'User gets locked out of AD every morning, even right after you unlock the account and reset the password.',q:'What is the most likely cause?',o:['A device or app still trying the old password (phone email, saved credentials, mapped drive)','The domain controller is out of disk space','The PC needs more RAM','The password is too complex'],e:'Repeat lockouts after a reset almost always come from a stale password: phone mail, Credential Manager, a mapped drive, a scheduled task or an old RDP session. Event ID 4740 on the PDC emulator shows which machine caused the lockout.'},
+ {t:'You added a user to the "Finance-Share" security group 10 minutes ago. They still get "Access denied" on the Finance share.',q:'What is the quickest fix?',o:['Have them sign out and back in (or run klist purge) to get a new token with the group','Wait 24 hours for AD replication','Give the user Full Control directly on the folder','Reinstall the file server'],e:'Group membership is baked into the access token at logon. Until the user signs out and in (or purges Kerberos tickets), the old token is used. Granting individual permissions is bad practice; always use groups.'},
+ {t:'A new GPO should map the S: drive for Sales users, but one Sales user\'s PC never gets it.',q:'Which command shows which GPOs actually applied?',o:['gpresult /r','ipconfig /all','sfc /scannow','netstat -ano'],e:'gpupdate /force refreshes policy; gpresult /r shows what applied and what was filtered. Common reasons a GPO is skipped: object in a different OU, security filtering, or a WMI filter.'},
+ {t:'Ten people on the 2nd floor say print jobs are "stuck". The queue on the print server has jobs that won\'t clear.',q:'What is the standard fix?',o:['Restart the Print Spooler service on the print server and clear the stuck jobs','Reinstall Windows on every PC','Replace the toner','Change everyone\'s default printer'],e:'A stuck spooler is the classic cause. Restart the Print Spooler service; if jobs still won\'t clear, stop it, delete files in C:\\Windows\\System32\\spool\\PRINTERS, then start it again.'},
+ {t:'User: "I got an email from IT asking me to confirm my password, so I clicked the link and typed it in."',q:'What should you do first?',o:['Reset the password, end their active sessions, then report it to Security','Tell them to delete the email','Run a virus scan and close the ticket','Tell them to be more careful next time'],e:'Assume the credentials are compromised. Reset the password, revoke sessions/tokens, check MFA methods for anything new, and report to Security so they can block the sender and find other victims.'},
+ {t:'Domain PC shows: "The trust relationship between this workstation and the primary domain failed."',q:'What fixes this?',o:['Repair the computer\'s secure channel (Test-ComputerSecureChannel -Repair) or rejoin the domain','Reset the user\'s password','Clear the browser cache','Replace the network card'],e:'The computer account password is out of sync with AD (often after restoring an old image or a long time offline). Log in as local admin and repair the secure channel, or remove and rejoin the domain.'},
+ {t:'Outlook keeps popping up a password prompt. Webmail works fine with the same password.',q:'What is the best next step?',o:['Remove saved Office credentials in Credential Manager and, if needed, create a new Outlook profile','Reset the user\'s password again','Reinstall Windows','Increase the mailbox size'],e:'If webmail works, the account is fine; the PC is sending a stale credential. Clear Office/Outlook entries in Credential Manager, sign out of Office apps, rebuild the Outlook profile if it continues.'},
+ {t:'User can ping the server, but Remote Desktop says it cannot connect.',q:'What do you check?',o:['TCP 3389 is allowed, RDP is enabled, and the user is in Remote Desktop Users','The server\'s DNS cache','The user\'s printer settings','The server\'s screen resolution'],e:'Ping proves the network path, not the RDP service. Check RDP is enabled, the firewall allows TCP 3389, and the user has permission. Test-NetConnection server -Port 3389 tests the port.'},
+ {t:'Three tickets arrive at once: (A) the CEO wants a new wireless mouse, (B) the payroll app is down for all of Finance on payday, (C) one user\'s second monitor flickers.',q:'Which do you work first?',o:['B: payroll down','A: the CEO','C: the monitor, it\'s quickest','Whichever came in first'],e:'Priority = impact x urgency. Payroll down for a whole team on payday is high on both. Job title does not change priority (but stay polite about it).'},
+ {t:'The same VPN disconnect has caused 30 incidents this month. Each time, L1 reconnects the user and closes the ticket.',q:'Which ITIL process should handle this now?',o:['Problem management: find and fix the root cause','Incident management: keep restoring service','Change management: approve a new VPN','Request fulfilment'],e:'Incident management restores service fast. When the same incident keeps coming back, open a problem record to find the root cause, document a workaround (known error), then fix it for good.'},
+ {t:'User\'s PC blue-screens on every boot since a graphics driver update yesterday.',q:'Best approach?',o:['Boot into Safe Mode and roll back the driver (or use System Restore)','Replace the motherboard','Reformat the drive straight away','Update the BIOS first'],e:'Start with the least destructive fix that targets the recent change. Safe Mode loads minimal drivers so you can roll back in Device Manager. Recent change = most likely cause.'},
+ {t:'Users see "Windows has detected an IP address conflict". The other device is a printer someone gave a static IP by hand.',q:'What is the proper long-term fix?',o:['Give the printer a DHCP reservation, or a static IP outside the DHCP scope','Turn DHCP off','Restart the PC that complained','Shorten the DHCP lease to 1 minute'],e:'A static IP inside the DHCP pool will eventually be handed to someone else. Reserve the address in DHCP for the printer\'s MAC, or use an IP outside the scope (or add an exclusion).'},
+ {t:'User wants local admin rights "just for a minute" to install a free tool from the internet.',q:'What should you do?',o:['Follow the software request/approval process and deploy it with the approved tool','Give them admin rights temporarily','Share the local admin password','Install it with your account and leave it'],e:'Least privilege: users should not have admin. Unvetted software is a security and licensing risk. Route it through the software request process; if approved, deploy via SCCM/Intune/Software Center.'},
+ {t:'User can\'t sign in to anything. Errors mention Kerberos. You notice the PC clock is 9 minutes behind.',q:'What is going on?',o:['Kerberos fails when clock skew is over 5 minutes; resync the time','The password expired','The network cable is loose','The DHCP server is down'],e:'Kerberos tickets are time-stamped and the default max skew is 5 minutes. Domain PCs sync time from the domain; check the Windows Time service and run w32tm /resync.'},
+ {t:'External senders say emails to @yourcompany.com bounce. Internal email works.',q:'What should be checked?',o:['The domain\'s MX records in public DNS','The users\' Outlook profiles','The print server','The DHCP scope'],e:'MX records tell the internet where to deliver mail for your domain. Wrong or missing MX (e.g. after a DNS change or migration) breaks external mail while internal mail still works. Check with nslookup -type=mx yourcompany.com.'},
+ {t:'Server "app01" moved to a new IP. DNS was updated, but some users still connect to the old IP.',q:'Likely cause and fix?',o:['Cached DNS entries; wait for the TTL or run ipconfig /flushdns on affected PCs','The server\'s NIC is faulty','The users need new AD accounts','The firewall is blocking port 53'],e:'Clients cache DNS answers for the record\'s TTL. Flush the client cache and check the hosts file for hard-coded entries. Lowering the TTL before a planned IP change avoids this.'},
+ {t:'You solved a tricky issue that L1 will probably see again.',q:'What should you do before closing the ticket?',o:['Write clear resolution notes and a knowledge base article L1 can follow','Just close it, it\'s fixed','Email only the user','Keep the fix to yourself so you\'re needed'],e:'Good L2 work makes L1 stronger. Documenting the fix cuts future escalations and resolution times. It is also great evidence for your own promotion.'},
+ {t:'A caller says they are the CFO, travelling, and urgently need a password reset sent to a new mobile number.',q:'What do you do?',o:['Verify identity with the approved process first, even if it\'s urgent','Do it quickly, it\'s the CFO','Reset it and email them the new password','Ask for their old password to confirm who they are'],e:'Urgency and authority are classic social engineering pressure. Always follow identity verification policy, and never ask a user for their password.'},
+ {t:'User got a new phone and no longer receives MFA prompts, so they can\'t sign in.',q:'What is the right process?',o:['Verify their identity, then reset and re-register their MFA method','Turn off MFA for their account','Let them use a colleague\'s MFA','Tell them to keep using the old phone'],e:'MFA resets are a favourite attacker target, so verify identity first. Then clear the old methods and let them register the new device. Never disable MFA as a workaround.'},
+ {t:'Desktop says "Network cable unplugged". The cable looks plugged in at both ends.',q:'Best next step?',o:['Swap in a known-good cable and/or try a different wall/switch port','Reinstall the network driver first','Reimage the PC','Change the DNS servers'],e:'Work up from Layer 1. Physical swaps are fast and rule out cable and port. Check link lights on the NIC and switch, then drivers, then configuration.'},
+ {t:'Office apps show "Unlicensed Product" for one user after they moved departments.',q:'What do you check first?',o:['Whether they still have a Microsoft 365 license assigned (group-based licensing may have changed)','The PC\'s RAM','The DHCP server','Their desktop wallpaper'],e:'Moving departments often changes group membership, and group-based licensing can drop the license. Check it in the admin center, then have them sign out and back in to Office.'},
+ {t:'User deleted an important file from a network share yesterday afternoon.',q:'Fastest way to get it back?',o:['Restore it from Previous Versions (shadow copies) or the file server backup','It\'s gone forever','Check the user\'s local Recycle Bin','Run chkdsk'],e:'Files deleted from a network share skip the user\'s Recycle Bin. Right-click the folder > Restore previous versions (if shadow copies are on), otherwise restore from backup.'},
+ {t:'VPN connects. Users can reach internal servers by IP, but not by name.',q:'Likely cause?',o:['The VPN isn\'t giving out the internal DNS servers / DNS suffix','The VPN password expired','The laptop battery is low','Port 443 is blocked'],e:'Works by IP but not by name = DNS. Check which DNS servers and search suffix the VPN adapter received (ipconfig /all). It is always DNS.'},
+ {t:'User has called for the third time about the same issue and is angry.',q:'Best approach?',o:['Acknowledge the frustration, own the ticket, explain next steps and when you\'ll update them','Transfer them to someone else','Tell them it\'s not your fault','Put them on hold until they calm down'],e:'Empathy, ownership and clear expectations, then actually update them when you said you would. Customer handling matters at L2 as much as technical skill.'},
+ {t:'The C: drive on a user\'s PC is at 99% and apps are crashing.',q:'Safe first step?',o:['Run Disk Cleanup / Storage Sense and find the big folders before deleting anything','Delete the Windows folder','Delete Program Files','Format the drive'],e:'Clear temp files, old updates and the Recycle Bin first. Use Storage settings or WinDirStat to see what is big (often Downloads, OST/PST files or old user profiles).'},
+ {t:'A mapped drive shows a red X at logon, but opens fine when clicked.',q:'What is most likely happening?',o:['Windows tried to reconnect before the network was ready; it reconnects on first use','The file server is down','The user has no permissions','The drive letter is invalid'],e:'Usually cosmetic timing. Fixes include the "Always wait for the network at computer startup and logon" policy, or mapping via GPO with the Reconnect option.'},
+ {t:'PC suddenly very slow. Task Manager shows Disk at 100%.',q:'Best next step?',o:['Sort Task Manager / Resource Monitor by disk activity to find the process responsible','Buy more RAM','Reinstall Windows','Ignore it'],e:'Find the culprit before fixing. Windows Update, antivirus scans and search indexing are common. If no process explains it, check drive health (SMART); a dying HDD often sits at 100%.'},
+];
+const FUND=[
+ {q:'At which OSI layer do routers and IP addresses work?',o:['Layer 3, Network','Layer 2, Data Link','Layer 4, Transport','Layer 7, Application'],e:'Layer 3 handles logical addressing (IP) and routing. Memory aid, layers 1 to 7: Please Do Not Throw Sausage Pizza Away (Physical, Data Link, Network, Transport, Session, Presentation, Application).'},
+ {q:'A network switch forwards frames using what?',o:['MAC addresses','IP addresses','Port numbers','Hostnames'],e:'Switches are Layer 2 devices. They learn which MAC address is on which port (the MAC address table) and forward frames accordingly.'},
+ {q:'Which protocol is connectionless and does not guarantee delivery?',o:['UDP','TCP','SSH','HTTPS'],e:'UDP just sends packets: fast, no handshake, no retransmits. Used by DNS queries, DHCP, VoIP and streaming. TCP does a 3-way handshake (SYN, SYN-ACK, ACK) and guarantees ordered delivery.'},
+ {q:'What are the DHCP lease steps, in order?',o:['Discover, Offer, Request, Acknowledge','Request, Offer, Discover, Acknowledge','Offer, Discover, Acknowledge, Request','Discover, Request, Offer, Acknowledge'],e:'DORA: the client broadcasts Discover, servers Offer an address, the client Requests one, the server Acknowledges. No answer at all = APIPA 169.254.x.x.'},
+ {q:'Which of these is NOT a private (RFC 1918) address?',o:['172.32.10.5','10.200.1.1','192.168.0.50','172.20.0.1'],e:'Private ranges: 10.0.0.0/8, 172.16.0.0/12 (172.16.0.0 to 172.31.255.255) and 192.168.0.0/16. 172.32.x.x is outside the /12, so it is public.'},
+ {q:'Share permission is Read. NTFS permission is Modify. What can the user do when accessing over the network?',o:['Read only','Modify','Full Control','Nothing'],e:'Over the network, the more restrictive of share and NTFS permissions wins. Common practice: keep share permissions broad and control access with NTFS.'},
+ {q:'Which RAID level mirrors data across two disks?',o:['RAID 1','RAID 0','RAID 5','JBOD'],e:'RAID 0 = striping, fast but no redundancy. RAID 1 = mirroring. RAID 5 = striping with parity, survives one disk failure, needs at least 3 disks. RAID 10 = striped mirrors.'},
+ {q:'What is the minimum number of disks for RAID 5?',o:['3','2','4','5'],e:'RAID 5 spreads data plus parity across at least 3 disks and survives one failed disk. RAID 6 uses double parity, needs at least 4 and survives two.'},
+ {q:'Which DNS record tells the world where to deliver email for a domain?',o:['MX','A','CNAME','PTR'],e:'A = name to IPv4, AAAA = name to IPv6, CNAME = alias to another name, MX = mail servers, PTR = IP to name (reverse lookup), TXT = text (SPF, DKIM, verification).'},
+ {q:'Which DNS record is used for a reverse lookup (IP to name)?',o:['PTR','MX','A','SRV'],e:'PTR records live in reverse lookup zones (in-addr.arpa). SRV records advertise services, e.g. Active Directory domain controllers via _ldap._tcp.'},
+ {q:'ITIL: what is the difference between an incident and a problem?',o:['An incident is an interruption to fix fast; a problem is the underlying cause of one or more incidents','They are the same thing','A problem is just a high priority incident','Incidents are for hardware, problems for software'],e:'Incident management = restore service ASAP. Problem management = find and remove the root cause so it stops happening. A known error is a problem with a documented workaround.'},
+ {q:'What does the principle of least privilege mean?',o:['Give people only the access they need for their job, nothing more','Give everyone admin to save time','Only managers get access','Remove all access every Friday'],e:'Least privilege limits damage from mistakes and compromised accounts. It is why admins use separate admin accounts and users do not get local admin.'},
+ {q:'What does an SLA define?',o:['Agreed service targets, such as response and resolution times','The software licence cost','The server login address','The list of approved apps'],e:'A Service Level Agreement sets targets like "P1 responded to in 15 minutes, resolved in 4 hours". L2 work is often measured against SLA breaches.'},
+ {q:'What is 127.0.0.1?',o:['The loopback address, meaning "this computer"','The default gateway','A public DNS server','The broadcast address'],e:'127.0.0.0/8 is loopback. ping 127.0.0.1 tests the local TCP/IP stack without touching the network.'},
+ {q:'Which pair is real multi-factor authentication?',o:['Password plus an authenticator app code','Password plus a security question','Two different passwords','Username plus password'],e:'MFA needs factors of different types: something you know (password), something you have (phone, token), something you are (fingerprint). A password and a security question are both "know".'},
+ {q:'Security Event ID 4740 on a domain controller means what?',o:['A user account was locked out','A user logged on successfully','A password was changed','A computer joined the domain'],e:'4740 = account locked out, and it records the caller computer name, so it shows where the bad passwords come from. 4625 = failed logon, 4624 = successful logon.'},
+ {q:'What does a VLAN do?',o:['Splits one physical switch into separate logical networks (broadcast domains)','Speeds up Wi-Fi','Encrypts traffic like a VPN','Assigns IP addresses'],e:'VLANs separate traffic (users, voice, printers, guests) on the same hardware. Traffic between VLANs needs a router or Layer 3 switch. A PC on the wrong VLAN gets the wrong IP range, or none.'},
+ {q:'What is the job of the default gateway?',o:['It forwards traffic to networks outside the local subnet','It hands out IP addresses','It resolves names to IPs','It stores user passwords'],e:'If the destination is not on your subnet, the packet goes to the default gateway (usually the router). DHCP hands out addresses; DNS resolves names.'},
+];
+const PORTS=[
+ [20,'FTP (data)','TCP','FTP uses 21 for control and 20 for data. It is unencrypted; prefer SFTP (22) or FTPS.'],
+ [21,'FTP (control)','TCP','Unencrypted file transfer. SFTP runs over SSH on 22 instead.'],
+ [22,'SSH / SFTP','TCP','Encrypted remote shell and file transfer. Standard for Linux servers and network gear.'],
+ [23,'Telnet','TCP','Unencrypted remote shell. Avoid it, though "telnet host port" is still a quick port test.'],
+ [25,'SMTP','TCP','Server-to-server mail delivery. Mail clients normally submit on 587.'],
+ [53,'DNS','TCP/UDP','Queries mostly use UDP 53; zone transfers and large answers use TCP 53.'],
+ [67,'DHCP (server)','UDP','The DHCP server listens on UDP 67, clients on UDP 68.'],
+ [80,'HTTP','TCP','Unencrypted web traffic. Usually redirects to HTTPS on 443.'],
+ [88,'Kerberos','TCP/UDP','Active Directory authentication. Breaks with clock skew over 5 minutes.'],
+ [110,'POP3','TCP','Downloads mail to one device. The encrypted version is POP3S on 995.'],
+ [123,'NTP','UDP','Time sync. Wrong time breaks Kerberos and certificates.'],
+ [143,'IMAP','TCP','Mail synced across devices. The encrypted version is IMAPS on 993.'],
+ [161,'SNMP','UDP','Monitoring of network devices and printers. Traps go to UDP 162.'],
+ [389,'LDAP','TCP/UDP','Directory queries to Active Directory. The encrypted version is LDAPS on 636.'],
+ [443,'HTTPS','TCP','Encrypted web traffic. Also used by many VPNs and most cloud apps.'],
+ [445,'SMB','TCP','Windows file and printer sharing (\\\\server\\share). Never expose it to the internet.'],
+ [587,'SMTP submission','TCP','Mail clients and apps send mail here, with STARTTLS and authentication.'],
+ [636,'LDAPS','TCP','LDAP over TLS.'],
+ [993,'IMAPS','TCP','IMAP over TLS.'],
+ [995,'POP3S','TCP','POP3 over TLS.'],
+ [1433,'Microsoft SQL Server','TCP','Default SQL Server instance port.'],
+ [3389,'RDP','TCP','Remote Desktop. Keep it behind a VPN or gateway, never open to the internet.'],
+ [5985,'WinRM (HTTP)','TCP','PowerShell remoting (Enter-PSSession). WinRM over HTTPS uses 5986.'],
+];
+const CMDS=[
+ ['Show full IP config, including DNS servers, MAC address and DHCP lease info.',[/^ipconfig \/all$/],'ipconfig /all','The first command for almost any network ticket. Check IP, mask, gateway, DNS servers and whether DHCP is enabled.'],
+ ['Clear the local DNS resolver cache.',[/^ipconfig \/flushdns$/],'ipconfig /flushdns','Use when a PC keeps going to an old IP after a DNS change. ipconfig /displaydns shows what is cached.'],
+ ['You already released the IP. Now ask DHCP for a new lease.',[/^ipconfig \/renew$/],'ipconfig /renew','ipconfig /release drops the current lease, /renew requests a new one. A good first fix for an APIPA 169.254.x.x address.'],
+ ['Look up the IP address of fileserver01 using DNS.',[/^nslookup fileserver01(\.\S+)?$/,/^resolve-dnsname (-name )?fileserver01(\.\S+)?$/],'nslookup fileserver01','nslookup asks the DNS server directly. Resolve-DnsName is the PowerShell version. Add -type=mx etc. for other record types.'],
+ ['Show every router hop between you and 8.8.8.8 (Windows).',[/^tracert 8\.8\.8\.8$/,/^pathping 8\.8\.8\.8$/],'tracert 8.8.8.8','tracert shows where the path breaks or slows down. pathping adds packet-loss stats per hop. Linux/macOS: traceroute.'],
+ ['Force an immediate Group Policy refresh.',[/^gpupdate \/force$/],'gpupdate /force','Reapplies all policies now instead of waiting for the background refresh (about 90 minutes). Some settings still need a logoff or reboot.'],
+ ['Show a summary of which GPOs applied to this user and computer.',[/^gpresult \/[rvz]$/],'gpresult /r','Lists applied and filtered GPOs plus group memberships. gpresult /h report.html makes a readable HTML report.'],
+ ['Scan and repair protected Windows system files.',[/^sfc \/scannow$/],'sfc /scannow','Run from an elevated prompt. If SFC cannot fix files, run DISM /Online /Cleanup-Image /RestoreHealth, then SFC again.'],
+ ['Repair the Windows component store image (when SFC cannot fix files).',[/^dism(\.exe)? \/online \/cleanup-image \/restorehealth$/],'DISM /Online /Cleanup-Image /RestoreHealth','DISM repairs the image that SFC uses as its source. Order: DISM first, then sfc /scannow.'],
+ ['List all connections and listening ports, with the owning process ID.',[/^netstat -(ano|aon|nao|noa|oan|ona)$/],'netstat -ano','-a all, -n numeric, -o process ID. Match the PID in Task Manager, or use Get-NetTCPConnection in PowerShell.'],
+ ['Show the user you are logged in as and every group they belong to.',[/^whoami \/(groups|all)$/],'whoami /groups','A quick way to see whether a new group membership is in the current token (if not, sign out and back in).'],
+ ['PowerShell: test whether TCP port 443 is open on web01.',[/^(test-netconnection|tnc) (-computername )?web01 -port 443$/],'Test-NetConnection web01 -Port 443','Shows TcpTestSucceeded True/False. Great for "can ping but the app will not connect" tickets. tnc is the short alias.'],
+ ['PowerShell: restart the Print Spooler service.',[/^restart-service (-name )?spooler( -force)?$/],'Restart-Service Spooler','The CMD way is net stop spooler, then net start spooler. Clears most stuck print queues.'],
+ ['Delete all cached Kerberos tickets so new group memberships load.',[/^klist purge$/],'klist purge','klist shows cached tickets; purge clears them, so the next access gets fresh tickets with current groups.'],
+ ['Force this PC to resync its clock with its time source.',[/^w32tm \/resync( \/force)?$/],'w32tm /resync','Kerberos breaks with more than 5 minutes of clock skew. w32tm /query /status shows the current time source.'],
+ ['Show the IP-to-MAC address (ARP) cache.',[/^arp -a$/],'arp -a','Useful for spotting duplicate IPs (one IP, unexpected MAC) and checking that the gateway answers.'],
+ ['Ping server01 continuously until you press Ctrl+C.',[/^ping (-t server01|server01 -t)$/],'ping -t server01','Handy for watching drops while you wiggle a cable or reboot a device. Linux ping is continuous by default.'],
+ ['Check drive C: for errors and fix them (runs at next boot if the drive is in use).',[/^chkdsk c: \/[fr]( \/[fr])?$/],'chkdsk C: /f','/f fixes file system errors; /r also scans for bad sectors (slow). On the system drive it runs at the next reboot.'],
+ ['Run dialog: open Active Directory Users and Computers.',[/^dsa\.msc$/],'dsa.msc','Other useful snap-ins: gpmc.msc (Group Policy Management), dnsmgmt.msc (DNS), dhcpmgmt.msc (DHCP), compmgmt.msc (Computer Management).'],
+ ['Run dialog: open Event Viewer.',[/^eventvwr(\.msc)?$/],'eventvwr.msc','Check Windows Logs > System and Application for errors around the time of the issue. Filter by Event ID.'],
+ ['Run dialog: open Device Manager.',[/^devmgmt\.msc$/],'devmgmt.msc','Look for yellow warnings, roll back or update drivers, and show hidden devices via View > Show hidden devices.'],
+ ['Run dialog: open the Services console.',[/^services\.msc$/],'services.msc','Start, stop and restart services and change startup type. Check the Log On tab for services running as an account whose password changed.'],
+ ['PowerShell: unlock the AD account jsmith.',[/^unlock-adaccount (-identity )?jsmith$/],'Unlock-ADAccount jsmith','Needs the ActiveDirectory module (RSAT). Then find the lockout source so it does not happen again.'],
+ ['PowerShell: show whether jsmith is locked out (get the LockedOut property).',[/^get-aduser (-identity )?jsmith -properties (\*|lockedout)( \|.*)?$/],'Get-ADUser jsmith -Properties LockedOut','Get-ADUser returns only a few properties by default; -Properties adds more (LockedOut, PasswordLastSet, LastLogonDate...).'],
+ ['Restart this PC immediately, with no delay.',[/^shutdown [\/-]r( [\/-]f)? [\/-]t 0$/,/^shutdown [\/-]t 0( [\/-]f)? [\/-]r$/,/^restart-computer( -force)?$/],'shutdown /r /t 0','/r restart, /t seconds of delay, /f force-close apps. /s would shut down instead.'],
+ ['Map drive Z: to \\\\fs01\\shared.',[/^net use z: \\\\fs01\\shared( \/persistent:(yes|no))?$/],'net use Z: \\\\fs01\\shared','net use on its own lists mapped drives; net use Z: /delete removes one.'],
+ ['PowerShell: repair the broken domain trust (secure channel) on this PC.',[/^test-computersecurechannel -repair( -credential .*)?$/],'Test-ComputerSecureChannel -Repair','Fixes "trust relationship failed" without rejoining the domain. Without -Repair it just returns True/False.'],
+ ['Show OS version, install date, last boot time and installed hotfixes.',[/^systeminfo$/],'systeminfo','Filter it, e.g. systeminfo | findstr /B /C:"System Boot Time".'],
+ ['Show the current computer name.',[/^hostname$/],'hostname','Users rarely know their PC name. It is also in ipconfig /all and Settings > System > About.'],
+ ['Linux: show disk usage of mounted filesystems in human-readable sizes.',[/^df -h$/],'df -h','du -sh * shows folder sizes in the current directory, to find what is filling a disk.'],
+ ['Linux: show the IP addresses of all interfaces (modern tool).',[/^ip (a|addr|address)( show)?$/],'ip a','Replaces the older ifconfig. ip r shows the routing table, including the default gateway.'],
+ ['Linux (systemd): follow the system log live.',[/^journalctl -f$/],'journalctl -f','journalctl -u name shows one service\'s logs; systemctl status name shows whether it is running.'],
+];
+
+/* ===== LEVEL 1 CONTENT ===== */
+const L1_T_OLD=[11,20,22,26,27], L1_F_OLD=[11,12,13,14], L1_C_OLD=[0,1,2,16,21,28], L1_PORTS=[21,22,25,53,80,443,3389];
+const T1=[
+ {t:'User forgot their password and is locked out of Windows.',q:'What do you do first?',o:['Verify their identity with the approved process, then reset or unlock the account','Reset it straight away so they can get back to work','Ask them to tell you their old password','Let them use a colleague\'s login for today'],e:'Identity checks come first, every time: password resets are a favourite trick of attackers. Never ask for a password and never share logins.'},
+ {t:'"My computer is frozen. Nothing responds."',q:'What is a good first step before forcing a power-off?',o:['Press Ctrl+Shift+Esc to open Task Manager and end the app that is not responding','Unplug the PC immediately','Reinstall Windows','Delete the user profile'],e:'Ctrl+Shift+Esc opens Task Manager directly (Ctrl+Alt+Del shows the security screen). End the frozen app under Processes. Hold the power button only if nothing responds, since unsaved work is lost.'},
+ {t:'User says the printer is "not working". Their job never came out.',q:'What should you check first?',o:['Power, paper, toner and any error on the printer, and that they picked the right printer','Replace the printer','Reinstall Windows','Escalate to L2 straight away'],e:'Start simple: power, online status, paper, jams, toner and error messages. Many "broken printer" tickets are just the wrong printer selected.'},
+ {t:'A website looks broken for one user only. It works for everyone else.',q:'Quick first fix?',o:['Try a private/incognito window, or clear the browser cache and cookies','Reboot the web server','Change the user\'s password','Replace the network cable'],e:'If it works in incognito, a cached file, cookie or browser extension is the cause. Clear the cache (Ctrl+Shift+Delete) or disable extensions.'},
+ {t:'User\'s laptop won\'t connect to the office Wi-Fi. Their phone connects fine.',q:'Good first steps?',o:['Check Wi-Fi is on (not airplane mode), then forget the network and reconnect','Replace the wireless access point','Reset the user\'s email','Run sfc /scannow'],e:'The phone connecting proves the Wi-Fi works, so focus on the laptop: airplane mode, the Wi-Fi switch or function key, forget and rejoin, restart. Then drivers or certificates.'},
+ {t:'User says their PC is slow. It has not been restarted in 41 days.',q:'Best first step?',o:['Save work and restart the PC','Order a new PC','Delete their files to free space','Escalate to L2'],e:'A restart clears memory, finishes pending updates and kills stuck processes. "Have you tried turning it off and on again?" is a cliche because it works. Fast Startup means "Shut down" is not always a full restart; use Restart.'},
+ {t:'User got an email saying their parcel is held and asking for a $2 fee through a link.',q:'What do you tell them?',o:['It looks like phishing: don\'t click, and report it with the phishing report button','Pay it, it\'s only $2','Reply and ask if it\'s real','Forward it to all staff as a warning'],e:'Urgency, small payments and unexpected links are classic phishing signs. Reporting it through the official process lets Security block it for everyone. Forwarding it spreads the link.'},
+ {t:'User says the monitor is black, but the PC fan is running.',q:'What do you check first?',o:['The monitor is powered on and the video cable is firmly in the right port','Reinstall the graphics driver','Replace the motherboard','Reset their password'],e:'Check the power light, the cable at both ends and the input source (HDMI/DisplayPort). If the PC has a graphics card, the cable must go into the card, not the motherboard port.'},
+ {t:'A user calls, and you can\'t fix the issue during the call.',q:'What should you do?',o:['Log the ticket with clear notes, tell them what happens next, and escalate if needed','Hang up and look at it later if you remember','Ask them to call back tomorrow','Close the ticket as resolved'],e:'Every contact gets a ticket. Record what you tried, the exact error and the impact so whoever picks it up doesn\'t start again. Always tell the user what happens next.'},
+ {t:'A ticket needs admin access that you don\'t have at L1.',q:'What do you do?',o:['Escalate to L2 with full notes of what you already checked','Ask a colleague for their admin password','Close the ticket','Tell the user it can\'t be fixed'],e:'Escalating is part of the job, not a failure. Good escalation notes: symptoms, exact error text, steps tried, user impact and the best way to contact the user.'},
+ {t:'User\'s wireless mouse and keyboard both stopped working.',q:'Most likely first fix?',o:['Replace or charge the batteries and re-seat the USB receiver','Reinstall Windows','Update the BIOS','Replace the PC'],e:'For wireless peripherals check batteries, the on/off switch, the USB receiver (try another port) and pairing. Fast and usually the fix.'},
+ {t:'User deleted a file from their desktop five minutes ago.',q:'Where should they look first?',o:['The Recycle Bin','Event Viewer','Control Panel','Task Manager'],e:'Local deletes go to the Recycle Bin unless Shift+Delete was used. Files deleted from network shares do not; use Previous Versions or backups for those.'},
+ {t:'Outlook is not receiving new emails, but webmail on the user\'s phone shows new mail.',q:'What do you check first in Outlook?',o:['Whether the status bar says "Working Offline" or "Disconnected"','The printer queue','The BIOS settings','The keyboard language'],e:'The Outlook status bar shows the connection state. Send/Receive > Work Offline toggles it. Then check the internet connection and restart Outlook.'},
+ {t:'User can\'t hear anything on a Teams call.',q:'Good first check?',o:['The right speaker or headset is selected in Teams device settings, and nothing is muted','Reinstall Windows','Reset their password','Check the DHCP server'],e:'Most audio problems are the wrong output device or mute. Check the app\'s device settings, the Windows sound output and the headset connection.'},
+ {t:'A new starter asks for access to their team\'s shared drive.',q:'What is the correct process?',o:['Get approval from the data owner or manager, then add them to the right security group','Add them to every group to save time','Let them use your login','Give them Full Control on the folder directly'],e:'Access requests need approval and should be granted through groups, not individual permissions. That keeps access auditable and easy to remove when people move on.'},
+ {t:'User is about to walk away from an unlocked laptop in a busy café.',q:'Which habit should IT teach?',o:['Lock the screen with Windows + L every time you step away','Turn down the screen brightness','Close the lid only if it\'s raining','Nothing, it\'s fine for a minute'],e:'Win+L locks instantly. Combine it with automatic screen-lock timeouts and never leaving devices unattended in public.'},
+ {t:'A user\'s screen is suddenly sideways.',q:'Quickest fix?',o:['Settings > System > Display > Display orientation: Landscape','Reinstall the graphics driver','Replace the monitor','Restore from backup'],e:'Orientation is in display settings. On some graphics drivers Ctrl+Alt+Arrow keys rotate the screen, which is how it usually happens by accident.'},
+ {t:'User says the PC "has no internet". The network icon shows a globe or warning sign.',q:'What should you check next?',o:['Whether other people have internet, and whether this PC has a valid IP (ipconfig)','Replace the hard drive','Reset their email password','Uninstall Office'],e:'Scope first: one user or everyone? Then basics: cable or Wi-Fi, ipconfig for a valid IP and gateway, then ping the gateway and 8.8.8.8.'},
+];
+const F1=[
+ {q:'What does RAM do?',o:['Holds running programs and data temporarily while the PC is on','Stores files permanently','Connects the PC to Wi-Fi','Cools the CPU'],e:'RAM is fast, temporary memory that is cleared at power-off. Storage (SSD/HDD) keeps files permanently. Not enough RAM = slow PC when many apps are open.'},
+ {q:'Which storage is usually fastest?',o:['NVMe SSD','Hard disk drive (HDD)','DVD','USB 2.0 flash drive'],e:'SSDs have no moving parts; NVMe SSDs connect over PCIe and are the fastest common storage. Swapping an old HDD for an SSD is one of the best speed upgrades.'},
+ {q:'What does Ctrl+Shift+Esc do in Windows?',o:['Opens Task Manager','Locks the PC','Opens File Explorer','Takes a screenshot'],e:'Handy shortcuts: Win+L lock, Win+E File Explorer, Win+R Run, Win+Shift+S screenshot, Win+D desktop, Win+V clipboard history, Win+P projector modes.'},
+ {q:'Which shortcut locks a Windows PC immediately?',o:['Windows + L','Windows + D','Ctrl + L','Alt + F4'],e:'Win+L locks without closing anything. Teach users to do it every time they leave their desk.'},
+ {q:'Which shortcut opens the Run dialog?',o:['Windows + R','Windows + E','Ctrl + R','Alt + Tab'],e:'From Run you can type things like cmd, control, appwiz.cpl, ncpa.cpl, devmgmt.msc or \\\\server\\share.'},
+ {q:'What does DNS do?',o:['Turns names like intranet.company.com into IP addresses','Hands out IP addresses','Encrypts Wi-Fi traffic','Stores user passwords'],e:'DNS is the phone book of the network. When "the internet is down" but pinging an IP works, DNS is the usual suspect.'},
+ {q:'What does DHCP do?',o:['Automatically gives devices an IP address, gateway and DNS settings','Turns names into IP addresses','Blocks viruses','Backs up files'],e:'DHCP hands out leases. If no DHCP server answers, Windows gives itself a 169.254.x.x (APIPA) address and the user has no network.'},
+ {q:'Which is the strongest password?',o:['A long passphrase like "Purple-Kettle-Rides-42!"','Password123','The user\'s birthday','Their username backwards'],e:'Length beats complexity. A long passphrase is easier to remember and much harder to crack. Add MFA, and never reuse passwords.'},
+ {q:'What is phishing?',o:['Fake messages that trick people into clicking links or giving away information','A type of network cable','A backup method','A way to speed up Wi-Fi'],e:'Signs: urgency, unexpected attachments or links, mismatched sender addresses, requests for passwords or payment. Report it, don\'t click.'},
+ {q:'What usually decides a ticket\'s priority?',o:['Impact and urgency','How loudly the caller complains','Alphabetical order','Only the caller\'s job title'],e:'Impact = how many people or how critical the service. Urgency = how fast it hurts. Both together set the priority (P1 to P4).'},
+ {q:'What is a MAC address?',o:['A unique hardware address of a network adapter','An Apple computer\'s IP address','A Wi-Fi password','A type of email account'],e:'A 48-bit address written in hex, like 00-1A-2B-3C-4D-5E. See it with getmac or ipconfig /all. Used for DHCP reservations and network access control.'},
+ {q:'What is the difference between a hub and a switch?',o:['A switch sends traffic only to the right port; a hub repeats it to every port','They are the same thing','A hub is faster','A switch gives out IP addresses'],e:'Hubs are Layer 1 repeaters and basically obsolete. Switches are Layer 2 and learn which MAC address is on each port.'},
+ {q:'Which email attachment type is most likely to be dangerous?',o:['.exe','.txt','.jpg','.csv'],e:'Executables and scripts (.exe, .scr, .js, .vbs, .bat) and macro-enabled Office files (.docm, .xlsm) are the riskiest. Unexpected attachments from anyone deserve suspicion.'},
+ {q:'What does SaaS mean?',o:['Software as a Service: apps used over the internet, like Microsoft 365','Storage as a Server','Security and Antivirus Suite','System Admin as a Service'],e:'SaaS = the vendor runs the app (M365, Salesforce). PaaS = a platform to build on. IaaS = rented virtual servers and networks (AWS EC2, Azure VMs).'},
+ {q:'Why do remote workers use a VPN?',o:['It creates an encrypted connection to the company network over the internet','It makes the internet faster','It replaces antivirus','It gives free Wi-Fi'],e:'A VPN tunnels traffic securely so remote PCs can reach internal resources (file shares, intranet). If the VPN is up but names fail, check DNS.'},
+ {q:'A user needs to send a 3 GB video to a colleague. What is usually best?',o:['Share it from OneDrive or SharePoint as a link','Attach it to an email','Print it','Split it across 100 emails'],e:'Email attachments are usually limited to around 20 to 35 MB. Sharing links keeps one copy, respects permissions and avoids filling mailboxes.'},
+ {q:'Which connector is the small reversible one on most modern laptops and phones?',o:['USB-C','VGA','PS/2','Serial (RS-232)'],e:'USB-C can carry data, charging and video (DisplayPort/Thunderbolt). VGA and PS/2 are legacy video and keyboard/mouse ports.'},
+ {q:'What does "first contact resolution" mean?',o:['Fixing the issue during the first contact, with no escalation or callback','Answering the phone on the first ring','Closing tickets without talking to the user','Escalating every ticket quickly'],e:'FCR is a key service desk metric. Good knowledge articles and remote tools raise it.'},
+ {q:'What is MFA mainly protecting against?',o:['Someone logging in with a stolen password','Hard drive failure','Slow Wi-Fi','Paper jams'],e:'With MFA, a stolen password alone is not enough. Watch for "MFA fatigue": users approving prompts they did not start. Tell them to deny and report.'},
+ {q:'What is Safe Mode in Windows for?',o:['Starting Windows with minimal drivers and services to troubleshoot','Encrypting the disk','Making Windows faster permanently','Blocking internet access for kids'],e:'If a PC works in Safe Mode but not normally, a driver, startup app or service is the likely cause. Reach it via Settings > Recovery > Advanced startup, or Shift+Restart.'},
+];
+const C1=[
+ ['Show your IP address, subnet mask and default gateway (basic view).',[/^ipconfig$/],'ipconfig','The quick view. Add /all for DNS servers, MAC address and DHCP details.'],
+ ['Test whether you can reach 8.8.8.8.',[/^ping 8\.8\.8\.8$/],'ping 8.8.8.8','If pinging an IP works but websites fail, suspect DNS. If it fails, check the cable/Wi-Fi, IP config and gateway.'],
+ ['Run dialog: open Task Manager.',[/^taskmgr(\.exe)?$/],'taskmgr','Ctrl+Shift+Esc also opens it. Check the Processes and Startup tabs for slow PCs.'],
+ ['Run dialog: open the classic Control Panel.',[/^control(\.exe)?$/],'control','Still useful for older settings like Mail profiles, Credential Manager and Devices and Printers.'],
+ ['Run dialog: open Programs and Features to uninstall software.',[/^appwiz\.cpl$/],'appwiz.cpl','Also shows installed updates via "View installed updates".'],
+ ['Run dialog: open Network Connections (the list of network adapters).',[/^ncpa\.cpl$/],'ncpa.cpl','Enable or disable adapters and set static IP or DNS settings on the adapter properties.'],
+ ['Run dialog: open System Information (model, RAM, BIOS version).',[/^msinfo32(\.exe)?$/],'msinfo32','Great for collecting hardware details for a ticket or warranty check.'],
+ ['Run dialog: open the Remote Desktop client.',[/^mstsc(\.exe)?$/],'mstsc','mstsc /v:servername connects straight to a machine.'],
+ ['Show the MAC address of this PC\'s network adapters.',[/^getmac( \/v)?$/,/^ipconfig \/all$/],'getmac','getmac /v adds adapter names. ipconfig /all shows it as "Physical Address".'],
+ ['Run dialog: open Disk Management.',[/^diskmgmt\.msc$/],'diskmgmt.msc','Initialise new disks, assign drive letters, extend or shrink volumes.'],
+ ['Open the classic Devices and Printers page from Run.',[/^control printers$/],'control printers','Quick way to see printers, set the default and open the print queue.'],
+];
+/* ===== HELPERS & GENERATORS (endless questions) ===== */
+const $=id=>document.getElementById(id);
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const reEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const ipStr=n=>[n>>>24,(n>>>16)&255,(n>>>8)&255,n&255].join('.');
+const maskOf=p=>p<=0?0:(0xFFFFFFFF<<(32-p))>>>0;
+const NAMES=['Priya (Finance)','Tom (Sales)','Mei (HR)','Raj (Warehouse)','Olivia (Legal)','Ahmed (Marketing)','Grace (Payroll)','Liam (Operations)','Sofia (Reception)','Ben (Engineering)','Aroha (Customer Service)','Daniel (IT)'];
+function ticketMeta(text,lvl){return {no:'INC'+(100000+rnd(899999)),who:pick(NAMES),pri:lvl===1?pick(['P3','P4']):pick(['P2','P3','P3']),text}}
+function mc(q,opts,explain,extra){ /* opts[0] is correct */
+  const u=[];opts.forEach(o=>{if(!u.includes(o))u.push(o)});
+  const order=shuffle(u.map((_,i)=>i));
+  return Object.assign({kind:'mc',q,options:order.map(i=>u[i]),correct:order.indexOf(0),answer:u[0],explain},extra||{});
+}
+function randNet(p){
+  const b=pick([[10,rnd(256),rnd(256)],[172,16+rnd(16),rnd(256)],[192,168,rnd(256)]]);
+  const ip=((b[0]<<24)|(b[1]<<16)|(b[2]<<8)|rnd(256))>>>0, mask=maskOf(p), size=2**(32-p), net=(ip&mask)>>>0;
+  return {ip,mask,size,net,bc:(net+size-1)>>>0};
+}
+function subnetQ(easy){
+  const type=pick(easy?['mask','hosts','net','same','first']:['hosts','mask','net','bc','first','same']);
+  const p=easy?(type==='mask'?pick([8,16,24]):type==='hosts'?pick([24,24,16]):24):((type==='hosts'||type==='mask')?16+rnd(15):22+rnd(9));
+  const {ip,mask,size,net,bc}=randNet(p);
+  const idx=p%8===0?p/8-1:Math.floor(p/8),oct=(mask>>>(24-8*idx))&255,blk=256-oct;
+  const blockTxt=p===24?`/24 = mask 255.255.255.0, so the first three octets are the network and the last octet is the host.`:`/${p} = mask ${ipStr(mask)}. The "interesting" octet is #${idx+1} (${oct}), so the block size is 256 - ${oct} = ${blk}: subnets go up in steps of ${blk} in that octet.`;
+  const range=(n,x)=>`Network ${ipStr(n)}, first usable ${ipStr(n+1)}, last usable ${ipStr(x-1)}, broadcast ${ipStr(x)}.`;
+  let q,o,e;
+  if(type==='hosts'){q=`How many usable host addresses are in a /${p} subnet?`;o=[size-2,size,size/2-2,size*2-2].map(String);e=`/${p} leaves ${32-p} host bits. 2^${32-p} = ${size} addresses, minus the network and broadcast addresses = ${size-2} usable.`}
+  else if(type==='mask'){q=`What is the subnet mask for /${p}?`;o=[p,p-1,p+1,p+2].map(x=>ipStr(maskOf(Math.min(32,x))));if(easy)o=[ipStr(mask),...[8,16,24,32].filter(x=>x!==p).map(x=>ipStr(maskOf(x)))];e=`/${p} means ${p} ones followed by zeros: ${ipStr(mask)}. Mask octet values to memorise: 128, 192, 224, 240, 248, 252, 254, 255.`}
+  else if(type==='net'){q=`What is the network address of ${ipStr(ip)}/${p}?`;o=[net,net+size,net-size,ip===net?net+1:ip,bc].map(x=>ipStr(x>>>0));e=`${blockTxt} ${ipStr(ip)} falls in ${ipStr(net)} to ${ipStr(bc)}. ${range(net,bc)}`}
+  else if(type==='bc'){q=`What is the broadcast address of ${ipStr(ip)}/${p}?`;o=[bc,bc+size,bc-size,net,bc-1].map(x=>ipStr(x>>>0));e=`${blockTxt} The broadcast is the last address before the next subnet. ${range(net,bc)}`}
+  else if(type==='first'){q=`What is the first usable host address in ${ipStr(ip)}/${p}?`;o=[net+1,net,bc-1,net+size+1,net+2].map(x=>ipStr(x>>>0));e=`${blockTxt} The first usable host is the network address + 1. ${range(net,bc)}`}
+  else{const same=Math.random()<.5,ip2=(same?net+rnd(size):net+size+rnd(size))>>>0,net2=(ip2&mask)>>>0;
+    q=`Are ${ipStr(ip)} and ${ipStr(ip2)} in the same subnet if both use /${p}?`;
+    o=same?['Yes, same subnet','No, different subnets']:['No, different subnets','Yes, same subnet'];
+    e=`${blockTxt} ${ipStr(ip)} is in ${ipStr(net)}/${p}; ${ipStr(ip2)} is in ${ipStr(net2)}/${p}. ${same?'Same network, so they talk directly.':'Different networks, so traffic has to go through a router.'}`}
+  if(type!=='same'){o=[...new Set(o)].slice(0,4);let k=2;while(o.length<4){const x=type==='hosts'?String(size*2**k-2):ipStr((net+size*k)>>>0);if(!o.includes(x))o.push(x);k++}}
+  return mc(q,o,e);
+}
+function genSizing(){
+  const N=pick([rnd(28)+3,rnd(120)+10,rnd(900)+50]),hb=Math.ceil(Math.log2(N+2)),p=32-hb,u=h=>2**h-2;
+  const o=[`/${p}`,`/${p+1}`,`/${p-1}`,`/${p-2}`];
+  return mc(`What is the smallest subnet that fits ${N} devices?`,o,`You need ${N} hosts + network + broadcast = ${N+2} addresses. The first power of two that is at least ${N+2} is 2^${hb} = ${2**hb}, so ${hb} host bits: /${p} gives ${u(hb)} usable. /${p+1} only gives ${u(hb-1)}.`,{ticket:ticketMeta(`The new ${pick(['Accounts','Design','QA','Training','Logistics'])} team needs its own subnet for ${N} devices. Addresses are tight, so it must be as small as possible.`,2)});
+}
+function genGateway(){
+  const p=22+rnd(7),{ip,mask,size,net,bc}=randNet(p),valid=Math.random()<.5;
+  let gw=valid?(Math.random()<.6?net+1:bc-1):(Math.random()<.5?net+size+1:net-size+1);
+  if(valid&&gw===ip)gw=gw===net+1?bc-1:net+1;gw>>>=0;
+  const A='The gateway is outside the PC\'s subnet, so the PC can never reach it',B='IP, mask and gateway are consistent; check the gateway device, cabling or VLAN next';
+  return mc('What does the config tell you?',[valid?B:A,valid?A:B,'The mask must be changed to 255.0.0.0','It must be DNS, because it is always DNS'],
+   `${ipStr(ip)}/${p} is in ${ipStr(net)} to ${ipStr(bc)} (usable ${ipStr(net+1)} to ${ipStr(bc-1)}). The gateway ${ipStr(gw)} is ${valid?'inside':'outside'} that range. ${valid?'The config is fine, so test the gateway itself: ping it, check the switch port and VLAN.':'A PC can only hand traffic to a gateway on its own subnet. Fix the gateway or mask (usually a typo in a static config or a wrong DHCP option).'}`,
+   {ticket:ticketMeta(`ipconfig: IPv4 ${ipStr(ip)}, mask ${ipStr(mask)} (/${p}), gateway ${ipStr(gw)}. The user can reach PCs on their own subnet but nothing else.`,2)});
+}
+function genApipa(){
+  const ips=[`169.254.${rnd(254)+1}.${rnd(254)+1}`,`192.168.${rnd(256)}.${rnd(250)+2}`,`10.${rnd(256)}.${rnd(256)}.${rnd(250)+2}`,`172.${16+rnd(16)}.${rnd(256)}.${rnd(250)+2}`];
+  const who=shuffle(['Anna','Ben','Chen','Dev','Ella','Femi']).slice(0,4),o=ips.map((ip,i)=>`${who[i]}: ${ip}`);
+  return mc('Whose PC failed to get an address from DHCP?',o,`${ips[0]} is an APIPA address (169.254.x.x). Windows picks it itself when no DHCP server answers, so ${who[0]} has no working network. The others are normal private addresses, so their problem is elsewhere.`,{ticket:ticketMeta('Four users report "no network". L1 collected their IPv4 addresses from ipconfig.',1)});
+}
+function genFirewall(){
+  const it=pick(PORTS.filter(p=>p[1]!=='FTP (data)')),others=shuffle(PORTS.filter(p=>p[0]!==it[0])).slice(0,3);
+  return mc('Which port and protocol should they check?',[`${it[2]} ${it[0]}`,...others.map(p=>`${p[2]} ${p[0]}`)],`${it[1]} = ${it[2]} ${it[0]}. ${it[3]}`,{ticket:ticketMeta(`After a firewall change last night, ${it[1]} stopped working between the office and the server. The network team asks which port to look at.`,2)});
+}
+function genPrivate(){
+  const t=pick(['priv','priv','pub','pub','loop','apipa']);let ip;
+  if(t==='priv')ip=pick([`10.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`,`172.${16+rnd(16)}.${rnd(256)}.${rnd(254)+1}`,`192.168.${rnd(256)}.${rnd(254)+1}`]);
+  else if(t==='pub')ip=pick([`172.${32+rnd(40)}.${rnd(256)}.${rnd(254)+1}`,`172.${rnd(15)+1}.${rnd(256)}.${rnd(254)+1}`,`192.169.${rnd(256)}.${rnd(254)+1}`,`8.8.${rnd(256)}.${rnd(254)+1}`,`52.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`,`11.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`]);
+  else if(t==='loop')ip=`127.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`;else ip=`169.254.${rnd(254)+1}.${rnd(254)+1}`;
+  const L={priv:'Private (RFC 1918)',pub:'Public',loop:'Loopback',apipa:'APIPA (link-local)'};
+  return mc(`What kind of IPv4 address is ${ip}?`,[L[t],...Object.keys(L).filter(k=>k!==t).map(k=>L[k])],`Private: 10.0.0.0/8, 172.16.0.0 to 172.31.255.255, 192.168.0.0/16. Loopback: 127.x.x.x. APIPA: 169.254.x.x (no DHCP). Anything else here is public. ${ip} is ${L[t].toLowerCase()}.`);
+}
+const OSI=['Physical','Data Link','Network','Transport','Session','Presentation','Application'];
+const OSI_ITEMS=[['Ethernet cable',1],['Network hub',1],['Wi-Fi radio signal',1],['Network switch',2],['MAC address',2],['VLAN',2],['ARP (finding the MAC for an IP)',2],['Router',3],['IP address',3],['ICMP (ping)',3],['TCP',4],['UDP',4],['Port numbers',4],['TLS/SSL encryption (as usually taught)',6],['HTTP / HTTPS',7],['DNS',7],['SMTP email',7],['DHCP',7]];
+function genOSI(){
+  const [name,l]=pick(OSI_ITEMS),lab=n=>`Layer ${n}, ${OSI[n-1]}`,others=shuffle([1,2,3,4,5,6,7].filter(n=>n!==l)).slice(0,3);
+  return mc(`Which OSI layer does "${name}" belong to?`,[lab(l),...others.map(lab)],`${name} = ${lab(l)}. Layers 1 to 7: Physical, Data Link, Network, Transport, Session, Presentation, Application ("Please Do Not Throw Sausage Pizza Away").`);
+}
+function genProto(){
+  const it=pick(PORTS),m={'TCP':'TCP','UDP':'UDP','TCP/UDP':'Both TCP and UDP'};
+  return mc(`${it[1]} (port ${it[0]}) normally uses which transport protocol?`,[m[it[2]],...Object.values(m).filter(v=>v!==m[it[2]])],`${it[1]} = ${it[2]} ${it[0]}. ${it[3]} TCP is connection-based and reliable; UDP is connectionless and fast.`);
+}
+const SECURE=[['HTTP',80,'HTTPS',443],['LDAP',389,'LDAPS',636],['IMAP',143,'IMAPS',993],['POP3',110,'POP3S',995],['Telnet',23,'SSH',22],['FTP',21,'SFTP (over SSH)',22]];
+function genSecure(){
+  const s=pick(SECURE),ans=`${s[2]} on ${s[3]}`,o=[ans,`${s[2]} on ${s[1]}`,...shuffle(SECURE.filter(x=>x!==s)).map(x=>`${x[2]} on ${x[3]}`)];
+  return mc(`What is the encrypted alternative to ${s[0]} (port ${s[1]})?`,o.slice(0,4),`${s[0]} on ${s[1]} sends data in clear text. Use ${ans}. Encrypted pairs: HTTP 80 / HTTPS 443, LDAP 389 / LDAPS 636, IMAP 143 / IMAPS 993, POP3 110 / POP3S 995, Telnet 23 / SSH 22.`);
+}
+const MASKV=[0,128,192,224,240,248,252,254,255];
+const b8=n=>n.toString(2).padStart(8,'0'),fb=s=>s.slice(0,4)+' '+s.slice(4);
+function genBinary(){
+  const n=Math.random()<.5?pick(MASKV):rnd(256),flips=shuffle([0,1,2,3,4,5,6,7]).slice(0,3).map(b=>n^(1<<b));
+  const parts=[128,64,32,16,8,4,2,1].filter(v=>n&v),why=`Place values: 128 64 32 16 8 4 2 1. ${n} = ${parts.join(' + ')||'0'}, so ${fb(b8(n))}.`;
+  if(Math.random()<.5)return mc(`What is ${n} in 8-bit binary?`,[fb(b8(n)),...flips.map(x=>fb(b8(x)))],why);
+  return mc(`What is ${fb(b8(n))} in decimal?`,[String(n),...flips.map(String)],why);
+}
+function genHex(){
+  const n=rnd(256),h=x=>x.toString(16).toUpperCase().padStart(2,'0'),hi=n>>4,lo=n&15;
+  const wrong=[(n+16)&255,(n^1),((lo<<4)|hi)===n?(n+1)&255:((lo<<4)|hi),(n+10)&255,(n-16)&255];
+  const why=`Hex digits: 0-9, then A=10 B=11 C=12 D=13 E=14 F=15. 0x${h(n)} = ${hi} x 16 + ${lo} = ${n}. MAC addresses are 6 bytes in hex, e.g. 00-1A-2B-3C-4D-5E.`;
+  if(Math.random()<.5)return mc(`What is hex ${h(n)} in decimal?`,[...new Set([String(n),...wrong.map(String)])].slice(0,4),why);
+  return mc(`What is ${n} in hex?`,[...new Set([h(n),...wrong.map(h)])].slice(0,4),why);
+}
+function genMaskCidr(){
+  const p=17+rnd(14),o=[p,p-1,p+1,p+2].map(x=>'/'+Math.min(32,x));
+  return mc(`Mask ${ipStr(maskOf(p))} is which prefix length?`,o,`Count the 1 bits. ${ipStr(maskOf(p)).split('.').map(x=>fb(b8(+x))).join(' . ')} has ${p} ones, so /${p}.`);
+}
+/* command templates: random hosts/users make these endless */
+const HOSTS=['fs01','web01','app02','dc01','print01','sql01','hr-srv02','files03'],USERS=['jsmith','pkumar','mlee','tnguyen','agarcia','rpatel'],SHARES=['shared','finance','hr','projects','scans'],LETTERS=['H','P','S','T','Z'];
+const SVCS=[['Spooler','Print Spooler'],['W32Time','Windows Time'],['wuauserv','Windows Update']];
+const CMD_T=[
+ {lvl:1,f:p=>({q:`Test basic connectivity to ${p.h}.`,ac:[`^ping ${reEsc(p.h)}$`],a:`ping ${p.h}`,e:'ping sends ICMP echo requests. Replies mean the host is reachable; "Request timed out" can also mean a firewall blocks ICMP.'})},
+ {lvl:1,f:p=>({q:`Ping ${p.h} nonstop until you press Ctrl+C.`,ac:[`^ping (-t ${reEsc(p.h)}|${reEsc(p.h)} -t)$`],a:`ping -t ${p.h}`,e:'-t keeps pinging. Useful while you reseat a cable or wait for a reboot.'})},
+ {lvl:1,f:p=>({q:`Find the IP address of ${p.h} using DNS.`,ac:[`^nslookup ${reEsc(p.h)}(\\.\\S+)?$`,`^resolve-dnsname (-name )?${reEsc(p.h)}(\\.\\S+)?$`],a:`nslookup ${p.h}`,e:'nslookup asks the DNS server directly, bypassing the local cache. Resolve-DnsName is the PowerShell version.'})},
+ {lvl:1,f:p=>({q:`Open a Remote Desktop connection straight to ${p.h}.`,ac:[`^mstsc (\\/v:|-v:|\\/v )${reEsc(p.h)}$`],a:`mstsc /v:${p.h}`,e:'mstsc is the Remote Desktop client; /v: sets the target. RDP uses TCP 3389.'})},
+ {lvl:1,f:p=>({q:`Map drive ${p.L}: to \\\\${p.h}\\${p.s}.`,ac:['^'+reEsc(`net use ${p.L}: \\\\${p.h}\\${p.s}`.toLowerCase())+'( /persistent:(yes|no))?$'],a:`net use ${p.L}: \\\\${p.h}\\${p.s}`,e:'net use lists, adds (and with /delete, removes) mapped drives. /persistent:yes keeps it after reboot.'})},
+ {lvl:1,f:p=>({q:`Restart this PC in ${p.m} minutes so the user can save their work.`,ac:[`^shutdown [\\/-]r( [\\/-]f)? [\\/-]t ${p.m*60}$`,`^shutdown [\\/-]t ${p.m*60}( [\\/-]f)? [\\/-]r$`],a:`shutdown /r /t ${p.m*60}`,e:`/t takes seconds: ${p.m} x 60 = ${p.m*60}. shutdown /a aborts a pending shutdown.`})},
+ {lvl:2,f:p=>({q:`Show every router hop between you and ${p.h}.`,ac:[`^tracert ${reEsc(p.h)}$`,`^pathping ${reEsc(p.h)}$`],a:`tracert ${p.h}`,e:'tracert shows where the path stops or slows. pathping adds per-hop packet loss.'})},
+ {lvl:2,f:p=>({q:`PowerShell: test whether ${p.t[1]} (TCP ${p.t[0]}) is reachable on ${p.h}.`,ac:[`^(test-netconnection|tnc) (-computername )?${reEsc(p.h)} -port ${p.t[0]}$`],a:`Test-NetConnection ${p.h} -Port ${p.t[0]}`,e:'Look at TcpTestSucceeded. True = the port is open end to end; False = firewall, service down or wrong host.'})},
+ {lvl:2,f:p=>({q:`PowerShell: unlock the AD account ${p.u}.`,ac:[`^unlock-adaccount (-identity )?${p.u}$`],a:`Unlock-ADAccount ${p.u}`,e:'Needs the ActiveDirectory module (RSAT). Then find the lockout source (Event ID 4740) so it does not happen again.'})},
+ {lvl:2,f:p=>({q:`PowerShell: check whether ${p.u} is locked out (LockedOut property).`,ac:[`^get-aduser (-identity )?${p.u} -properties (\\*|lockedout)( \\|.*)?$`],a:`Get-ADUser ${p.u} -Properties LockedOut`,e:'Get-ADUser returns few properties by default; -Properties adds LockedOut, PasswordLastSet, LastLogonDate and more.'})},
+ {lvl:2,f:p=>({q:`CMD: show domain account details for ${p.u} (password last set, active status, groups).`,ac:[`^net user ${p.u} \\/domain$`],a:`net user ${p.u} /domain`,e:'Works without RSAT on any domain PC. Shows password expiry, account active and group memberships.'})},
+ {lvl:2,f:p=>({q:`PowerShell: list the AD groups ${p.u} is a member of.`,ac:[`^get-adprincipalgroupmembership (-identity )?${p.u}( \\|.*)?$`,`^get-aduser (-identity )?${p.u} -properties memberof( \\|.*)?$`],a:`Get-ADPrincipalGroupMembership ${p.u}`,e:'Add | Select Name for a clean list. Remember the user must sign in again to pick up new groups.'})},
+ {lvl:2,f:p=>({q:`PowerShell: open a remote session on ${p.h}.`,ac:[`^(enter-pssession|etsn) (-computername )?${reEsc(p.h)}$`],a:`Enter-PSSession ${p.h}`,e:'Uses WinRM (TCP 5985/5986). Exit-PSSession to leave. Invoke-Command runs commands on many machines.'})},
+ {lvl:2,f:p=>({q:`PowerShell: restart the ${p.v[1]} service (${p.v[0]}).`,ac:[`^restart-service (-name )?${p.v[0].toLowerCase()}( -force)?$`],a:`Restart-Service ${p.v[0]}`,e:'Get-Service shows status. In CMD: net stop then net start with the same service name.'})},
+];
+function cmdParams(){return {h:pick(HOSTS),u:pick(USERS),s:pick(SHARES),L:pick(LETTERS),m:pick([5,10,15,30]),t:pick(PORTS.filter(p=>p[2]!=='UDP'&&p[0]>20)),v:pick(SVCS)}}
+function cmdFromTemplate(t){
+  const p=cmdParams(),c=t.f(p);
+  const alts=shuffle(CMD_T.filter(x=>x!==t)).map(x=>x.f(p).a).filter(a=>a!==c.a).slice(0,3);
+  return {kind:'text',q:c.q,accept:c.ac.map(s=>new RegExp(s)),answer:c.a,explain:c.e,alts};
+}
+/* ===== STATE ===== */
+const KEY='l2quest_v1';
+const DEF_SET={theme:'system',goal:20,cmdMode:'type',sound:true,vib:true,level:'all'};
+function load(){
+  let d={};try{d=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
+  const p=Object.assign({xp:0,answered:0,correct:0,seen:{},missed:[],acc:{},topic:{},days:{},notes:[],bestStreak:0,games:{},ach:{}},d);
+  p.set=Object.assign({},DEF_SET,d.set||{});
+  if(d.sub&&d.sub.length&&!p.acc.subnet)p.acc.subnet=d.sub;
+  return p;
+}
+let P=load();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}};
+const today=()=>new Date().toLocaleDateString('en-CA');
+const RANKS=[[0,'Help Desk Trainee'],[60,'L1 Support Analyst'],[200,'Senior L1 Analyst'],[450,'L2 Candidate'],[800,'L2 Support Engineer'],[1300,'Senior L2 Engineer'],[2000,'L3 Engineer'],[3000,'Systems Administrator'],[4500,'Infrastructure Wizard']];
+const rankIdx=xp=>{let i=0;RANKS.forEach((r,j)=>{if(xp>=r[0])i=j});return i};
+
+/* ===== QUESTION BANK ===== */
+const TOPICS={
+ ticket:{name:'Tickets',label:'INC',c:'#f59e0b',desc:'Real user problems. What would you do?',rate:.3},
+ fund:{name:'Fundamentals',label:'OSI',c:'#8b5cf6',desc:'Hardware, networking, security, ITIL',rate:.35},
+ cmd:{name:'Commands',label:'>_',c:'#10b981',desc:'Type real CMD and PowerShell',rate:.5},
+ port:{name:'Ports',label:':443',c:'#3b82f6',desc:'Which port, which protocol',rate:.4},
+ subnet:{name:'Subnetting',label:'/24',c:'#ec4899',desc:'Masks, hosts and address ranges',rate:1},
+ binary:{name:'Binary & Hex',label:'1010',c:'#06b6d4',desc:'The maths behind IPs and MACs',rate:1},
+};
+const TKEYS=Object.keys(TOPICS);
+const BANK={};
+const reg=(id,topic,lvl,build)=>BANK[id]={id,topic,lvl,build};
+const tq=(it,lvl)=>mc(it.q,it.o,it.e,{ticket:ticketMeta(it.t,lvl)});
+const ALL_CMD_ANS=[...CMDS,...C1].map(c=>c[2]);
+const cmdQ=c=>({kind:'text',q:c[0],accept:c[1],answer:c[2],explain:c[3],alts:shuffle(ALL_CMD_ANS.filter(a=>a!==c[2])).slice(0,3)});
+function portQ(it){
+  const others=shuffle(PORTS.filter(p=>p!==it)).slice(0,3),e=`${it[1]} = ${it[2]} ${it[0]}. ${it[3]}`;
+  return Math.random()<.5?mc(`Which port does ${it[1]} use by default?`,[String(it[0]),...others.map(o=>String(o[0]))],e):mc(`What normally runs on port ${it[0]}?`,[it[1],...others.map(o=>o[1])],e);
+}
+TICKETS.forEach((it,i)=>{const l=L1_T_OLD.includes(i)?1:2;reg('t'+i,'ticket',l,()=>tq(it,l))});
+T1.forEach((it,i)=>reg('ta'+i,'ticket',1,()=>tq(it,1)));
+FUND.forEach((it,i)=>reg('f'+i,'fund',L1_F_OLD.includes(i)?1:2,()=>mc(it.q,it.o,it.e)));
+F1.forEach((it,i)=>reg('fa'+i,'fund',1,()=>mc(it.q,it.o,it.e)));
+CMDS.forEach((c,i)=>reg('c'+i,'cmd',L1_C_OLD.includes(i)?1:2,()=>cmdQ(c)));
+C1.forEach((c,i)=>reg('ca'+i,'cmd',1,()=>cmdQ(c)));
+PORTS.forEach((it,i)=>reg('p'+i,'port',L1_PORTS.includes(it[0])?1:2,()=>portQ(it)));
+const GENS=[
+ {t:'ticket',lvl:2,w:1,f:genGateway,pic:'net'},{t:'ticket',lvl:1,w:1,f:genApipa,pic:'dhcp'},{t:'ticket',lvl:2,w:1,f:genFirewall,pic:'fw'},{t:'ticket',lvl:2,w:.6,f:genSizing},
+ {t:'fund',lvl:1,w:1,f:genPrivate},{t:'fund',lvl:1,w:1,f:genOSI,pic:'osi'},
+ ...CMD_T.map(x=>({t:'cmd',lvl:x.lvl,w:1,f:()=>cmdFromTemplate(x)})),
+ {t:'port',lvl:1,w:1,f:genProto},{t:'port',lvl:2,w:1,f:genSecure},
+ {t:'subnet',lvl:1,w:1,f:()=>subnetQ(true)},{t:'subnet',lvl:2,w:4,f:()=>subnetQ(false)},{t:'subnet',lvl:2,w:1,f:genSizing},
+ {t:'binary',lvl:1,w:3,f:genBinary,pic:'bits'},{t:'binary',lvl:2,w:2,f:genHex},{t:'binary',lvl:2,w:1,f:genMaskCidr},
+];
+const lvlOk=l=>P.set.level==='all'||+P.set.level===l;
+function wpick(arr,wf){const ws=arr.map(wf),sum=ws.reduce((a,b)=>a+b,0);let r=Math.random()*sum;for(let i=0;i<arr.length;i++){r-=ws[i];if(r<=0)return arr[i]}return arr[arr.length-1]}
+const BOXW=[6,3,1.5,.7,.35];
+const weight=id=>{const s=P.seen[id];return s?BOXW[Math.min(s.box||0,4)]:3};
+function questionFor(t,recent){
+  const ids=Object.values(BANK).filter(b=>b.topic===t&&lvlOk(b.lvl)),gens=GENS.filter(g=>g.t===t&&lvlOk(g.lvl));
+  if(gens.length&&(!ids.length||Math.random()<TOPICS[t].rate)){const g=wpick(gens,x=>x.w);return Object.assign(g.f(),{id:'g',topic:t,lvl:g.lvl,gen:true,pic:g.pic})}
+  let c=ids.filter(b=>!recent.includes(b.id));if(!c.length)c=ids;
+  const b=wpick(c,x=>weight(x.id));return Object.assign(b.build(),{id:b.id,topic:t,lvl:b.lvl});
+}
+function mastery(t){
+  const ids=Object.values(BANK).filter(b=>b.topic===t&&lvlOk(b.lvl));
+  if(!ids.length||t==='subnet'||t==='binary'){const a=P.acc[t]||[];return {pc:a.length?a.reduce((x,y)=>x+y,0)/Math.max(10,a.length):0,lbl:'recent accuracy'}}
+  return {pc:ids.filter(b=>(P.seen[b.id]?.box||0)>=2).length/ids.length,lbl:`mastered of ${ids.length}+`};
+}
+function dayStreak(){
+  const g=P.set.goal,d=new Date();let n=0;
+  if((P.days[today()]||0)<g)d.setDate(d.getDate()-1);
+  while((P.days[d.toLocaleDateString('en-CA')]||0)>=g){n++;d.setDate(d.getDate()-1)}
+  return n;
+}
+
+/* ===== FEEDBACK EFFECTS ===== */
+let actx;
+function tone(f,d,type='sine',v=.05,delay=0){if(!P.set.sound)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();const t=actx.currentTime+delay,o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const sGood=()=>{tone(660,.12,'triangle');tone(990,.16,'triangle',.05,.08)},sBad=()=>tone(160,.25,'sawtooth',.035);
+const buzz=p=>{if(P.set.vib&&navigator.vibrate)try{navigator.vibrate(p)}catch(e){}};
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;$('toasts').appendChild(d);setTimeout(()=>d.remove(),2800)}
+function xpFloat(n,el){const r=(el||$('qText')).getBoundingClientRect(),d=document.createElement('div');d.className='xpf';d.textContent='+'+n+' XP';d.style.left=Math.min(innerWidth-110,r.left+r.width/2-30)+'px';d.style.top=(r.top+10)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
+
+/* ===== ROUTING ===== */
+const VIEWS=['home','play','summary','stats','notes','sheet','games','game'];
+function nav(v){if(location.hash!=='#'+v)location.hash=v;else route()}
+function route(){
+  let v=(location.hash||'#home').slice(1);if(!VIEWS.includes(v))v='home';
+  if(v==='play'&&!S){v='home';history.replaceState(null,'','#home')}
+  if(v==='game'&&!G){v='games';history.replaceState(null,'','#games')}
+  if(v!=='game')stopGame();
+  VIEWS.forEach(x=>$('v-'+x).hidden=x!==v);
+  $('backBtn').hidden=!['play','summary','game'].includes(v);$('actionbar').hidden=v!=='play';$('tabbar').hidden=v==='play'||v==='game';
+  $('tabbar').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.nav===v||(v==='summary'&&b.dataset.nav==='home')));if(v==='games')renderGames();
+  if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='notes')renderNotes();if(v==='sheet')renderSheet();
+  if(v!=='play'&&v!=='summary'&&S&&S.n>0)S=null;
+  window.scrollTo(0,0);
+}
+function applyTheme(){document.documentElement.dataset.theme=P.set.theme;const dark=P.set.theme==='dark'||(P.set.theme==='system'&&!matchMedia('(prefers-color-scheme: light)').matches);document.querySelector('meta[name=theme-color]').content=dark?'#0b1020':'#f2f5fb'}
+function renderChip(){$('rankChip').textContent=RANKS[rankIdx(P.xp)][1]}
+
+/* ===== HOME ===== */
+function renderHome(){
+  const r=rankIdx(P.xp),cur=RANKS[r],nxt=RANKS[r+1],td=P.days[today()]||0,g=P.set.goal,C=2*Math.PI*30;
+  $('rankName').textContent=cur[1];renderChip();$('rankPic').innerHTML=rankBadge(r,52);renderGreet();$('promoPics').innerHTML=GAMES.slice(0,4).map(g=>`<span>${gameArt(g.id)}</span>`).join('');
+  $('xpBar').style.width=(nxt?(P.xp-cur[0])/(nxt[0]-cur[0])*100:100)+'%';
+  $('xpTxt').textContent=nxt?`${P.xp} XP, ${nxt[0]-P.xp} to ${nxt[1]}`:`${P.xp} XP, top rank`;
+  const rf=$('ringFg');rf.style.strokeDasharray=C;rf.style.strokeDashoffset=C*(1-Math.min(1,td/g));
+  $('goalNum').textContent=td;$('goalOf').textContent=`of ${g} today`;
+  $('kStreak').textContent=dayStreak();$('kAns').textContent=P.answered;$('kAcc').textContent=P.answered?Math.round(P.correct/P.answered*100)+'%':'-';
+  $('levelSeg').innerHTML=[['all','All levels'],['1','Level 1'],['2','Level 2']].map(([v,l])=>`<button data-lv="${v}" class="${String(P.set.level)===v?'on':''}">${l}</button>`).join('');
+  $('levelSeg').querySelectorAll('button').forEach(b=>b.onclick=()=>{P.set.level=b.dataset.lv==='all'?'all':+b.dataset.lv;save();renderHome()});
+  $('topics').innerHTML=TKEYS.map(k=>{const t=TOPICS[k],m=mastery(k),pc=Math.round(m.pc*100);
+    return `<button class="topic" data-t="${k}" style="--c:${t.c}"><span class="tpic">${artTopic(k)}</span><h3>${t.name}</h3><p>${t.desc}</p><div class="mbar"><i style="width:${pc}%"></i></div><div class="mlbl">${pc}% ${m.lbl}</div></button>`}).join('');
+  $('topics').querySelectorAll('.topic').forEach(b=>b.onclick=()=>start(b.dataset.t));
+  const nm=P.missed.filter(id=>BANK[id]).length;
+  $('revCount').textContent=nm?`${nm} waiting`:'Nothing to review yet';$('revBtn').disabled=!nm;$('revBtn').style.opacity=nm?1:.55;
+}
+
+/* ===== PRACTICE SESSION (endless) ===== */
+let S=null;
+function start(mode){
+  if(mode==='review'&&!P.missed.some(id=>BANK[id]))mode='mixed';
+  S={mode,n:0,c:0,streak:0,best:0,xp:0,recent:[],missed:[],q:null,done:false,hint:false,r0:rankIdx(P.xp)};
+  nav('play');nextQ();
+}
+function nextQ(){
+  let q;
+  if(S.mode==='review'){
+    const ids=P.missed.filter(id=>BANK[id]);
+    if(!ids.length){toast('Review cleared! Carrying on with Mixed practice.');S.mode='mixed'}
+    else{let c=ids.filter(id=>!S.recent.includes(id));if(!c.length)c=ids;const b=BANK[pick(c)];q=Object.assign(b.build(),{id:b.id,topic:b.topic,lvl:b.lvl})}
+  }
+  if(!q)q=questionFor(S.mode==='mixed'||S.mode==='review'?pick(TKEYS):S.mode,S.recent);
+  if(q.kind==='text'&&P.set.cmdMode==='choose')toChoice(q);
+  S.recent.push(q.id);if(S.recent.length>8)S.recent.shift();
+  S.q=q;S.done=false;S.hint=false;renderQ();
+}
+function toChoice(q){const o=[q.answer,...q.alts.filter(a=>a!==q.answer)].slice(0,4);Object.assign(q,mc(q.q,o,q.explain),{wasText:true})}
+const modeName=()=>S.mode==='mixed'?'Mixed practice':S.mode==='review'?'Review mistakes':TOPICS[S.mode].name;
+function renderHead(){
+  $('pTopic').textContent=modeName();
+  $('pSub').textContent=S.n?`${S.n} answered, ${Math.round(S.c/S.n*100)}% correct, +${S.xp} XP`:'Answer as many as you like. Tap End when you are done.';
+  const st=$('pStreak');st.textContent=`Streak ${S.streak}`;st.classList.toggle('hot',S.streak>=3);
+}
+function renderQ(){
+  const q=S.q,t=TOPICS[q.topic];renderHead();
+  $('qTags').innerHTML=`<span class="tpic xs">${artTopic(q.topic)}</span><span class="tag l${q.lvl}">LEVEL ${q.lvl}</span><span class="tag" style="color:${t.c}">${t.name.toUpperCase()}</span>`;
+  $('qTicket').innerHTML=q.ticket?`<div class="ticket"><div class="tav" id="tAv">${avatar(q.ticket.who,false)}</div><div class="tbd"><div class="meta">${q.ticket.no} | ${q.ticket.pri} | ${esc(q.ticket.who)}</div>${esc(q.ticket.text)}</div></div>`:'';
+  $('qText').textContent=q.q;$('qFb').innerHTML='';updSave();
+  const body=$('qBody');
+  if(q.kind==='mc'){
+    body.innerHTML=(q.pic?diagram(q.pic):'')+`<div class="opts">${q.options.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join('')}</div>`;
+    body.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answerMC(+b.dataset.i));
+    setBar('End','Show answer',endSession,()=>answerMC(-1));
+  }else{
+    body.innerHTML=`<div class="term"><span>C:\\&gt;</span><input id="cmdIn" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" placeholder="type the command"></div>
+      <div class="keys">${['/','\\','-','.',':','|','*','$'].map(k=>`<button data-k="${esc(k)}" aria-label="insert ${esc(k)}">${esc(k)}</button>`).join('')}</div>
+      <button class="linkbtn" id="toMC">Hard to type on this device? Choose from options instead</button>`;
+    const inp=$('cmdIn');
+    if(matchMedia('(pointer:fine)').matches)inp.focus();
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();answerText(inp.value)}});
+    body.querySelectorAll('.keys button').forEach(b=>{b.onmousedown=e=>e.preventDefault();b.onclick=()=>{const s=inp.selectionStart??inp.value.length,en=inp.selectionEnd??s;inp.value=inp.value.slice(0,s)+b.dataset.k+inp.value.slice(en);inp.focus();inp.setSelectionRange(s+1,s+1)}});
+    $('toMC').onclick=()=>{toChoice(q);renderQ()};
+    setBar('Hint','Run',()=>{if(S.done)return;S.hint=true;const a=q.answer.split(' ');inp.placeholder=`starts with "${a[0]}"${a.length>1?`, ${a.length} parts`:''}`;$('abL').textContent='Show answer';$('abL').onclick=()=>answerText(null);inp.focus()},()=>answerText(inp.value));
+  }
+}
+function setBar(l,r,lf,rf){$('abL').textContent=l;$('abR').textContent=r;$('abL').onclick=lf;$('abR').onclick=rf}
+const norm=s=>s.trim().toLowerCase().replace(/^(ps [^>]*>|c:\\[^>]*>|\$|#)\s*/,'').replace(/\s+/g,' ');
+function answerMC(i){
+  if(S.done)return;const q=S.q;
+  document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j===q.correct)b.classList.add('right');else if(j===i)b.classList.add('wrong');else b.classList.add('dim')});
+  finish(i===q.correct,null,document.querySelector('.opt.right'));
+}
+function answerText(v){
+  if(S.done)return;const q=S.q;
+  if(v!==null&&!v.trim()){$('cmdIn').focus();return}
+  const ok=v!==null&&q.accept.some(re=>re.test(norm(v)));
+  $('cmdIn').disabled=true;finish(ok,v,$('cmdIn'));
+}
+function finish(ok,typed,el){
+  S.done=true;const q=S.q,d=today();
+  S.n++;P.answered++;P.days[d]=(P.days[d]||0)+1;
+  const ts=P.topic[q.topic]||(P.topic[q.topic]={a:0,c:0});ts.a++;
+  let gain=0;
+  if(ok){
+    S.c++;S.streak++;S.best=Math.max(S.best,S.streak);P.bestStreak=Math.max(P.bestStreak,S.streak);P.correct++;ts.c++;
+    gain=10+(q.kind==='text'?5:0)+(q.lvl===2?2:0)+Math.min(10,(S.streak-1)*2);if(S.hint)gain=Math.ceil(gain/2);
+    S.xp+=gain;P.xp+=gain;sGood();buzz(15);xpFloat(gain,el);
+  }else{S.streak=0;S.missed.push(q);sBad();buzz([40,50,40])}
+  if(q.gen){const a=P.acc[q.topic]||(P.acc[q.topic]=[]);a.push(ok?1:0);if(a.length>25)a.shift()}
+  else{const s=P.seen[q.id]||{c:0,w:0,box:0};ok?(s.c++,s.box=Math.min(4,(s.box||0)+1)):(s.w++,s.box=0);s.last=ok;P.seen[q.id]=s;
+    P.missed=P.missed.filter(x=>x!==q.id);if(!ok)P.missed.push(q.id)}
+  save();
+  checkAch();if(P.days[d]===P.set.goal)setTimeout(()=>confetti()||toast(`Daily goal reached: ${P.set.goal} questions!`),400);
+  const r=rankIdx(P.xp);if(r>S.r0){S.r0=r;setTimeout(()=>confetti()||toast('Promoted: '+RANKS[r][1]),700);renderChip()}
+  const praise=pick(['Nice work.','Correct.','Spot on.','Ticket resolved.','That\'s the one.']);
+  $('qFb').innerHTML=`<div class="fb ${ok?'ok':'bad'}"><div class="fbm">${mascot(ok?(S.streak>=5?'wow':'happy'):'sad',46)}</div><h4>${ok?`${praise} +${gain} XP`:'Not quite.'}</h4>
+    ${typed&&!ok?`<div>You typed: <span class="ans">${esc(typed)}</span></div>`:''}
+    ${q.kind==='text'||!ok?`<div style="margin:4px 0 8px">Answer: <span class="ans">${esc(q.answer)}</span></div>`:''}
+    <div>${esc(q.explain)}</div></div>`;
+  if(ok&&q.ticket&&$('tAv'))$('tAv').innerHTML=avatar(q.ticket.who,true);if(ok&&S.streak%5===0)confetti(40);
+  renderHead();setBar('End','Next question',endSession,nextQ);
+  if(!matchMedia('(min-width:700px)').matches)setTimeout(()=>$('qFb').scrollIntoView({behavior:'smooth',block:'nearest'}),150);
+  if(document.activeElement&&document.activeElement!==document.body)document.activeElement.blur();
+}
+function noteKey(q){return (q.ticket?q.ticket.text:'')+'|'+q.q}
+function updSave(){const k=noteKey(S.q);$('saveBtn').classList.toggle('on',P.notes.some(n=>n.k===k))}
+$('saveBtn').onclick=()=>{
+  const q=S.q,k=noteKey(q),i=P.notes.findIndex(n=>n.k===k);
+  if(i>=0){P.notes.splice(i,1);toast('Removed from notes')}
+  else{P.notes.unshift({k,topic:q.topic,lvl:q.lvl,ticket:q.ticket?q.ticket.text:'',q:q.q,a:q.answer,e:q.explain,at:Date.now()});toast('Saved to notes')}
+  save();updSave();checkAch();
+};
+function endSession(){
+  if(!S||!S.n){S=null;nav('home');return}
+  const s=S,pc=Math.round(s.c/s.n*100);
+  $('v-summary').innerHTML=`<div class="card" style="text-align:center">${mascot(pc>=80?'wow':pc>=50?'happy':'sad',96)}<div class="mut small">SESSION COMPLETE</div>
+    <div style="font-size:46px;font-weight:800;margin:4px 0">${pc}%</div>
+    <div style="font-size:17px">${pc===100?'Flawless. You could teach this.':pc>=80?'Strong work. You know this.':pc>=50?'Solid progress. Check the misses below.':'Tough one. The explanations below are where the learning happens.'}</div>
+    <div class="tiles"><div class="tile"><b>${s.n}</b><span>answered</span></div><div class="tile"><b>${s.c}</b><span>correct</span></div><div class="tile"><b>+${s.xp}</b><span>XP</span></div><div class="tile"><b>${s.best}</b><span>best streak</span></div></div>
+    <div style="display:flex;gap:10px"><button class="btn pri" style="flex:2" id="sumGo">Keep going</button><button class="btn" style="flex:1" id="sumHome">Home</button></div></div>
+    ${s.missed.length?`<div class="h2">Worth another look</div>`+s.missed.map(q=>`<div class="note"><div class="nq">${esc(q.q)}</div>Answer: <span class="ans">${esc(q.answer)}</span><div class="mut" style="margin-top:6px">${esc(q.explain)}</div></div>`).join(''):''}`;
+  nav('summary');
+  if(pc>=80&&s.n>=5)confetti();$('sumGo').onclick=()=>start(s.mode);$('sumHome').onclick=()=>nav('home');
+}
+
+/* ===== PICTURES (all drawn in SVG, works offline) ===== */
+function mascot(mood,s){
+  s=s||72;const g='#34d399';
+  const eyes=mood==='sad'?`<path d="M23 31q4-3 8 0M41 31q4-3 8 0" stroke="${g}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`
+    :mood==='wow'?`<path d="M22 32l5-5 5 5M40 32l5-5 5 5" stroke="${g}" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
+    :`<circle cx="27" cy="31" r="3.3" fill="${g}"/><circle cx="45" cy="31" r="3.3" fill="${g}"/>`;
+  const mouth=mood==='sad'?`<path d="M29 44q7-5 14 0" stroke="${g}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`
+    :mood==='ok'?`<path d="M29 41.5h14" stroke="${g}" stroke-width="2.6" stroke-linecap="round"/>`
+    :mood==='wow'?`<path d="M27 39q9 9 18 0z" fill="${g}"/>`
+    :`<path d="M27 39q9 8 18 0" stroke="${g}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`;
+  const cheeks=mood==='happy'||mood==='wow'?'<circle cx="21" cy="38" r="2.6" fill="#f472b6" opacity=".55"/><circle cx="51" cy="38" r="2.6" fill="#f472b6" opacity=".55"/>':'';
+  const tear=mood==='sad'?'<path d="M24 35q-2 3 0 4.5q2-1.5 0-4.5z" fill="#60a5fa"/>':'';
+  return `<svg class="mascot" width="${s}" height="${s}" viewBox="0 0 72 72" aria-hidden="true">
+  <line x1="36" y1="5" x2="36" y2="13" stroke="#93a3c4" stroke-width="2.5"/><circle cx="36" cy="5" r="3.6" fill="#fbbf24"/>
+  <rect x="25" y="53" width="22" height="6" rx="2" fill="#93a3c4"/><rect x="18" y="58" width="36" height="6" rx="3" fill="#7d8db0"/>
+  <rect x="9" y="13" width="54" height="41" rx="12" fill="#4cc9f0"/><rect x="9" y="13" width="54" height="12" rx="12" fill="#fff" opacity=".18"/>
+  <rect x="15" y="19" width="42" height="29" rx="8" fill="#0b1020"/>${eyes}${mouth}${cheeks}${tear}
+  <path d="M6 33a30 30 0 0 1 60 0" stroke="#7c6cf6" stroke-width="3.5" fill="none"/>
+  <rect x="2" y="27" width="9" height="15" rx="4.5" fill="#7c6cf6"/><rect x="61" y="27" width="9" height="15" rx="4.5" fill="#7c6cf6"/>
+  <path d="M6 42q1 10 13 11" stroke="#7c6cf6" stroke-width="2.5" fill="none"/><circle cx="20" cy="53" r="2.8" fill="#fbbf24"/></svg>`;
+}
+const TOPIC_ART={
+ ticket:'<path d="M12 27a12 12 0 0 1 24 0" stroke="#fff" stroke-width="3" fill="none"/><rect x="9" y="25" width="7" height="11" rx="3.5" fill="#fff"/><rect x="32" y="25" width="7" height="11" rx="3.5" fill="#fff"/><path d="M12 35q1 6 9 6.5" stroke="#fff" stroke-width="2.4" fill="none"/><rect x="20" y="39.5" width="6" height="4" rx="2" fill="#fff"/><circle cx="34" cy="13" r="6" fill="#fff"/><path d="M34 10v3.5" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="round"/><circle cx="34" cy="16.3" r="1.3" fill="#f59e0b"/>',
+ fund:'<rect x="14" y="14" width="20" height="20" rx="3" fill="#fff"/><rect x="19" y="19" width="10" height="10" rx="1.5" fill="#8b5cf6"/><path d="M18 9v5M24 9v5M30 9v5M18 34v5M24 34v5M30 34v5M9 18h5M9 24h5M9 30h5M34 18h5M34 24h5M34 30h5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
+ cmd:'<rect x="7" y="10" width="34" height="28" rx="5" fill="#0b1020" stroke="#fff" stroke-width="2.4"/><circle cx="12" cy="15" r="1.4" fill="#f87171"/><circle cx="16.5" cy="15" r="1.4" fill="#fbbf24"/><circle cx="21" cy="15" r="1.4" fill="#34d399"/><path d="M13 23l5 4-5 4" stroke="#34d399" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 32h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>',
+ port:'<rect x="9" y="11" width="30" height="24" rx="4" fill="#fff"/><path d="M15 17h18v9h-4v4h-10v-4h-4z" fill="#3b82f6"/><path d="M18 17v4M21 17v4M24 17v4M27 17v4M30 17v4" stroke="#fff" stroke-width="1.3"/><path d="M24 35v6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
+ subnet:'<path d="M24 15v8M24 23H12v8M24 23h12v8M24 23v8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linejoin="round"/><rect x="17" y="8" width="14" height="9" rx="2.5" fill="#fff"/><rect x="7" y="31" width="10" height="8" rx="2" fill="#fff"/><rect x="19" y="31" width="10" height="8" rx="2" fill="#fff"/><rect x="31" y="31" width="10" height="8" rx="2" fill="#fff"/>',
+ binary:'<g font-family="ui-monospace,Consolas,monospace" font-weight="800" font-size="11" fill="#fff"><text x="9" y="20">1</text><text x="17" y="20" opacity=".5">0</text><text x="25" y="20">1</text><text x="33" y="20">1</text><text x="9" y="33" opacity=".5">0</text><text x="17" y="33">1</text><text x="25" y="33" opacity=".5">0</text><text x="33" y="33">F</text></g><path d="M8 38h32" stroke="#fff" stroke-width="2" opacity=".6"/>',
+};
+function artTopic(k){const t=TOPICS[k]||TOPICS.fund;return `<svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="13" fill="${t.c}"/><circle cx="40" cy="6" r="18" fill="#fff" opacity=".13"/>${TOPIC_ART[k]||''}</svg>`}
+function hashStr(s){let h=7;for(const ch of String(s))h=(h*31+ch.charCodeAt(0))>>>0;return h}
+let AVN=0;
+function avatar(name,happy){
+  const h=hashStr(name),p=a=>a[h%a.length],q=(a,n)=>a[Math.floor(h/n)%a.length];
+  const skin=p(['#f1c27d','#e0ac69','#c68642','#8d5524','#ffdbac','#d4a373']),hair=q(['#2b1d14','#5a3825','#111','#b5651d','#e6be8a','#6b4f3a'],7),
+    bg=q(['#fde68a','#bfdbfe','#c7d2fe','#fbcfe8','#bbf7d0','#fed7aa'],13),shirt=q(['#3b82f6','#ef4444','#10b981','#8b5cf6','#f59e0b','#0ea5e9'],17),style=q([0,1,2,0,1],23),glasses=q([0,0,1],29);
+  const hairS=style===0?`<path d="M13 19c0-7 4-11 9-11s9 4 9 11c-2-3-5-5-9-5s-7 2-9 5z" fill="${hair}"/>`
+    :style===1?`<path d="M12 21c0-9 4-13 10-13s10 4 10 13v9c-1-2-2-5-2-9-3-1-6-3-8-6-2 3-5 5-8 6 0 4-1 7-2 9z" fill="${hair}"/>`
+    :`<circle cx="22" cy="8" r="4.5" fill="${hair}"/><path d="M13 19c0-7 4-10 9-10s9 3 9 10c-2-3-5-5-9-5s-7 2-9 5z" fill="${hair}"/>`;
+  const mouth=happy?'<path d="M18.5 23.5q3.5 3.5 7 0" stroke="#3a2a20" stroke-width="1.6" fill="none" stroke-linecap="round"/>':'<path d="M19 25.5q3-2.2 6 0" stroke="#3a2a20" stroke-width="1.6" fill="none" stroke-linecap="round"/>';
+  const brows=happy?'':'<path d="M16.8 16.6l3.2 1M27.2 16.6l-3.2 1" stroke="#3a2a20" stroke-width="1.3" stroke-linecap="round"/>';
+  const gl=glasses?'<circle cx="19" cy="19.5" r="3" fill="none" stroke="#333" stroke-width="1.2"/><circle cx="25" cy="19.5" r="3" fill="none" stroke="#333" stroke-width="1.2"/><path d="M22 19.5h0" stroke="#333"/>':'';
+  return `<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><clipPath id="avc${++AVN}"><circle cx="22" cy="22" r="22"/></clipPath><g clip-path="url(#avc${AVN})"><rect width="44" height="44" fill="${bg}"/>
+  <path d="M7 46c1-10 7-14 15-14s14 4 15 14z" fill="${shirt}"/><rect x="19" y="27" width="6" height="6" fill="${skin}"/><circle cx="22" cy="19.5" r="9" fill="${skin}"/>${hairS}
+  <circle cx="19" cy="19.5" r="1.25" fill="#222"/><circle cx="25" cy="19.5" r="1.25" fill="#222"/>${brows}${mouth}${gl}${happy?'':'<path d="M33 8q-2 3 0 4.5q2-1.5 0-4.5z" fill="#60a5fa"/>'}</g></svg>`;
+}
+function rankBadge(i,s){
+  s=s||40;const tier=Math.floor(i/3),n=i%3+1,c=['#cd7f32','#c3cbd8','#fbbf24'][tier]||'#fbbf24',d=['#8a5523','#8792a6','#b77d00'][tier]||'#b77d00';
+  let ch='';for(let j=0;j<n;j++){const y=17+j*7-(n-1)*3.5;ch+=`<path d="M12 ${y}l8 5 8-5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`}
+  const star=i===RANKS.length-1?'<path d="M20 0l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z" fill="#fff" stroke="#b77d00" stroke-width="1"/>':'';
+  return `<svg width="${s}" height="${Math.round(s*1.15)}" viewBox="0 0 40 46" aria-hidden="true" style="flex:none"><path d="M20 3l16 6v12c0 11-7 19-16 23C11 40 4 32 4 21V9z" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M20 7l12 4.5v9.5c0 4-1 7.5-3 10.5L11 11z" fill="#fff" opacity=".2"/>${ch}${star}</svg>`;
+}
+const DG={
+ pc:(x,y)=>`<rect class="bx" x="${x-18}" y="${y-16}" width="36" height="24" rx="3"/><path class="ln" d="M${x} ${y+8}v6M${x-9} ${y+14}h18"/>`,
+ sw:(x,y)=>`<rect class="bx" x="${x-22}" y="${y-9}" width="44" height="18" rx="4"/>${[0,1,2,3,4].map(i=>`<rect class="ok" x="${x-16+i*7}" y="${y-2}" width="4" height="4" rx="1"/>`).join('')}`,
+ rt:(x,y)=>`<rect class="bx2" x="${x-20}" y="${y-12}" width="40" height="24" rx="12"/><path class="ln" d="M${x-10} ${y}h20M${x+5} ${y-5}l5 5-5 5M${x-5} ${y-5}l-5 5 5 5" style="stroke:var(--ac2)"/>`,
+ cloud:(x,y)=>`<path class="bx" d="M${x-20} ${y+10}a9 9 0 0 1 2-17.5a12 12 0 0 1 22-3a9 9 0 0 1 16 10a8 8 0 0 1-4 10.5z"/>`,
+ srv:(x,y)=>[0,1,2].map(i=>`<rect class="bx2" x="${x-16}" y="${y-17+i*12}" width="32" height="10" rx="2"/><circle class="ok" cx="${x+10}" cy="${y-12+i*12}" r="2"/>`).join(''),
+ wall:(x,y)=>`<rect x="${x-15}" y="${y-18}" width="30" height="36" rx="3" style="fill:#ea580c"/><path d="M${x-15} ${y-6}h30M${x-15} ${y+6}h30M${x-5} ${y-18}v12M${x+5} ${y-6}v12M${x-5} ${y+6}v12" style="stroke:#fff;stroke-width:1.6;opacity:.7"/>`,
+ x:(x,y)=>`<path class="x" d="M${x-6} ${y-6}l12 12M${x+6} ${y-6}l-12 12"/>`,
+};
+function diagram(pic){
+  const T=(x,y,s)=>`<text x="${x}" y="${y}">${s}</text>`;
+  if(pic==='net')return `<svg class="dg" viewBox="0 0 340 74" aria-hidden="true"><path class="ln" d="M58 30h40M142 30h40"/><path class="ln bad" d="M226 30h40"/>${DG.x(246,30)}${DG.pc(38,32)}${DG.sw(120,30)}${DG.rt(204,30)}${DG.cloud(298,30)}${T(38,66,'User PC')}${T(120,66,'Switch')}${T(204,66,'Gateway')}${T(300,66,'Other networks')}</svg>`;
+  if(pic==='dhcp')return `<svg class="dg" viewBox="0 0 340 74" aria-hidden="true"><path class="ln" d="M58 30h70"/><path class="ln bad" d="M172 30h90"/>${DG.x(217,30)}${DG.pc(38,32)}${DG.sw(150,30)}${DG.srv(292,30)}${T(38,66,'User PC')}${T(150,66,'Switch')}${T(217,66,'"Any DHCP server?"')}${T(292,66,'DHCP server')}</svg>`;
+  if(pic==='fw')return `<svg class="dg" viewBox="0 0 340 74" aria-hidden="true"><path class="ln" d="M58 30h90"/><path class="ln bad" d="M192 30h80"/>${DG.x(232,30)}${DG.pc(38,32)}${DG.wall(170,30)}${DG.srv(298,30)}${T(38,66,'Office')}${T(170,66,'Firewall')}${T(232,66,'blocked?')}${T(298,66,'Server')}</svg>`;
+  if(pic==='osi'){const cols=['#ef4444','#f97316','#f59e0b','#10b981','#06b6d4','#3b82f6','#8b5cf6'];
+    return `<svg class="dg" viewBox="0 0 300 134" style="max-width:320px" aria-hidden="true">${[7,6,5,4,3,2,1].map((n,i)=>`<rect x="${40+i*3}" y="${i*19}" width="${220-i*6}" height="16" rx="5" style="fill:${cols[n-1]};opacity:.9"/><text x="150" y="${i*19+12}" style="fill:#fff;font-size:10.5px">${n}  ${OSI[n-1]}</text>`).join('')}</svg>`}
+  if(pic==='bits')return `<svg class="dg" viewBox="0 0 330 52" aria-hidden="true">${[128,64,32,16,8,4,2,1].map((v,i)=>`<rect class="bx" x="${4+i*41}" y="4" width="36" height="28" rx="6"/><text class="pv" x="${22+i*41}" y="23">${v}</text>`).join('')}${T(165,48,'place values: add the ones that are 1')}</svg>`;
+  return '';
+}
+const TIPS=['"Have you tried turning it off and on again?" works because a restart clears memory, stuck processes and network state.','Always ask "what changed?" first. Most outages follow a change.','If ping by IP works but by name fails, think DNS.','An IP of 169.254.x.x means DHCP did not answer.','Write ticket notes so the next engineer can carry on without calling you.','Check if one user or many are affected. Many users means escalate fast.','Restart the Print Spooler service when the print queue is stuck.','Locked-out accounts often come from an old password saved on a phone.','Use the OSI model bottom up: cable, link, IP, then the app.','Port 3389 is RDP, and it should never be open to the internet.','Run gpupdate /force after a Group Policy change, then log off and on.','Event Viewer > Windows Logs > System is where crashes and driver errors live.','Good L2 engineers reproduce the problem before they fix it.','Least privilege: give users only the access they need.','Before you escalate, collect logs, screenshots, times and what you already tried.'];
+function renderGreet(){
+  const h=new Date().getHours(),hi=h<12?'Good morning!':h<18?'Good afternoon!':'Good evening!',td=P.days[today()]||0,g=P.set.goal;
+  const line=td>=g?`Daily goal done. Anything extra is bonus XP.`:td?`${g-td} more questions to hit today's goal.`:`Ready for today's shift? Goal: ${g} questions.`;
+  const mood=td>=g?'wow':'happy';
+  $('greet').innerHTML=`${mascot(mood,64)}<button class="bubble" id="tipB"><b>${hi} ${line}</b><small>Tip: ${esc(pick(TIPS))}</small></button>`;
+  $('tipB').onclick=()=>{$('tipB').querySelector('small').textContent='Tip: '+pick(TIPS)};
+}
+function confetti(n){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  n=n||70;const cs=['#4cc9f0','#7c6cf6','#34d399','#fbbf24','#f472b6','#f87171'];
+  for(let i=0;i<n;i++){const d=document.createElement('i');d.className='cf';
+    d.style.cssText=`left:${Math.random()*100}vw;background:${pick(cs)};--dx:${(Math.random()*160-80).toFixed(0)}px;--r:${(Math.random()*900-450).toFixed(0)}deg;animation-duration:${(1.4+Math.random()*1.4).toFixed(2)}s;animation-delay:${(Math.random()*.4).toFixed(2)}s;${Math.random()<.4?'border-radius:50%;height:9px':''}`;
+    document.body.appendChild(d);setTimeout(()=>d.remove(),3400)}
+}
+
+/* ===== ARCADE: mini-games ===== */
+let G=null;
+function stopGame(){if(!G)return;G.iv.forEach(clearInterval);G.to.forEach(clearTimeout);G=null}
+const gIv=(f,ms)=>G.iv.push(setInterval(f,ms)),gTo=(f,ms)=>G.to.push(setTimeout(f,ms));
+function gStat(id){return P.games[id]||(P.games[id]={best:0,plays:0})}
+function tick(ok,topic){
+  const d=today();P.answered++;P.days[d]=(P.days[d]||0)+1;if(ok)P.correct++;
+  if(topic){const ts=P.topic[topic]||(P.topic[topic]={a:0,c:0});ts.a++;if(ok)ts.c++}
+  save();if(P.days[d]===P.set.goal){confetti();toast(`Daily goal reached: ${P.set.goal} questions!`)}
+}
+const GA={
+ blitz:'<circle cx="32" cy="37" r="19" fill="#fff"/><rect x="27" y="8" width="10" height="6" rx="2" fill="#fff"/><path d="M32 14v5M47 20l3-3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M35 23l-10 16h7l-3 12 11-18h-7z" fill="#ef4444"/>',
+ shift:'<circle cx="15" cy="27" r="6" fill="#fff" opacity=".5"/><path d="M5 46c1-7 5-11 10-11s9 4 10 11z" fill="#fff" opacity=".5"/><circle cx="49" cy="27" r="6" fill="#fff" opacity=".5"/><path d="M39 46c1-7 5-11 10-11s9 4 10 11z" fill="#fff" opacity=".5"/><circle cx="32" cy="26" r="9" fill="#fff"/><path d="M17 53c1-10 7-14 15-14s14 4 15 14z" fill="#fff"/><rect x="38" y="6" width="20" height="13" rx="5" fill="#fff"/><path d="M42 19l-3 5 7-5" fill="#fff"/><path d="M48 9v4" stroke="#f59e0b" stroke-width="2.6" stroke-linecap="round"/><circle cx="48" cy="16" r="1.4" fill="#f59e0b"/>',
+ tf:'<g transform="rotate(-9 19 33)"><rect x="6" y="15" width="26" height="34" rx="7" fill="#fff"/><path d="M12 32l5 5 9-11" stroke="#10b981" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="rotate(9 45 33)"><rect x="32" y="15" width="26" height="34" rx="7" fill="#fff" opacity=".9"/><path d="M40 27l10 10M50 27l-10 10" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round"/></g>',
+ match:'<rect x="5" y="13" width="23" height="38" rx="6" fill="#fff"/><text x="16.5" y="37" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-weight="800" font-size="12" fill="#3b82f6">22</text><rect x="36" y="13" width="23" height="38" rx="6" fill="#fff"/><text x="47.5" y="37" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="10" fill="#3b82f6">SSH</text><path d="M28 32h8" stroke="#fff" stroke-width="3" stroke-dasharray="2 3"/>',
+ bits:[1,0,1,1].map((on,i)=>`<rect x="${9+i*12.5}" y="13" width="9" height="38" rx="4.5" fill="#fff" opacity="${on?1:.45}"/><circle cx="${13.5+i*12.5}" cy="${on?21:43}" r="5.5" fill="#06b6d4" stroke="#fff" stroke-width="2.4"/>`).join(''),
+ order:[0,1,2].map(i=>`<circle cx="15" cy="${17+i*15}" r="6" fill="#fff"/><text x="15" y="${21+i*15}" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="10" fill="#8b5cf6">${i+1}</text><rect x="25" y="${12+i*15}" width="${16+i*9}" height="10" rx="5" fill="#fff" opacity="${1-i*.2}"/>`).join(''),
+};
+const GAMES=[
+ {id:'blitz',name:'60-Second Blitz',desc:'As many as you can. Right +2s, wrong -3s.',c:'#ef4444',xp:4,good:10,unit:'pts',run:gBlitz},
+ {id:'shift',name:'Help Desk Shift',desc:'Customers keep coming. 3 lives. Survive the rush.',c:'#f59e0b',xp:6,good:8,unit:'solved',run:gShift},
+ {id:'tf',name:'True or False',desc:'Quick facts. Swipe or tap. 45 seconds.',c:'#10b981',xp:2,good:15,unit:'pts',run:gTF},
+ {id:'match',name:'Port Match',desc:'Pair each port with its service against the clock.',c:'#3b82f6',xp:3,good:12,unit:'pairs',run:gMatch},
+ {id:'bits',name:'Binary Builder',desc:'Flip the switches to build the number.',c:'#06b6d4',xp:4,good:8,unit:'made',run:gBits},
+ {id:'order',name:'Put It In Order',desc:'OSI, DHCP, boot steps, troubleshooting and more.',c:'#8b5cf6',xp:3,good:10,unit:'pts',run:gOrder},
+];
+function gameArt(id){const g=GAMES.find(x=>x.id===id);return `<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="${g.c}"/><circle cx="58" cy="4" r="24" fill="#fff" opacity=".14"/>${GA[id]}</svg>`}
+const heart=on=>`<svg width="19" height="17" viewBox="0 0 24 21" aria-hidden="true" style="vertical-align:-3px;margin:0 1px"><path d="M12 20C5 14.5 1 11 1 6.5a5.5 5.5 0 0 1 11-1.5 5.5 5.5 0 0 1 11 1.5C23 11 19 14.5 12 20z" fill="${on?'#f87171':'none'}" stroke="#f87171" stroke-width="2"/></svg>`;
+
+/* trophies */
+const ACH=[
+ {id:'first',n:'First fix',d:'Answer your first question',g:'1',f:()=>P.answered>=1},
+ {id:'c100',n:'Century',d:'Answer 100 questions',g:'100',f:()=>P.answered>=100},
+ {id:'c500',n:'Veteran',d:'Answer 500 questions',g:'500',f:()=>P.answered>=500},
+ {id:'s10',n:'On fire',d:'10 right in a row',g:'10x',f:()=>P.bestStreak>=10},
+ {id:'goal',n:'Goal getter',d:'Hit your daily goal',g:'G',f:()=>Object.values(P.days).some(n=>n>=P.set.goal)},
+ {id:'d3',n:'Regular',d:'3-day goal streak',g:'3d',f:()=>dayStreak()>=3},
+ {id:'d7',n:'Committed',d:'7-day goal streak',g:'7d',f:()=>dayStreak()>=7},
+ {id:'blitz',n:'Speed demon',d:'Score 15 in Blitz',g:'15',f:()=>gStat('blitz').best>=15},
+ {id:'shift',n:'Customer hero',d:'Solve 10 in one shift',g:'10',f:()=>gStat('shift').best>=10},
+ {id:'tf',n:'Fact checker',d:'Score 20 in True or False',g:'20',f:()=>gStat('tf').best>=20},
+ {id:'match',n:'Port master',d:'Match 15 pairs in one game',g:'15',f:()=>gStat('match').best>=15},
+ {id:'bits',n:'Bit flipper',d:'Build 10 numbers in one game',g:'10',f:()=>gStat('bits').best>=10},
+ {id:'order',n:'Methodical',d:'Score 13+ in Put It In Order',g:'13',f:()=>gStat('order').best>=13},
+ {id:'notes',n:'Note taker',d:'Save 5 notes',g:'5',f:()=>P.notes.length>=5},
+ {id:'l2',n:'L2 ready',d:'Reach L2 Support Engineer',g:'L2',f:()=>P.xp>=800},
+];
+function medal(a,on){
+  return `<svg width="48" height="56" viewBox="0 0 52 60" aria-hidden="true"><path d="M13 2h10l6 21h-10zM39 2H29l-6 21h10z" fill="${on?'#ef4444':'#8a93a6'}"/>
+  <circle cx="26" cy="39" r="18" fill="${on?'#fbbf24':'#9aa3b5'}" stroke="${on?'#b77d00':'#6b7385'}" stroke-width="3"/><circle cx="26" cy="39" r="12.5" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+  <text x="26" y="${a.g.length>2?42.5:44}" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="${a.g.length>2?10:13}" fill="#fff">${on?a.g:'?'}</text></svg>`;
+}
+const trophyGrid=()=>`<div class="trophies">${ACH.map(a=>{const on=!!P.ach[a.id];return `<div class="troph ${on?'':'lock'}">${medal(a,on)}<b>${a.n}</b><span class="mut">${a.d}</span></div>`}).join('')}</div>`;
+function checkAch(silent){
+  let changed=false;ACH.forEach(a=>{if(!P.ach[a.id]&&a.f()){P.ach[a.id]=Date.now();changed=true;if(!silent){toast('Trophy unlocked: '+a.n);confetti(50)}}});
+  if(changed)save();
+}
+
+/* hub and shared game frame */
+function renderGames(){
+  const got=ACH.filter(a=>P.ach[a.id]).length;
+  $('v-games').innerHTML=`<div class="greet">${mascot('wow',60)}<div class="bubble"><b>Welcome to the Arcade</b><small>Quick games that use the same IT knowledge. They earn XP and count toward your daily goal.</small></div></div>
+   <div class="ggrid">${GAMES.map(g=>{const s=gStat(g.id);return `<button class="gcard" data-g="${g.id}" style="--c:${g.c}"><span class="gpic">${gameArt(g.id)}</span><h3>${g.name}</h3><p>${g.desc}</p><span class="gbest">${s.plays?`Best: ${s.best} ${g.unit}`:'New game'}</span></button>`}).join('')}</div>
+   <div class="h2">Trophies <span class="mut small">${got} of ${ACH.length}</span></div>${trophyGrid()}`;
+  $('v-games').querySelectorAll('.gcard').forEach(b=>b.onclick=()=>startGame(b.dataset.g));
+}
+function startGame(id){
+  stopGame();const g=GAMES.find(x=>x.id===id);
+  G={game:g,iv:[],to:[],score:0,miss:[],recent:[],r0:rankIdx(P.xp),pause:false,lock:false,key:null};
+  nav('game');g.run();
+}
+function gFrame(pills){
+  $('v-game').innerHTML=`<div class="ghud"><span class="gpic sm">${gameArt(G.game.id)}</span><div class="gt">${G.game.name}</div>${pills}</div>
+   <div class="tbar" id="gBar"><i id="gBarI" style="width:100%"></i></div><div id="gArea"></div>`;
+}
+function countdown(sec,onEnd){G.T=G.T0=sec*10;gIv(()=>{if(G.pause)return;G.T--;drawTime();if(G.T<=0){G.T=0;onEnd()}},100);drawTime()}
+function drawTime(){if(!G)return;const i=$('gBarI');if(!i)return;const f=Math.max(0,Math.min(1,G.T/G.T0));i.style.width=f*100+'%';$('gBar').classList.toggle('low',f<.25);const t=$('gTime');if(t)t.textContent=Math.ceil(Math.max(0,G.T)/10)+'s'}
+function setScore(){const e=$('gScore');if(e&&G)e.textContent=G.score}
+function gameQ(topics){
+  const q=questionFor(pick(topics),G.recent);if(q.kind==='text')toChoice(q);
+  G.recent.push(q.id);if(G.recent.length>8)G.recent.shift();return q;
+}
+const optsHTML=q=>`<div class="opts">${q.options.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${esc(o)}</span></button>`).join('')}</div>`;
+function markOpts(q,i){$('gArea').querySelectorAll('.opt').forEach((x,j)=>{x.disabled=true;if(j===q.correct)x.classList.add('right');else if(j===i)x.classList.add('wrong');else x.classList.add('dim')})}
+const numKeys=e=>{if(/^[1-4]$/.test(e.key)){const b=$('gArea').querySelectorAll('.opt')[+e.key-1];if(b&&!b.disabled)b.click()}};
+function gameOver(lines){
+  if(!G)return;
+  const g=G.game,sc=G.score,st=gStat(g.id),nb=sc>st.best&&sc>0,miss=G.miss.slice(0,12),r0=G.r0;
+  st.plays++;if(nb)st.best=sc;const xp=Math.round(sc*g.xp);P.xp+=xp;stopGame();save();renderChip();
+  const mood=nb?'wow':sc>=g.good?'happy':sc>0?'ok':'sad';
+  $('v-game').innerHTML=`<div class="card" style="text-align:center">${mascot(mood,96)}<div class="mut small">${esc(g.name.toUpperCase())}</div>
+   <div style="font-size:54px;font-weight:800;line-height:1.1;margin:6px 0">${sc}</div><div style="font-size:17px">${nb?'New best score!':sc>=g.good?'Great run.':sc?'Good effort. Go again?':'Warm-up done. Try again.'} <span class="mut">Best: ${st.best}</span></div>
+   <div class="tiles">${(lines||[]).map(([a,b])=>`<div class="tile"><b>${a}</b><span>${b}</span></div>`).join('')}<div class="tile"><b>+${xp}</b><span>XP</span></div></div>
+   <div style="display:flex;gap:10px"><button class="btn pri" style="flex:2" id="goAgain">Play again</button><button class="btn" style="flex:1" id="goGames">All games</button></div></div>
+   ${miss.length?`<div class="h2">Learn from these</div>`+miss.map(q=>`<div class="note"><div class="nq">${esc(q.q)}</div>Answer: <span class="ans">${esc(q.answer)}</span><div class="mut" style="margin-top:6px">${esc(q.explain)}</div></div>`).join(''):''}`;
+  $('goAgain').onclick=()=>startGame(g.id);$('goGames').onclick=()=>nav('games');
+  if(nb)confetti();const r=rankIdx(P.xp);if(r>r0)setTimeout(()=>{confetti();toast('Promoted: '+RANKS[r][1])},600);
+  checkAch();window.scrollTo(0,0);
+}
+
+/* 1. Blitz */
+function gBlitz(){
+  gFrame(`<span class="pill" id="gTime">60s</span><span class="pill">Score <b id="gScore">0</b></span>`);
+  G.n=0;G.key=numKeys;
+  countdown(60,()=>gameOver([[G.n,'answered'],[G.n?Math.round(G.score/G.n*100)+'%':'-','accuracy']]));
+  const next=()=>{if(!G)return;const q=G.q=gameQ(TKEYS);G.lock=false;
+    $('gArea').innerHTML=`<div class="card">${q.ticket?`<div class="ticket" style="font-size:14px"><div class="tbd">${esc(q.ticket.text)}</div></div>`:''}<div class="q">${esc(q.q)}</div>${optsHTML(q)}</div>`;
+    $('gArea').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(G.lock)return;G.lock=true;const i=+b.dataset.i,ok=i===q.correct;G.n++;markOpts(q,i);tick(ok,q.topic);
+      if(ok){G.score++;G.T=Math.min(G.T0,G.T+20);sGood();buzz(15)}else{G.T-=30;G.miss.push(q);sBad();buzz([40,50,40])}
+      setScore();drawTime();gTo(next,ok?450:1200)})};
+  next();
+}
+
+/* 2. Help Desk Shift */
+function gShift(){
+  gFrame(`<span class="pill" id="gLives"></span><span class="pill">Solved <b id="gScore">0</b></span>`);
+  G.lives=3;G.pat=30;G.queue=shuffle(NAMES.slice()).slice(0,4);G.key=numKeys;G.T=G.T0=1;G.pause=true;
+  const lives=()=>$('gLives').innerHTML=[0,1,2].map(i=>heart(i<G.lives)).join('');lives();
+  const over=()=>gameOver([[G.score,'customers helped'],[Math.max(...G.times,0)?Math.round(G.times.reduce((a,b)=>a+b,0)/G.times.length)+'s':'-','avg time']]);G.times=[];
+  const resolve=i=>{
+    if(!G||G.pause)return;G.pause=true;const q=G.q,ok=i===q.correct;markOpts(q,i);tick(ok,q.topic);
+    if(ok){G.score++;G.times.push(Math.round((G.T0-G.T)/10));setScore();sGood();buzz(15);$('cAv').innerHTML=avatar(G.who,true);
+      $('cMsg').textContent=pick(['Thank you so much!','That fixed it, cheers!','You are a lifesaver.','Working now, thanks!','Brilliant, thank you.']);
+      if(G.score%5===0){G.pat=Math.max(12,G.pat-4);toast('Rush hour! Customers are less patient now.')}
+      gTo(next,1000);
+    }else{
+      G.lives--;lives();sBad();buzz([40,50,40]);G.miss.push(q);
+      $('cMsg').textContent=i===-2?'I gave up waiting...':pick(['That did not help.','Still broken...','Hmm, that is not it.']);
+      $('gFb').innerHTML=`<div class="fb bad"><h4>${i===-2?'Out of time.':'Not quite.'} ${G.lives?`${G.lives} ${G.lives>1?'lives':'life'} left`:'Shift over'}</h4><div style="margin:4px 0 8px">Answer: <span class="ans">${esc(q.answer)}</span></div><div>${esc(q.explain)}</div></div>
+        <button class="btn pri" style="width:100%;margin-top:12px" id="gNx">${G.lives?'Next customer':'See results'}</button>`;
+      $('gNx').onclick=()=>G.lives?next():over();
+    }
+  };
+  gIv(()=>{if(!G||G.pause)return;G.T--;drawTime();if(G.T<=0)resolve(-2)},100);
+  const next=()=>{if(!G)return;
+    G.who=G.queue.shift();G.queue.push(pick(NAMES.filter(n=>n!==G.who&&!G.queue.includes(n))));
+    const q=G.q=gameQ(['ticket','ticket','ticket','fund','port','cmd']);
+    G.T=G.T0=Math.round(G.pat*10*(q.lvl===2?1.25:1));
+    $('gArea').innerHTML=`<div class="queue"><span class="mut small">Queue</span>${G.queue.map(n=>`<span class="qa">${avatar(n,false)}</span>`).join('')}</div>
+     <div class="card"><div class="cust"><span class="cav" id="cAv">${avatar(G.who,false)}</span><div style="flex:1;min-width:0"><b>${esc(G.who)}</b><div class="bubble" id="cMsg" style="margin-top:6px">${pick(['Hi, can you help me?','This is really urgent!','Sorry to bother you...','Not sure who else to ask.','My manager is waiting on this.'])}</div></div></div>
+     ${q.ticket?`<div class="ticket"><div class="tbd"><div class="meta">${q.ticket.no} | ${q.ticket.pri}</div>${esc(q.ticket.text)}</div></div>`:''}<div class="q">${esc(q.q)}</div>${optsHTML(q)}<div id="gFb"></div></div>`;
+    $('gArea').querySelectorAll('.opt').forEach(b=>b.onclick=()=>resolve(+b.dataset.i));
+    G.pause=false;drawTime();window.scrollTo(0,0);
+  };
+  next();
+}
+/* 3. True or False */
+function ipOf(t){
+  if(t==='priv')return pick([`10.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`,`172.${16+rnd(16)}.${rnd(256)}.${rnd(254)+1}`,`192.168.${rnd(256)}.${rnd(254)+1}`]);
+  if(t==='pub')return pick([`172.${32+rnd(40)}.${rnd(256)}.${rnd(254)+1}`,`192.169.${rnd(256)}.${rnd(254)+1}`,`8.8.${rnd(256)}.${rnd(254)+1}`,`52.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`,`11.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`]);
+  if(t==='loop')return `127.${rnd(256)}.${rnd(256)}.${rnd(254)+1}`;return `169.254.${rnd(254)+1}.${rnd(254)+1}`;
+}
+const w1=s=>s.split(/[ (/]/)[0];
+function tfMake(){
+  const L1=P.set.level===1,ports=L1?PORTS.filter(p=>L1_PORTS.includes(p[0])):PORTS,yes=Math.random()<.5;
+  const k=pick(L1?['port','port','ip','osi','cmd','cmd','bin']:['port','ip','osi','cmd','hosts','bin','sec']);
+  if(k==='port'){const it=pick(ports),p=yes?it[0]:pick(PORTS.filter(x=>x[0]!==it[0]&&w1(x[1])!==w1(it[1])))[0];
+    return {s:`${it[1]} uses port ${p} by default.`,t:yes,e:`${it[1]} = ${it[2]} ${it[0]}.`,topic:'port'}}
+  if(k==='ip'){const L={priv:'private',pub:'public',loop:'loopback',apipa:'APIPA (link-local)'},t=pick(Object.keys(L)),c=yes?t:pick(Object.keys(L).filter(x=>x!==t)),ip=ipOf(t);
+    return {s:`${ip} is a ${L[c]} address.`,t:yes,e:`${ip} is ${L[t]}. Private: 10.x, 172.16-31.x, 192.168.x. Loopback: 127.x. APIPA: 169.254.x.`,topic:'fund'}}
+  if(k==='osi'){const [n,l]=pick(OSI_ITEMS),s=yes?l:pick([1,2,3,4,5,6,7].filter(x=>x!==l));
+    return {s:`"${n}" works at OSI layer ${s} (${OSI[s-1]}).`,t:yes,e:`${n} = layer ${l}, ${OSI[l-1]}.`,topic:'fund'}}
+  if(k==='cmd'){const pool=L1?[...C1,...CMDS.filter((_,i)=>L1_C_OLD.includes(i))]:[...CMDS,...C1],c=pick(pool);let a=c[2];
+    if(!yes)a=shuffle(pool.filter(x=>x[2]!==c[2]&&!c[1].some(r=>r.test(norm(x[2])))))[0][2];
+    const task=c[0].replace(/\.$/,'');return {s:`To "${task[0].toLowerCase()+task.slice(1)}", run: ${a}`,t:yes,e:`Use ${c[2]}. ${c[3]}`,topic:'cmd'}}
+  if(k==='hosts'){const p=22+rnd(9),h=2**(32-p)-2,s=yes?h:pick([h+2,h*2+2,Math.max(1,(h+2)/2-2)].filter(v=>v!==h));
+    return {s:`A /${p} subnet has ${s} usable host addresses.`,t:yes,e:`/${p} leaves ${32-p} host bits: 2^${32-p} - 2 = ${h} usable hosts.`,topic:'subnet'}}
+  if(k==='sec'){const s=pick(SECURE),c=yes?s[2]:pick(SECURE.filter(x=>x[2]!==s[2]&&x[0]!==s[0]))[2];
+    return {s:`${c} is the encrypted replacement for ${s[0]}.`,t:yes,e:`${s[0]} (${s[1]}) is replaced by ${s[2]} (${s[3]}).`,topic:'port'}}
+  const n=rnd(256),s=yes?n:n^(1<<rnd(8));
+  return {s:`Binary ${fb(b8(n))} = ${s} in decimal.`,t:yes,e:`${fb(b8(n))} = ${[128,64,32,16,8,4,2,1].filter(v=>n&v).join(' + ')||'0'} = ${n}.`,topic:'binary'};
+}
+function gTF(){
+  gFrame(`<span class="pill" id="gTime">45s</span><span class="pill">Score <b id="gScore">0</b></span>`);
+  G.n=0;G.combo=0;G.bestCombo=0;
+  countdown(45,()=>gameOver([[G.n,'answered'],[G.bestCombo,'best combo']]));
+  $('gArea').innerHTML=`<div class="tfcard" id="tfC"></div><div class="mut small" id="tfE" style="text-align:center;min-height:44px;margin-top:10px">Swipe right for True, left for False</div>
+   <div class="tfbtns"><button class="btn f" id="tfF">&#10007; False</button><button class="btn t" id="tfT">&#10003; True</button></div>`;
+  const c=$('tfC');
+  const show=()=>{if(!G)return;G.it=tfMake();c.className='tfcard';c.style.transform='';c.textContent=G.it.s;G.lock=false;G.pause=false};
+  const ans=v=>{if(!G||G.lock)return;G.lock=true;const it=G.it,ok=v===it.t;G.n++;tick(ok,it.topic);
+    c.classList.add(ok?'ok':'bad');c.style.transform=`translateX(${v?30:-30}px) rotate(${v?3:-3}deg)`;
+    if(ok){G.score++;G.combo++;G.bestCombo=Math.max(G.bestCombo,G.combo);sGood();buzz(12);$('tfE').textContent=G.combo>=3?`Combo x${G.combo}!`:'Correct.';gTo(show,380)}
+    else{G.combo=0;G.pause=true;sBad();buzz([40,50,40]);G.miss.push({q:it.s,answer:it.t?'True':'False',explain:it.e});$('tfE').textContent=`It's ${it.t?'true':'false'}. ${it.e}`;gTo(show,2200)}
+    setScore()};
+  $('tfT').onclick=()=>ans(true);$('tfF').onclick=()=>ans(false);
+  let x0=null;
+  c.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+  c.addEventListener('touchmove',e=>{if(x0===null||!G||G.lock)return;const dx=e.touches[0].clientX-x0;c.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`},{passive:true});
+  c.addEventListener('touchend',e=>{if(x0===null||!G)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(G.lock)return;if(dx>60)ans(true);else if(dx<-60)ans(false);else c.style.transform=''});
+  G.key=e=>{if(e.key==='ArrowRight'||e.key==='t')ans(true);if(e.key==='ArrowLeft'||e.key==='f')ans(false)};
+  show();
+}
+
+/* 4. Port Match */
+function gMatch(){
+  gFrame(`<span class="pill" id="gTime">60s</span><span class="pill">Pairs <b id="gScore">0</b></span>`);
+  G.err=0;G.rounds=0;
+  countdown(60,()=>gameOver([[G.rounds,'boards cleared'],[G.err,'mistakes']]));
+  const base=P.set.level===1?PORTS.filter(p=>L1_PORTS.includes(p[0])):PORTS;
+  const pool=base.filter((p,i,a)=>a.findIndex(x=>x[0]===p[0]||x[1]===p[1])===i);
+  const board=()=>{if(!G)return;
+    const items=shuffle(pool.slice()).slice(0,5);let left=0;G.sel=null;
+    $('gArea').innerHTML=`<p class="mut small" style="text-align:center;margin:0 0 10px">Tap a port, then its service (or the other way round)</p>
+     <div class="mgrid"><div class="mcol">${shuffle(items.slice()).map(p=>`<button class="mt port" data-s="l" data-p="${p[0]}">${p[0]}</button>`).join('')}</div>
+     <div class="mcol">${shuffle(items.slice()).map(p=>`<button class="mt" data-s="r" data-p="${p[0]}">${esc(p[1])}</button>`).join('')}</div></div>`;
+    $('gArea').querySelectorAll('.mt').forEach(b=>b.onclick=()=>{
+      if(!G||b.disabled)return;
+      if(!G.sel||G.sel.dataset.s===b.dataset.s){if(G.sel)G.sel.classList.remove('sel');G.sel=b;b.classList.add('sel');tone(520,.05);return}
+      const a=G.sel;G.sel=null;a.classList.remove('sel');
+      if(a.dataset.p===b.dataset.p){a.classList.add('done');b.classList.add('done');a.disabled=b.disabled=true;G.score++;setScore();sGood();buzz(12);tick(true,'port');
+        if(++left===items.length){G.rounds++;G.T=Math.min(G.T0,G.T+30);drawTime();toast('Board cleared! +3s');gTo(board,450)}}
+      else{G.err++;G.T-=20;drawTime();tick(false,'port');sBad();buzz([30,40,30]);
+        const it=pool.find(p=>String(p[0])===(a.dataset.s==='l'?a.dataset.p:b.dataset.p));if(it)G.miss.push({q:`Port ${it[0]}`,answer:it[1],explain:`${it[1]} = ${it[2]} ${it[0]}. ${it[3]}`});
+        [a,b].forEach(x=>{x.classList.remove('wrong');void x.offsetWidth;x.classList.add('wrong')})}
+    })};
+  board();
+}
+
+/* 5. Binary Builder */
+function gBits(){
+  gFrame(`<span class="pill" id="gTime">60s</span><span class="pill">Built <b id="gScore">0</b></span>`);
+  G.skips=0;const hexOK=P.set.level!==1;
+  countdown(60,()=>gameOver([[G.skips,'skipped']]));
+  $('gArea').innerHTML=`<div class="card"><div class="target"><span class="mut small" id="bLbl">BUILD THIS NUMBER</span><b id="bT"></b></div><div class="cur" id="bC"></div>
+   <div class="bits">${[128,64,32,16,8,4,2,1].map(v=>`<button class="bit" data-v="${v}"><small>${v}</small><span class="lv"></span><b>0</b></button>`).join('')}</div>
+   <div style="display:flex;gap:10px;margin-top:14px"><button class="btn" style="flex:1" id="bClr">Clear</button><button class="btn" style="flex:1" id="bSkip">Skip</button></div>
+   <p class="mut small" id="bTip" style="text-align:center;margin:10px 0 0;min-height:20px"></p></div>`;
+  const bits=[...$('gArea').querySelectorAll('.bit')];
+  const val=()=>bits.reduce((s,b)=>s+(b.classList.contains('on')?+b.dataset.v:0),0);
+  const setBit=(b,on)=>{b.classList.toggle('on',on);b.querySelector('b').textContent=on?'1':'0'};
+  const draw=()=>{const v=val();$('bC').textContent=`${fb(b8(v))} = ${v}`;$('bC').classList.remove('hit')};
+  const newT=()=>{if(!G)return;const n=Math.random()<.35?pick(MASKV.filter(x=>x)):1+rnd(255);G.n=n;G.hex=hexOK&&Math.random()<.3;G.lock=false;
+    $('bT').textContent=G.hex?'0x'+n.toString(16).toUpperCase().padStart(2,'0'):n;$('bLbl').textContent=G.hex?'BUILD THIS HEX NUMBER':'BUILD THIS NUMBER';
+    bits.forEach(b=>setBit(b,false));draw();$('bTip').textContent=MASKV.includes(n)?'Tip: this one is also a subnet mask octet.':G.hex?'Each hex digit is 4 bits: left 4 switches, right 4 switches.':''};
+  bits.forEach(b=>b.onclick=()=>{if(!G||G.lock)return;setBit(b,!b.classList.contains('on'));tone(b.classList.contains('on')?700:480,.04);draw();
+    if(val()===G.n){G.lock=true;G.score++;setScore();sGood();buzz(15);tick(true,'binary');$('bC').classList.add('hit');$('bC').textContent+='  Nailed it!';gTo(newT,600)}});
+  $('bClr').onclick=()=>{if(!G||G.lock)return;bits.forEach(b=>setBit(b,false));draw()};
+  $('bSkip').onclick=()=>{if(!G||G.lock)return;G.skips++;tick(false,'binary');G.miss.push({q:`Build ${$('bT').textContent} in binary`,answer:fb(b8(G.n)),explain:`${G.n} = ${[128,64,32,16,8,4,2,1].filter(v=>G.n&v).join(' + ')}.`});newT()};
+  newT();
+}
+
+/* 6. Put It In Order */
+const PUZZLES=[
+ {lvl:1,t:'OSI layers, from layer 1 (bottom) up to layer 7',i:['Physical','Data Link','Network','Transport','Session','Presentation','Application'],e:'Please Do Not Throw Sausage Pizza Away.'},
+ {lvl:1,t:'The troubleshooting method, first step to last',i:['Identify the problem','Establish a theory','Test the theory','Plan the fix','Implement the fix','Verify it works','Document it'],e:'The CompTIA 7-step method. Documenting is last, but never skip it.'},
+ {lvl:1,t:'A password reset call, in the right order',i:['Verify the caller\'s identity','Reset the password','Tick "change at next logon"','Unlock the account if locked','Confirm the user can sign in','Update the ticket'],e:'Never reset before verifying identity. That is how social engineering attacks work.'},
+ {lvl:1,t:'Testing a network problem, closest first',i:['ping 127.0.0.1','ping your own IP','ping the default gateway','ping 8.8.8.8','ping google.com'],e:'Work outwards: your network stack, your NIC, the LAN, the internet, then DNS.'},
+ {lvl:1,t:'What happens after you press the power button',i:['Power supply starts','POST hardware check','UEFI/BIOS finds the boot drive','Boot loader starts','Windows kernel loads','Sign-in screen'],e:'No POST and no picture? Think power, RAM or motherboard.'},
+ {lvl:1,t:'Setting up a new starter',i:['Create the AD account','Add them to the right groups','Enrol or image the laptop','First sign-in and MFA setup','Hand over and show the basics'],e:'Account and groups first, so the laptop picks up the right policies at first sign-in.'},
+ {lvl:2,t:'DHCP "DORA", in order',i:['Discover','Offer','Request','Acknowledge'],e:'Client broadcasts Discover, server Offers, client Requests, server ACKs. No Offer means APIPA 169.254.x.x.'},
+ {lvl:2,t:'The TCP three-way handshake',i:['SYN','SYN-ACK','ACK'],e:'Client SYN, server SYN-ACK, client ACK. Then data flows.'},
+ {lvl:2,t:'Data units, from layer 1 up to layer 4',i:['Bits','Frames','Packets','Segments'],e:'Bits (L1), Frames (L2, MAC), Packets (L3, IP), Segments (L4, TCP).'},
+ {lvl:2,t:'Incident lifecycle (ITIL)',i:['Log the incident','Categorise and prioritise','Diagnose','Escalate if needed','Resolve','Close with the user'],e:'Only close once the user confirms it is fixed.'},
+ {lvl:2,t:'Opening https://intranet: what happens first?',i:['DNS lookup of the name','TCP handshake on port 443','TLS handshake','HTTP request sent','Page loads'],e:'Name first, then the connection, then encryption, then the request.'},
+ {lvl:2,t:'Change management, in order',i:['Raise a change request','Assess risk and impact','Get CAB approval','Implement in the change window','Review and close'],e:'Unapproved changes cause most outages. Always have a rollback plan.'},
+];
+function gOrder(){
+  gFrame(`<span class="pill" id="gRound">1/5</span><span class="pill">Points <b id="gScore">0</b></span>`);
+  $('gBar').hidden=true;
+  G.list=shuffle(PUZZLES.filter(p=>lvlOk(p.lvl))).slice(0,5);G.k=0;G.perfect=0;
+  const play=()=>{if(!G)return;const pz=G.list[G.k];let pos=0,err=0;$('gRound').textContent=`${G.k+1}/${G.list.length}`;
+    $('gArea').innerHTML=`<div class="card"><div class="q" style="font-size:17px;margin-bottom:4px">${esc(pz.t)}</div><div class="mut small" style="margin-bottom:12px">Tap them in the right order</div>
+     <div class="olist" id="oL"></div><div class="opool" id="oP">${shuffle(pz.i.map((x,i)=>[x,i])).map(([x,i])=>`<button class="oitem" data-i="${i}">${esc(x)}</button>`).join('')}</div><div id="oF"></div></div>`;
+    $('oP').querySelectorAll('.oitem').forEach(b=>b.onclick=()=>{
+      if(!G)return;
+      if(+b.dataset.i===pos){b.remove();$('oL').insertAdjacentHTML('beforeend',`<div class="oslot"><span class="n">${pos+1}</span>${esc(pz.i[pos])}</div>`);pos++;tone(480+pos*70,.08,'triangle');buzz(10);
+        if(pos===pz.i.length){const pts=err===0?3:err<=2?2:1;G.score+=pts;if(!err){G.perfect++;confetti(30)}setScore();tick(err===0,'fund');sGood();
+          if(err)G.miss.push({q:pz.t,answer:pz.i.join(' > '),explain:pz.e});
+          $('oF').innerHTML=`<div class="fb ok"><h4>${err?`Solved with ${err} slip${err>1?'s':''}`:'Perfect order!'} +${pts}</h4><div>${esc(pz.e)}</div></div><button class="btn pri" style="width:100%;margin-top:12px" id="oN">${G.k+1<G.list.length?'Next puzzle':'See results'}</button>`;
+          $('oN').onclick=()=>{G.k++;G.k<G.list.length?(play(),window.scrollTo(0,0)):gameOver([[G.perfect,'perfect'],[G.list.length,'puzzles']])}}}
+      else{err++;sBad();buzz([30,40,30]);b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong')}})};
+  play();
+}
+
+/* home-screen icon for iPhone (drawn once at start) */
+function makeIcon(){try{const c=document.createElement('canvas');c.width=c.height=180;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,'#4cc9f0');g.addColorStop(1,'#7c6cf6');x.fillStyle=g;x.fillRect(0,0,180,180);x.fillStyle='#fff';x.font='bold 80px Menlo,Consolas,monospace';x.textAlign='center';x.textBaseline='middle';x.fillText('>_',90,94);$('appleIcon').href=c.toDataURL('image/png')}catch(e){}}
+
+/* ===== STATS ===== */
+function renderStats(){
+  const acc=P.answered?Math.round(P.correct/P.answered*100)+'%':'-',g=P.set.goal,days=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=d.toLocaleDateString('en-CA');days.push({k,n:P.days[k]||0,l:i===0?'Today':d.toLocaleDateString('en-AU',{weekday:'short'})})}
+  const mx=Math.max(g,...days.map(d=>d.n));
+  $('v-stats').innerHTML=`<div class="h2" style="margin-top:4px">Your stats</div>
+    <div class="tiles"><div class="tile"><b>${P.answered}</b><span>answered</span></div><div class="tile"><b>${acc}</b><span>accuracy</span></div><div class="tile"><b>${P.xp}</b><span>XP</span></div><div class="tile"><b>${P.bestStreak||0}</b><span>best streak</span></div></div>
+    <div class="card"><div style="display:flex;justify-content:space-between"><b>Last 7 days</b><span class="mut small">goal ${g}/day, ${dayStreak()} day streak</span></div>
+    <div class="week">${days.map(d=>`<div class="day"><span>${d.n||''}</span><i class="${d.n>=g?'met':''}" style="height:${Math.round(d.n/mx*100)}%"></i><span>${d.l}</span></div>`).join('')}</div></div>
+    <div class="h2">By topic</div><div class="card" style="padding:6px 16px">${TKEYS.map(k=>{const t=TOPICS[k],s=P.topic[k]||{a:0,c:0},m=mastery(k);
+      return `<div class="trow" style="--c:${t.c}"><span class="tpic sm">${artTopic(k)}</span><div class="tb"><b>${t.name}</b><div class="mut small">${s.a} answered, ${Math.round(m.pc*100)}% ${m.lbl}</div></div><b>${s.a?Math.round(s.c/s.a*100)+'%':'-'}</b></div>`}).join('')}</div>
+    <div class="h2">Trophies <span class="mut small">${ACH.filter(a=>P.ach[a.id]).length} of ${ACH.length}</span></div>${trophyGrid()}<div class="h2">Rank ladder</div><div class="card" style="padding:6px 16px">${RANKS.map((r,i)=>`<div class="trow">${rankBadge(i,28)}<div class="tb" style="${i===rankIdx(P.xp)?'font-weight:800;color:var(--ac)':P.xp>=r[0]?'':'opacity:.55'}">${i===rankIdx(P.xp)?'&#9654; ':''}${r[1]}</div><span class="mut">${r[0]} XP</span></div>`).join('')}</div>`;
+}
+
+/* ===== NOTES ===== */
+function renderNotes(){
+  const v=$('v-notes');
+  if(!P.notes.length){v.innerHTML=`<div class="h2" style="margin-top:4px">Saved notes</div><div class="empty">${mascot('ok',90)}<p>No notes yet.</p><p class="small">Tap the bookmark on any question to save it here with its answer and explanation.</p><button class="btn pri" id="nGo">Start practising</button></div>`;$('nGo').onclick=()=>start('mixed');return}
+  v.innerHTML=`<div class="h2" style="margin-top:4px">Saved notes <span class="mut small">(${P.notes.length})</span></div>`+P.notes.map((n,i)=>{const t=TOPICS[n.topic]||{name:n.topic};
+    return `<div class="note"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="mut small">${esc(t.name)}, Level ${n.lvl||'-'}</span><button class="linkbtn" data-rm="${i}" style="color:var(--bad);padding:0">Remove</button></div>
+    ${n.ticket?`<div class="mut small" style="margin:4px 0">${esc(n.ticket)}</div>`:''}<div class="nq">${esc(n.q)}</div>Answer: <span class="ans">${esc(n.a)}</span><div class="mut" style="margin-top:6px">${esc(n.e)}</div></div>`}).join('');
+  v.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{P.notes.splice(+b.dataset.rm,1);save();renderNotes()});
+}
+
+/* ===== CHEAT SHEET ===== */
+function tbl(head,rows){return `<div class="tw"><table><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>`}
+function renderSheet(){
+  const code=s=>`<code>${esc(s)}</code>`;
+  const secs=[
+   ['trouble','Troubleshooting',tbl(['Step','What to do'],[
+     ['1. Identify','Ask what changed, who is affected, any error message. Reproduce it.'],
+     ['2. Theory','Start simple: cable, power, Wi-Fi, logged in, password expired?'],
+     ['3. Test','Test one thing at a time (ping gateway, then 8.8.8.8, then a name).'],
+     ['4. Plan','Plan the fix; check the impact and get approval if needed.'],
+     ['5. Fix','Apply the fix, or escalate with full notes if out of scope.'],
+     ['6. Verify','Confirm with the user it works. Prevent it happening again.'],
+     ['7. Document','Write clear ticket notes: symptoms, steps, result.']])+
+     tbl(['Symptom','Likely cause'],[
+     ['IP starts with 169.254','No DHCP reply (APIPA). Check cable/Wi-Fi, DHCP server.'],
+     ['Ping IP works, names fail','DNS problem. Check DNS servers, flush cache.'],
+     ['Can reach LAN, not internet','Default gateway, proxy or firewall.'],
+     ['Only one user affected','Their device, account or profile.'],
+     ['Many users affected','Shared service, network or outage: escalate fast.']])],
+   ['ports','Ports',tbl(['Port','Service','Proto'],[...PORTS].sort((a,b)=>a[0]-b[0]).map(p=>[`<b>${p[0]}</b>`,esc(p[1]),esc(p[2])]))],
+   ['cmds','Commands',tbl(['Command','What it does'],[...C1,...CMDS].filter((c,i,a)=>a.findIndex(x=>x[2]===c[2])===i).map(c=>[code(c[2]),esc(c[0])]))],
+   ['run','Run box',tbl(['Win+R','Opens'],[['ncpa.cpl','Network adapters'],['devmgmt.msc','Device Manager'],['services.msc','Services'],['eventvwr.msc','Event Viewer'],['compmgmt.msc','Computer Management'],['appwiz.cpl','Programs and Features'],['lusrmgr.msc','Local users and groups'],['diskmgmt.msc','Disk Management'],['gpedit.msc','Local Group Policy'],['dsa.msc','AD Users and Computers'],['mstsc','Remote Desktop'],['msinfo32','System Information'],['control printers','Devices and Printers']].map(r=>[code(r[0]),r[1]]))],
+   ['subnet','Subnets',tbl(['CIDR','Mask','Hosts'],Array.from({length:15},(_,i)=>i+16).map(c=>[`<b>/${c}</b>`,code(ipStr(maskOf(c))),(2**(32-c)-2).toLocaleString()]))+
+     `<p class="small mut" style="margin:6px 4px 14px">Usable hosts = 2<sup>host bits</sup> - 2. Private ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. 169.254.x.x = APIPA. 127.0.0.1 = loopback.</p>`],
+   ['osi','OSI',tbl(['#','Layer','Examples'],[[7,'Application','HTTP, DNS, SMTP'],[6,'Presentation','TLS, encoding'],[5,'Session','RPC, NetBIOS'],[4,'Transport','TCP, UDP, ports'],[3,'Network','IP, ICMP, routers'],[2,'Data Link','MAC, switches, VLAN'],[1,'Physical','Cables, Wi-Fi radio, hubs']])+
+     `<p class="small mut" style="margin:6px 4px 14px">Memory trick (top down): All People Seem To Need Data Processing.</p>`],
+   ['keys','Shortcuts',tbl(['Keys','Does'],[['Win + L','Lock the PC'],['Ctrl + Shift + Esc','Task Manager'],['Win + X','Admin menu (Device Manager, Terminal)'],['Win + R','Run box'],['Win + E','File Explorer'],['Win + Shift + S','Snip a screenshot'],['Win + P','Projector / display mode'],['Win + Ctrl + Shift + B','Restart graphics driver'],['Win + .','Emoji panel'],['Ctrl + Alt + Del','Security screen (change password)']].map(r=>[`<b>${r[0]}</b>`,r[1]]))],
+  ];
+  $('v-sheet').innerHTML=`<div class="h2" style="margin:4px 0 0">Cheat sheet</div><div class="chipnav">${secs.map(s=>`<button data-go="${s[0]}">${s[1]}</button>`).join('')}</div>`+
+    secs.map(s=>`<div id="sh-${s[0]}" style="scroll-margin-top:130px"><div class="h2">${s[1]}</div>${s[2]}</div>`).join('');
+  $('v-sheet').querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>$('sh-'+b.dataset.go).scrollIntoView({behavior:'smooth',block:'start'}));
+}
+
+/* ===== SETTINGS ===== */
+function openSettings(){
+  const segs=(key,vals)=>`<div class="seg">${vals.map(([v,l])=>`<button data-set="${key}" data-v="${v}" class="${String(P.set[key])===String(v)?'on':''}">${l}</button>`).join('')}</div>`;
+  const sw=(key,l,sub)=>`<div class="setrow"><div class="lbl" style="margin:0"><span>${l}<div class="mut small" style="font-weight:400">${sub}</div></span><button class="sw ${P.set[key]?'on':''}" data-sw="${key}" aria-label="${l}"></button></div></div>`;
+  $('setBody').innerHTML=`<div class="grab"></div><div class="h2" style="margin:0 0 4px">Settings</div>
+    <div class="setrow"><div class="lbl">Theme</div>${segs('theme',[['system','System'],['light','Light'],['dark','Dark']])}</div>
+    <div class="setrow"><div class="lbl">Daily goal <span class="mut small">questions per day</span></div>${segs('goal',[[10,'10'],[20,'20'],[30,'30'],[50,'50']])}</div>
+    <div class="setrow"><div class="lbl">Level</div>${segs('level',[['all','All'],['1','Level 1'],['2','Level 2']])}</div>
+    <div class="setrow"><div class="lbl">Command questions</div>${segs('cmdMode',[['type','Type them'],['choose','Multiple choice']])}</div>
+    ${sw('sound','Sound effects','Short beeps for right and wrong')}${sw('vib','Vibration','On phones that support it')}
+    <div class="setrow" style="border:0"><button class="btn danger" id="resetBtn" style="width:100%">Reset all progress</button></div>
+    <button class="btn pri" id="setDone" style="width:100%">Done</button>
+    <p class="small mut" style="text-align:center;margin:12px 0 0">Progress is saved in this browser only. Works offline.</p>`;
+  $('settings').hidden=false;
+  $('setBody').querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{const k=b.dataset.set,v=b.dataset.v;P.set[k]=k==='goal'?+v:k==='level'&&v!=='all'?+v:v;save();if(k==='theme')applyTheme();openSettings();refresh()});
+  $('setBody').querySelectorAll('[data-sw]').forEach(b=>b.onclick=()=>{const k=b.dataset.sw;P.set[k]=!P.set[k];save();b.classList.toggle('on',P.set[k]);if(k==='sound'&&P.set.sound)sGood();if(k==='vib')buzz(30)});
+  $('resetBtn').onclick=()=>{if(!confirm('Reset ALL progress, XP, stats and notes? This cannot be undone.'))return;const st=P.set;localStorage.removeItem(KEY);P=load();P.set=st;save();closeSettings();toast('Progress reset');S=null;nav('home')};
+  $('setDone').onclick=closeSettings;
+}
+function closeSettings(){$('settings').hidden=true}
+function refresh(){const v=(location.hash||'#home').slice(1);if(v==='home')renderHome();if(v==='stats')renderStats()}
+$('settings').onclick=e=>{if(e.target===$('settings'))closeSettings()};
+
+/* ===== WIRING ===== */
+$('setBtn').onclick=openSettings;
+const goHome=()=>{if(!$('v-game').hidden){stopGame();nav('games');return}if(!$('v-play').hidden&&S&&S.n)endSession();else{S=null;nav('home')}};
+$('brand').onclick=goHome;$('backBtn').onclick=goHome;
+$('rankChip').onclick=()=>nav('stats');
+$('mixBtn').onclick=()=>start('mixed');$('revBtn').onclick=()=>start('review');
+document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>nav(b.dataset.nav));
+window.onhashchange=route;
+document.addEventListener('keydown',e=>{
+  if(!$('settings').hidden){if(e.key==='Escape')closeSettings();return}
+  if(G&&G.key&&!$('v-game').hidden&&!e.ctrlKey&&!e.metaKey){G.key(e);return}
+  if($('v-play').hidden||!S||!S.q||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
+  if(S.done&&(e.key==='Enter'||e.key===' '||e.key==='ArrowRight')){e.preventDefault();nextQ();return}
+  if(!S.done&&S.q.kind!=='text'&&/^[1-4]$/.test(e.key)){const i=+e.key-1;if(i<S.q.options.length)answerMC(i)}
+});
+matchMedia('(prefers-color-scheme: light)').addEventListener?.('change',applyTheme);
+
+/* ===== INIT ===== */
+applyTheme();makeIcon();checkAch(true);route();
+</script>
+</body>
+</html>
