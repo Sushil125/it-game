@@ -237,7 +237,7 @@ input.fld:focus,textarea.fld:focus{border-color:var(--ac)}
 .acmsg{min-height:20px;margin-top:8px;font-size:14px;color:var(--bad)}
 .acmsg.ok{color:var(--ok)}
 .lbme{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.lbrow .lbpos{width:30px;text-align:center;font-weight:800;font-size:15px;color:var(--mut)}
+.lbrow .lbpos{width:32px;display:flex;justify-content:center;text-align:center;font-weight:800;font-size:15px;color:var(--mut)}
 .lbrow .lbav svg{width:36px;height:36px;display:block}
 .lbrow.me{background:var(--okbg);margin:0 -14px;padding:10px 14px;border-radius:12px}
 .copy{text-align:center;font-size:11px;color:var(--mut);opacity:.75;margin:22px 0 4px}
@@ -647,11 +647,24 @@ const lvlOk=l=>P.set.level==='all'||+P.set.level===l;
 function wpick(arr,wf){const ws=arr.map(wf),sum=ws.reduce((a,b)=>a+b,0);let r=Math.random()*sum;for(let i=0;i<arr.length;i++){r-=ws[i];if(r<=0)return arr[i]}return arr[arr.length-1]}
 const BOXW=[6,3,1.5,.7,.35];
 const weight=id=>{const s=P.seen[id];return s?BOXW[Math.min(s.box||0,4)]:3};
+/* per-topic history of what was shown, kept with progress so new sessions do not repeat either */
+function histOf(t){if(!P.hist||typeof P.hist!=='object')P.hist={};return Array.isArray(P.hist[t])?P.hist[t]:(P.hist[t]=[])}
+function markShown(t,k){const h=histOf(t),i=h.indexOf(k);if(i>=0)h.splice(i,1);h.push(k);if(h.length>150)h.splice(0,h.length-150)}
+const qKey=q=>q.id&&q.id!=='g'?q.id:'g'+(q.gi??'')+':'+hashStr(String(q.q||'')+'|'+JSON.stringify(q.ticket||'')+'|'+(q.options||[]).slice().sort().join('|'));
 function questionFor(t,recent){
-  const ids=Object.values(BANK).filter(b=>b.topic===t&&lvlOk(b.lvl)),gens=GENS.filter(g=>g.t===t&&lvlOk(g.lvl));
-  if(gens.length&&(!ids.length||Math.random()<TOPICS[t].rate)){const g=wpick(gens,x=>x.w);return Object.assign(g.f(),{id:'g',topic:t,lvl:g.lvl,gen:true,pic:g.pic})}
-  let c=ids.filter(b=>!recent.includes(b.id));if(!c.length)c=ids;
-  const b=wpick(c,x=>weight(x.id));return Object.assign(b.build(),{id:b.id,topic:t,lvl:b.lvl});
+  recent=recent||[];
+  const ids=Object.values(BANK).filter(b=>b.topic===t&&lvlOk(b.lvl)),gens=GENS.filter(g=>g.t===t&&lvlOk(g.lvl)),h=histOf(t);
+  /* the same kind of made-up question waits at least 4 questions of this topic before it can come back */
+  const recentGi=new Set(h.slice(-4).filter(k=>k[0]==='g').map(k=>k.slice(1,k.indexOf(':'))));
+  let gfree=gens.filter(g=>!recentGi.has(String(GENS.indexOf(g))));if(!gfree.length&&!ids.length)gfree=gens;
+  if(gfree.length&&(!ids.length||Math.random()<TOPICS[t].rate)){
+    const seenG=new Set(h.filter(k=>!BANK[k]).slice(-60));let q;
+    for(let i=0;i<15;i++){const g=wpick(gfree,x=>x.w);q=Object.assign(g.f(),{id:'g',topic:t,lvl:g.lvl,gen:true,pic:g.pic,gi:GENS.indexOf(g)});if(!seenG.has(qKey(q)))break}
+    markShown(t,qKey(q));return q;
+  }
+  const win=Math.max(Math.floor(ids.length*0.7),ids.length-4),block=new Set([...h.filter(k=>BANK[k]).slice(-win),...recent]);
+  let c=ids.filter(b=>!block.has(b.id));if(!c.length)c=ids.filter(b=>!recent.includes(b.id));if(!c.length)c=ids;
+  const b=wpick(c,x=>weight(x.id));markShown(t,b.id);return Object.assign(b.build(),{id:b.id,topic:t,lvl:b.lvl});
 }
 function mastery(t){
   const ids=Object.values(BANK).filter(b=>b.topic===t&&lvlOk(b.lvl));
@@ -721,7 +734,7 @@ function nextQ(){
   if(S.mode==='review'){
     const ids=P.missed.filter(id=>BANK[id]);
     if(!ids.length){toast('Review cleared! Carrying on with Mixed practice.');S.mode='mixed'}
-    else{let c=ids.filter(id=>!S.recent.includes(id));if(!c.length)c=ids;const b=BANK[pick(c)];q=Object.assign(b.build(),{id:b.id,topic:b.topic,lvl:b.lvl})}
+    else{let c=ids.filter(id=>!S.recent.includes(id));if(!c.length)c=ids;const b=BANK[pick(c)];markShown(b.topic,b.id);q=Object.assign(b.build(),{id:b.id,topic:b.topic,lvl:b.lvl})}
   }
   if(!q)q=questionFor(S.mode==='mixed'||S.mode==='review'?pick(TKEYS):S.mode,S.recent);
   if(q.kind==='text'&&P.set.cmdMode==='choose')toChoice(q);
@@ -1434,6 +1447,8 @@ async function acDo(kind){
   }catch(e){msg.className='acmsg';msg.textContent=errText(e);btns.forEach(b=>b.disabled=false)}
 }
 /* ===== LEADERBOARD ===== */
+function lbMedal(i){const c=[['#fbbf24','#b77d00','#ef4444'],['#d1d5db','#6b7280','#3b82f6'],['#e0915a','#9a5a2c','#10b981']][i];
+  return `<svg width="30" height="34" viewBox="0 0 30 34" aria-label="#${i+1}"><path d="M7 1h6l4 12h-6zM23 1h-6l-4 12h6z" fill="${c[2]}"/><circle cx="15" cy="22" r="10.5" fill="${c[0]}" stroke="${c[1]}" stroke-width="2"/><text x="15" y="26.5" text-anchor="middle" font-size="12" font-weight="800" font-family="system-ui,sans-serif" fill="${c[1]}">${i+1}</text></svg>`}
 var LB={rows:null,at:0,loading:false,err:'',tab:'week'};
 function weekKey(){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toLocaleDateString('en-CA')}
 function lbWeek(){const wk=weekKey(),x=P.xp||0;
@@ -1470,7 +1485,7 @@ function renderBoard(){
   else{
     const myPos=rows.findIndex(r=>r.uid===me);
     if(myPos>=0)h+=`<p class="small mut" style="margin:0 0 8px">You are <b style="color:var(--ac)">#${myPos+1}</b> of ${rows.length} ${LB.tab==='week'?'this week':'all time'}.</p>`;
-    h+=`<div class="card" style="padding:4px 14px">`+rows.slice(0,100).map((r,i)=>{const pos=i<3?['&#129351;','&#129352;','&#129353;'][i]:'#'+(i+1);
+    h+=`<div class="card" style="padding:4px 14px">`+rows.slice(0,100).map((r,i)=>{const pos=i<3?lbMedal(i):'#'+(i+1);
       return `<div class="trow lbrow${r.uid===me?' me':''}"><span class="lbpos">${pos}</span><span class="lbav">${avatar(r.name||'?',true)}</span><div class="tb"><b>${esc(r.name||'Player')}${r.uid===me?' (you)':''}</b><div class="mut small">${RANKS[rankIdx(r.xp||0)][1]}, ${r.acc||0}% accuracy</div></div><b>${(r.score||0).toLocaleString()} XP</b></div>`}).join('')+`</div>`;
   }
   h+=`<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" id="lbRef">Refresh</button>${lbJoined()?`<button class="btn" id="lbRen">Change name</button><button class="btn danger" id="lbLeave">Leave</button>`:''}</div>
